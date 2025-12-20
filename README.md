@@ -88,9 +88,9 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 *   Ensure resume adheres to best practices for formatting and readability.
 **Context:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
 
-### 3. VS-003: Audit & Refine
+### 3. VS-003: Audit (Hallucination Detection)
 
-**Goal:** Evaluate the tailored resume against the job description for alignment, completeness, and effectiveness, then refine as needed.
+**Goal:** Conduct a forensic audit of the tailored resume to ensure zero fabrication of facts. Identify and report any claims that deviate from the factual ground truth of the raw resume.
 **Instructions:**
 *   Compare tailored resume against job description for keyword density and thematic alignment.
 *   Check for clarity, conciseness, and absence of generic language.
@@ -122,3 +122,83 @@ To multiply human value, we don't just "ask the AI." We systematically assemble 
 This process generates a single, auditable package (the Value Story YAML) that serves as the **Context-Rich, Algorithmically Legible Prompt** for the Agent.
 
 *👉 Check the `/illustrative-example` folder to see the input files and the resulting assembled YAML.*
+
+### Updated Value Stream Flow
+
+The full end-to-end pipeline for the tailored resume generation demonstrates the complete AVS framework:
+
+```mermaid
+graph TD
+    subgraph "Human-Agent Input"
+        JD[Job Description]
+        CR[Candidate Raw Resume]
+    end
+
+    subgraph "VS-001: Analysis & Strategy"
+        direction LR
+        L1[Logic: VS-001-logic-analysis.md] --> A1[Automation: assemble_prompt.py]
+        JD -- Context --> A1
+        CR -- Context --> A1
+        A1 --> P1(VS-001-assembled.yaml Prompt)
+    end
+
+    P1 --> AI1[AI Agent (Analyzes)]
+    AI1 --> SP[Strategic Plan Output]
+
+    subgraph "VS-002: Resume Generation"
+        direction LR
+        L2[Logic: VS-002-logic-generation.md] --> A2[Automation: assemble_prompt.py]
+        SP -- Context --> A2
+        CR -- Context --> A2
+        JD -- Context --> A2
+        A2 --> P2(VS-002-assembled.yaml Prompt)
+    end
+
+    P2 --> AI2[AI Agent (Generates)]
+    AI2 --> TR[Tailored Resume Output]
+
+    subgraph "VS-003: Audit"
+        direction LR
+        L3[Logic: VS-003-logic-audit.md] --> A3[Automation: assemble_prompt.py]
+        TR -- Context --> A3
+        CR -- Context --> A3
+        A3 --> P3(VS-003-assembled.yaml Prompt)
+    end
+
+    P3 --> AI3[AI Agent (Audits)]
+    AI3 --> AR[Audit Report Output]
+
+    AR --> HumanReview[Human-Agent Review]
+```
+
+### The Assembly Process
+
+The core of AVS is the "Automation" step, where human-defined logic and context are assembled into an AI-ready prompt. For this example, the `illustrative-example/assemble_prompt.py` script orchestrates this. It reads a Value Story's logic (`VS-XXX-logic-XXX.md`)—which now includes a `context_manifest`—and dynamically embeds the specified input files into a comprehensive `VS-XXX-assembled.yaml` prompt.
+
+### Running the Example
+
+To fully experience this end-to-end Value Stream, navigate to the project root and execute the assembly script for each Value Story. The script will generate the `VS-XXX-assembled.yaml` prompt, which you would then provide to your chosen AI Agent. The AI's output from one step often becomes the input (context) for the next.
+
+**1. Assemble VS-001 (Analysis & Strategy)**
+This step combines the job description and raw resume into a prompt for the AI to generate a strategic plan.
+```bash
+uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-001-logic-analysis.md --output VS-001-assembled.yaml
+# Manually 'run' VS-001-assembled.yaml as a prompt to get the Strategic Plan.
+# The output (Strategic Plan) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Strategic-Plan.md
+```
+
+**2. Assemble VS-002 (Resume Generation)**
+This step combines the strategic plan, raw resume, and job description into a prompt for the AI to generate a tailored resume.
+```bash
+uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-002-logic-generation.md --output VS-002-assembled.yaml
+# Manually 'run' VS-002-assembled.yaml as a prompt to get the Tailored Resume.
+# The output (Tailored Resume) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Tailored-Resume.md
+```
+
+**3. Assemble VS-003 (Audit)**
+This step combines the tailored resume and the raw resume into a prompt for the AI to audit for factual consistency and generate a report.
+```bash
+uv run illustrative-example/assemble_prompt.py --logic illustrative-example/VS-003-logic-audit.md --output VS-003-assembled.yaml
+# Manually 'run' VS-003-assembled.yaml as a prompt to get the Audit Report.
+# The output (Audit Report) should be saved to: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Hallucination-Audit-Report.md
+```
