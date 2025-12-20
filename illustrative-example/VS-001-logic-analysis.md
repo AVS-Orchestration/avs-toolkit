@@ -41,3 +41,4 @@ instructions:
   constraints:
     - "Do not hallucinate facts outside the provided Context."
     - "Output must be formatted as a structured strategic plan."
+    - "Save the generated strategic plan to 'company_job-title_description.md' derived from job description details."
