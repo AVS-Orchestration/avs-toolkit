@@ -64,3 +64,48 @@ Explore the Templates: Check the /templates folder for YAML schemas for creating
 Integrate with MCP: This repository includes implementation guides for the Model Context Protocol (MCP) to provide mandatory context to your agents [cite: 7.1].
 
 Contribute: Fork this repo to share your own "Algorithmically Legible" instructions for common industry value streams.
+
+## ✨ Illustrative Example: Tailored Resume Generation
+
+To demonstrate the power of Agentic Value Streams, consider the task of generating a tailored resume for a specific job application. This complex task can be broken down into a sequence of interconnected Value Stories:
+
+### 1. VS-001: Analysis & Strategy
+
+**Goal:** Understand the job description and the candidate's existing resume to identify key skills, experiences, and keywords for optimal matching.
+**Instructions:**
+*   Parse job description to extract required skills, keywords, and responsibilities.
+*   Parse candidate's raw resume to identify relevant experience, education, and achievements.
+*   Perform a gap analysis between job requirements and candidate profile.
+*   Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
+**Context:** Job description (URL or text), Candidate's raw resume (PDF or text).
+
+### 2. VS-002: Resume Generation
+
+**Goal:** Produce a draft resume tailored to the specific job application, following the strategic plan.
+**Instructions:**
+*   Select and prioritize relevant sections and bullet points from the candidate's raw resume based on the strategic plan.
+*   Rewrite/rephrase existing bullet points to incorporate job-specific keywords and align with the job description's language.
+*   Ensure resume adheres to best practices for formatting and readability.
+**Context:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
+
+### 3. VS-003: Audit & Refine
+
+**Goal:** Evaluate the tailored resume against the job description for alignment, completeness, and effectiveness, then refine as needed.
+**Instructions:**
+*   Compare tailored resume against job description for keyword density and thematic alignment.
+*   Check for clarity, conciseness, and absence of generic language.
+*   Identify any remaining gaps or areas for improvement.
+*   Suggest specific revisions to optimize the resume further.
+**Context:** Tailored resume (draft), Original job description, Best practices for resume optimization.
+
+### Value Stream Flow
+
+The sequence of these Value Stories forms a clear, auditable Agentic Value Stream:
+
+```mermaid
+graph TD
+    A[User Request: Job + Candidate Resume] --> B(VS-001: Analysis & Strategy)
+    B --> C(VS-002: Resume Generation)
+    C --> D(VS-003: Audit & Refine)
+    D --> E[Final Tailored Resume]
+```
