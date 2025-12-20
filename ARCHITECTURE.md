@@ -17,28 +17,30 @@ The fundamental principle of an AVS is that **Value is Cumulative**. In a tradit
 This diagram depicts a standard AVS flow, including the Business Review quality gates and the Recursive Feedback Loops.
 
 ```mermaid
-graph TB
-    subgraph "Value Story 1: Discovery"
-    A1[Goal] --> B1[Instructions]
-    C1[Initial Context] --> B1
-    B1 --> D1{AI Agent}
-    D1 --> E1[Product: Research]
+graph TD;
+    direction TB
+    
+    subgraph VS1["Value Story 1: Discovery"]
+        G1[Goal] --> AT1[Automation]
+        I1[Instructions] --> AT1
+        C1[Initial Context] --> AT1
+        AT1 --> AA1[Agentic-Agent]
+        AA1 --> P1[Product: Research]
+        P1 <--> BR1[Business-Review]
     end
 
-    E1 --> F1[Business Review]
-    F1 -- "Approved" --> G1[Context for VS2]
-    F1 -- "Refine" --> B1
+    BR1 -- "Approved" --> C2
 
-    subgraph "Value Story 2: Synthesis"
-    G1 --> B2[Instructions]
-    A2[Goal] --> B2
-    B2 --> D2{AI Agent}
-    D2 --> E2[Product: Draft]
+    subgraph VS2["Value Story 2: Synthesis"]
+        G2[Goal] --> AT2[Automation]
+        I2[Instructions] --> AT2
+        C2[Context: Research + Next Assets] --> AT2
+        AT2 --> AA2[Agentic-Agent]
+        AA2 --> P2[Product: Strategic Draft]
+        P2 <--> BR2[Business-Review]
     end
 
-    E2 --> F2[Business Review]
-    F2 -- "Approved" --> H1[Final Release]
-    F2 -- "Refine" --> B2
+    BR2 -- "Approved" --> Release[Final Release]
 ```
 
 ## 3. Orchestration Patterns
