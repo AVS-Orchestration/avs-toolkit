@@ -6,7 +6,7 @@
 
 metadata:
   version: '1.0'
-  story_id: VS-001-assembled
+  story_id: VS-Assembled
   status: active
   generated_by: assemble_prompt.py
 goal:
@@ -43,10 +43,11 @@ instructions:
   - Save the generated strategic plan to 'company_job-title_description.md' derived
     from job description details.
 context:
-  description: Assembled context from local files.
+  description: Assembled context based on manifest.
   assets:
-  - name: Job Description
-    source_file: job-description.md
+  - name: job_description
+    description: The full text of the target job description.
+    source_file: illustrative-example/job-description.md
     content: '# Senior Product Manager - AI Solutions
 
 
@@ -150,8 +151,9 @@ context:
       InnovateCorp is an Equal Opportunity Employer.
 
       '
-  - name: Raw Candidate Resume
-    source_file: raw-resume.md
+  - name: raw_resume
+    description: The candidate's original, untailored resume.
+    source_file: illustrative-example/raw-resume.md
     content: '# John Doe
 
 
@@ -234,9 +236,7 @@ context:
       Cross-Functional Collaboration, Mentorship.
 
       '
-  implicit_knowledge_overrides:
-  - Assume industry best practices for resume tailoring.
+  implicit_knowledge_overrides: []
 product:
   type: Document
   format: Markdown
-  handoff_target: VS-002-resume-generation
