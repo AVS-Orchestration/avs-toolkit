@@ -104,10 +104,12 @@ The sequence of these Value Stories forms a clear, auditable Agentic Value Strea
 
 ```mermaid
 graph TD
+    subgraph "Agentic Value Stream (AVS)"
     A[User Request: Job + Candidate Resume] --> B(VS-001: Analysis & Strategy)
     B --> C(VS-002: Resume Generation)
-    C --> D(VS-003: Audit & Refine)
-    D --> E[Final Tailored Resume]
+    C --> D(VS-003: Audit)
+    D --> E[DRAFT Tailored Resume]
+    end
 ```
 
 ### The Automation Step: Assembling the AI Prompt
