@@ -1,20 +1,15 @@
----
 # ==============================================================================
+# Value Story Logic: VS-001 Analysis & Strategy
 #
-# AVS Value Story Specification v1.0
+# This file contains the Goal and Instructions for the "Analysis & Strategy"
+# Value Story (VS-001). It is designed to be ingested by the
+# 'assemble_prompt.py' script, which combines it with context files
+# (job description, raw resume) to generate a complete, executable
+# Value Story YAML for an AI Agent.
 #
-# Framework by Patrick Heaney (CC BY-SA 4.0)
-#
-# Purpose: Modular, Algorithmically Legible unit of work for Agentic workflows.
-#
+# Use this file to define the *what* (Goal) and *how* (Instructions) of
+# this specific Value Story.
 # ==============================================================================
-
-metadata:
-  version: "1.0"
-  author: "Patrick Heaney"
-  repository: "https://github.com/PatrickHeaney/avs-value-story"
-  story_id: "VS-001-analysis"
-  status: "active"   # draft, active, archived
 
 # THE GOAL: The "Minimum Unique Information" needed to produce the product.
 # This defines the "North Star" for the Agent's internal reasoning loop.
@@ -46,32 +41,3 @@ instructions:
   constraints:
     - "Do not hallucinate facts outside the provided Context."
     - "Output must be formatted as a structured strategic plan."
-
-# CONTEXT: The antidote to hallucination.
-# Engineering 'The Information Hunt' out of the runtime loop.
-
-context:
-  mandatory_assets:
-    - name: "Job Description"
-      mcp_uri: "file://illustrative-example/job-description.md" # URI
-      alt_link: "N/A"
-    - name: "Raw Candidate Resume"
-      mcp_uri: "file://illustrative-example/raw-resume.md" # URI
-      alt_link: "N/A"
-  implicit_knowledge_overrides:
-    - "Assume industry best practices for resume tailoring."
-
-# THE PRODUCT: The deliverable produced by this Value Story.
-
-product:
-  type: "Document"
-  format: "Markdown"
-  handoff_target: "VS-002-resume-generation"
-
-# BUSINESS REVIEW: The Human-Agent governance layer.
-
-business_review:
-  authority_required: "Human-Agent"
-  quality_gate_checklist:
-    - "Does the strategic plan meet the Outcome Statement?"
-    - "Is the identified logic still optimal?"
