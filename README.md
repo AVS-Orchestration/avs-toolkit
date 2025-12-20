@@ -109,3 +109,16 @@ graph TD
     C --> D(VS-003: Audit & Refine)
     D --> E[Final Tailored Resume]
 ```
+
+### The Automation Step: Assembling the AI Prompt
+
+In the AVS framework, "Automation" isn't the AI thinking; it is the **assembly line** that builds the perfect prompt.
+
+To multiply human value, we don't just "ask the AI." We systematically assemble the prompt by combining:
+1.  **The Goal:** The specific outcome defined by the human architect.
+2.  **The Instructions:** The "Algorithmically Legible" logic for *how* to do the work.
+3.  **The Context:** The specific data (e.g., `job-description.md` and `raw-resume.md`) needed to prevent hallucination.
+
+This process generates a single, auditable package (the Value Story YAML) that serves as the **Context-Rich, Algorithmically Legible Prompt** for the Agent.
+
+*👉 Check the `/illustrative-example` folder to see the input files and the resulting assembled YAML.*
