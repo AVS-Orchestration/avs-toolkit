@@ -47,7 +47,7 @@ product:
   type: "Document"
   format: "Markdown"
   handoff_target: "VS-002-resume-generation"
-  output_path: "illustrative-example/outputs/vs-001"
+  output_path: "illustrative-example"
 
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
 # Defines what external files/data must be assembled by the script.

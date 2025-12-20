@@ -241,4 +241,4 @@ product:
   type: Document
   format: Markdown
   handoff_target: VS-002-resume-generation
-  output_path: illustrative-example
+  output_path: illustrative-example/outputs/vs-001
