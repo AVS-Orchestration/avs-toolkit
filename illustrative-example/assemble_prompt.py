@@ -10,34 +10,22 @@
 #
 # Description:
 # This script assembles a complete AVS (Agentic Value Stream) Value Story YAML
-# file by combining a YAML-formatted logic file (containing Goal and
-# Instructions) with Markdown context files (e.g., job description, raw resume).
-# The output is a single, self-contained YAML file that serves as a
-# Context-Rich, Algorithmically Legible Prompt for an AI Agent.
+# file. It reads a Logic File (YAML/MD) that contains the Goal, Instructions,
+# and a 'context_manifest'. It then dynamically loads all files listed in the
+# manifest and embeds them into the final YAML output.
+#
+# This allows the Logic File to act as the "Master Controller," defining exactly
+# what data constitutes the context for that specific Value Story.
 #
 # Usage:
 #   To run this script with `uv` (recommended):
 #     uv run assemble_prompt.py [OPTIONS]
 #
-#   To run this script directly with Python (ensure dependencies are installed):
-#     python assemble_prompt.py [OPTIONS]
-#
 # Options:
 #   --logic PATH      Path to the logic (Goal/Instructions) file.
 #                     (Default: illustrative-example/VS-001-logic-analysis.md)
-#   --job PATH        Path to the Job Description Markdown file.
-#                     (Default: illustrative-example/job-description.md)
-#   --resume PATH     Path to the Raw Resume Markdown file.
-#                     (Default: illustrative-example/raw-resume.md)
 #   --output PATH     Path to the output YAML file.
 #                     (Default: illustrative-example/VS-001-assembled.yaml)
-#
-# Example:
-#   To run with default files:
-#     uv run assemble_prompt.py
-#
-#   To specify custom input/output files:
-#     uv run assemble_prompt.py --job my_job.md --resume my_resume.md --output my_vs.yaml
 #
 # Dependencies:
 #   PyYAML (automatically managed by `uv run` if using `uv`)
@@ -46,77 +34,103 @@
 import yaml
 import os
 import argparse
+import sys
 
 def read_file(filename):
-    with open(filename, 'r') as f:
-        return f.read()
+    """Reads content from a file, handling potential path issues."""
+    try:
+        with open(filename, 'r') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: Could not find file at '{filename}'")
+        sys.exit(1)
 
 def main():
-    # Get the directory where the script is located
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get the directory where the script is located to resolve relative defaults
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # The project root is one level up
+    project_root = os.path.dirname(script_dir)
 
     parser = argparse.ArgumentParser(description="Assemble an AVS Value Story from logic and context files.")
-    parser.add_argument("--logic", default=os.path.join(base_dir, "VS-001-logic-analysis.md"), help="Path to the logic (Goal/Instructions) MD/YAML file.")
-    parser.add_argument("--job", default=os.path.join(base_dir, "job-description.md"), help="Path to the Job Description MD file.")
-    parser.add_argument("--resume", default=os.path.join(base_dir, "raw-resume.md"), help="Path to the Raw Resume MD file.")
-    parser.add_argument("--output", default=os.path.join(base_dir, "VS-001-assembled.yaml"), help="Path to the output YAML file.")
+    parser.add_argument("--logic", default=os.path.join(script_dir, "VS-001-logic-analysis.md"), 
+                        help="Path to the logic (Goal/Instructions) MD/YAML file.")
+    parser.add_argument("--output", default=os.path.join(script_dir, "VS-001-assembled.yaml"), 
+                        help="Path to the output YAML file.")
     
     args = parser.parse_args()
 
-    print("Assembling Value Story...")
-
-    # 1. Load the Logic (Goal + Instructions)
-    print(f"Loading Logic from '{args.logic}'...")
+    print(f"--- AVS Assembly Script ---")
+    print(f"1. Loading Logic from '{args.logic}'...")
+    
+    # 1. Load the Logic File
     logic_content = read_file(args.logic)
-    logic_data = yaml.safe_load(logic_content)
+    try:
+        logic_data = yaml.safe_load(logic_content)
+    except yaml.YAMLError as exc:
+        print(f"Error parsing YAML in logic file: {exc}")
+        sys.exit(1)
 
-    # 2. Load the Context (Data)
-    print(f"Loading Context from '{args.job}'...")
-    job_description = read_file(args.job)
+    # 2. Process Context Manifest
+    context_assets = []
+    manifest = logic_data.get('context_manifest', [])
+    
+    if not manifest:
+        print("Warning: No 'context_manifest' found in logic file. No context assets will be loaded.")
+    else:
+        print(f"2. Processing Context Manifest ({len(manifest)} items)...")
+        
+        for item in manifest:
+            key = item.get('key')
+            description = item.get('description', 'No description provided.')
+            default_path = item.get('default_path')
+            
+            if not default_path:
+                print(f"  - Skipping '{key}': No default_path provided.")
+                continue
 
-    print(f"Loading Context from '{args.resume}'...")
-    raw_resume = read_file(args.resume)
+            # Resolve path: 
+            # If path is absolute, use it. 
+            # If relative, treat it as relative to the PROJECT ROOT (standard convention).
+            if os.path.isabs(default_path):
+                file_path = default_path
+            else:
+                file_path = os.path.join(project_root, default_path)
+
+            print(f"  - Loading '{key}' from: {file_path}")
+            file_content = read_file(file_path)
+            
+            # Add to assets list
+            context_assets.append({
+                "name": key,
+                "description": description,
+                "source_file": default_path,
+                "content": file_content
+            })
 
     # 3. Assemble the Value Story
-    print("Assembling final structure...")
+    print("3. Assembling final structure...")
     value_story = {
         "metadata": {
             "version": "1.0",
-            "story_id": "VS-001-assembled",
+            "story_id": logic_data.get('metadata', {}).get('story_id', 'VS-Assembled'),
             "status": "active",
             "generated_by": "assemble_prompt.py"
         },
-        # Ingesting the Goal and Instructions directly
-        "goal": logic_data['goal'],
-        "instructions": logic_data['instructions'],
-        
-        # Embedding the Context directly (No URIs!)
+        "goal": logic_data.get('goal', {}),
+        "instructions": logic_data.get('instructions', {}),
         "context": {
-            "description": "Assembled context from local files.",
-            "assets": [
-                {
-                    "name": "Job Description",
-                    "source_file": os.path.basename(args.job),
-                    "content": job_description
-                },
-                {
-                    "name": "Raw Candidate Resume",
-                    "source_file": os.path.basename(args.resume),
-                    "content": raw_resume
-                }
-            ],
-            "implicit_knowledge_overrides": [
-                "Assume industry best practices for resume tailoring."
-            ]
+            "description": "Assembled context based on manifest.",
+            "assets": context_assets,
+            "implicit_knowledge_overrides": logic_data.get('context', {}).get('implicit_knowledge_overrides', [])
         },
-        "product": {
+        "product": logic_data.get('product', {
             "type": "Document",
-            "format": "Markdown",
-            "handoff_target": "VS-002-resume-generation"
-        }
+            "format": "Markdown"
+        })
     }
 
     # 4. Write the Assembled YAML
+    print(f"4. Writing output to '{args.output}'...")
     with open(args.output, 'w') as f:
         f.write("# ==============================================================================\n")
         f.write("# AUTO-GENERATED VALUE STORY\n")
@@ -125,7 +139,7 @@ def main():
         f.write("# ==============================================================================\n\n")
         yaml.dump(value_story, f, sort_keys=False, indent=2, width=80)
 
-    print(f"Successfully assembled '{args.output}'")
+    print(f"✅ Success! Assembled Value Story saved to: {args.output}")
 
 if __name__ == "__main__":
     main()
