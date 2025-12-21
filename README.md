@@ -20,6 +20,8 @@ The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rat
 
 **Context**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
 
+**Context Manifest**: lists every external file, data source, or API to be used as context by the agent to execute its task. Enables the Automation layer to dynamically assemble the correct context. 
+
 ## 🛠️ Framework Architecture
 
 ```mermaid
