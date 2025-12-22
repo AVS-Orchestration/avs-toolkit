@@ -98,7 +98,7 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 *   Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
 
 
-**Context:** Job description (URL or text), Candidate's raw resume (PDF or text).
+**Context-Manifest:** Job description (URL or text), Candidate's raw resume (PDF or text).
 
 ### 2. VS-002: Resume Generation
 
@@ -109,7 +109,7 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 *   Rewrite/rephrase existing bullet points to incorporate job-specific keywords and align with the job description's language.
 *   Ensure resume adheres to best practices for formatting and readability.
 
-**Context:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
+**Context-Manifest:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
 
 ### 3. VS-003: Audit (Hallucination Detection)
 
@@ -121,7 +121,7 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 *   Identify any remaining gaps or areas for improvement.
 *   Suggest specific revisions to optimize the resume further.
 
-**Context:** Tailored resume (draft), Original job description, Best practices for resume optimization.
+**Context-Manifest:** Tailored resume (draft), Original job description, Best practices for resume optimization.
 
 ### Value Stream Flow
 
