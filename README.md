@@ -4,11 +4,11 @@
 
 Developed by **Patrick Heaney**, this framework provides a rigorous methodological shift from "automating work" to **multiplying value** by externalizing tacit knowledge into **Algorithmically Legible Instructions**.
 
-🚀 **The Problem: The Information Hunt**
+## 🚀 **The Problem: The Information Hunt**
 
 The current crisis in knowledge work is characterized by the **"5–15 hour information hunt"**—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This **"context blindness"** is the primary reason AI deployments fail, lead to hallucinations, or require excessive human oversight [cite: 2.4, 6.2].
 
-💡 **The Solution: Agentic Value Streams (AVS)**
+# 💡 **The Solution: Agentic Value Streams (AVS)**
 
 The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a **cascading, iterative, and cumulative sequence** of value creation centered around the Value Story [cite: 1.1].
 
@@ -46,10 +46,10 @@ graph TD
         subgraph review ["**Review**"]
             Business-Review{Human<br>Review}
             Product ==> Business-Review
-            Business-Review -- Refine --> Goal
+            Business-Review -- **Refine** --> Goal
             
         end
-        Business-Review == Accept & Release ==> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+        Business-Review == **Release** ==> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
         Context[(MCP,<br>Database,<br>File System,<br>URL, etc)] <==> Automation
     end
     
@@ -65,7 +65,7 @@ graph TD
     class plan,Plan, Plan;
     class review,Review Review;
 ```
-### The Strategic Shift
+## The Strategic Shift
 
 Under the **AVS Framework**, the highest-value human contributions completes the shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
@@ -83,39 +83,34 @@ To demonstrate the power of Agentic Value Streams, consider the task of generati
 
 ### 1. VS-001: Analysis & Strategy
 
-**Goal:** Understand the job description and the candidate's existing resume to identify key skills, experiences, and keywords for optimal matching.
-
-**Instructions:**
-*   Parse job description to extract required skills, keywords, and responsibilities.
-*   Parse candidate's raw resume to identify relevant experience, education, and achievements.
-*   Perform a gap analysis between job requirements and candidate profile.
-*   Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
-
-
-**Context-Manifest:** Job description (URL or text), Candidate's raw resume (PDF or text).
+- **Goal:** Understand the job description and the candidate's existing resume to identify key skills, experiences, and keywords for optimal matching.
+- **Instructions:**
+    *   Parse job description to extract required skills, keywords, and responsibilities.
+    *   Parse candidate's raw resume to identify relevant experience, education, and achievements.
+    *   Perform a gap analysis between job requirements and candidate profile.
+    *   Develop a strategic plan for resume tailoring, including prioritization of content and keyword integration.
+- **Context-Manifest:** Job description (URL or text), Candidate's raw resume (PDF or text).
+- **Product:** Strategy Report (The "Algorithm" for the next step).  
 
 ### 2. VS-002: Resume Generation
 
-**Goal:** Produce a draft resume tailored to the specific job application, following the strategic plan.
-
-**Instructions:**
-*   Select and prioritize relevant sections and bullet points from the candidate's raw resume based on the strategic plan.
-*   Rewrite/rephrase existing bullet points to incorporate job-specific keywords and align with the job description's language.
-*   Ensure resume adheres to best practices for formatting and readability.
-
-**Context-Manifest:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
-
+- **Goal:** Produce a draft resume tailored to the specific job application, following the strategic plan.
+- **Instructions:**
+    *   Select and prioritize relevant sections and bullet points from the candidate's raw resume based on the strategic plan.
+    *   Rewrite/rephrase existing bullet points to incorporate job-specific keywords and align with the job description's language.
+    *   Ensure resume adheres to best practices for formatting and readability.
+- **Context-Manifest:** Output from VS-001 (strategic plan), Candidate's raw resume, Resume formatting guidelines.
+- **Product:**  Tailored Resume Draft
 ### 3. VS-003: Audit (Hallucination Detection)
 
-**Goal:** Conduct a forensic audit of the tailored resume to ensure zero fabrication of facts. Identify and report any claims that deviate from the factual ground truth of the raw resume.
-
-**Instructions:**
-*   Compare tailored resume against job description for keyword density and thematic alignment.
-*   Check for clarity, conciseness, and absence of generic language.
-*   Identify any remaining gaps or areas for improvement.
-*   Suggest specific revisions to optimize the resume further.
-
-**Context-Manifest:** Tailored resume (draft), Original job description, Best practices for resume optimization.
+- **Goal:** Conduct a forensic audit of the tailored resume to ensure zero fabrication of facts. Identify and report any claims that deviate from the factual ground truth of the raw resume.
+- **Instructions:**
+    *   Compare tailored resume against job description for keyword density and thematic alignment.
+    *   Check for clarity, conciseness, and absence of generic language.
+    *   Identify any remaining gaps or areas for improvement.
+    *   Suggest specific revisions to optimize the resume further.
+- **Context-Manifest:** Tailored resume (draft), Original job description, Best practices for resume optimization.
+- **Product:**  Audit Report & Finalized Resume.
 
 ### Value Stream Flow
 
@@ -124,10 +119,14 @@ The sequence of these Value Stories forms a clear, auditable Agentic Value Strea
 ```mermaid
 graph TD
     subgraph "Agentic Value Stream (AVS)"
-    A[User Request: Job + Candidate Resume] --> B(VS-001: Analysis & Strategy)
-    B --> C(VS-002: Resume Generation)
-    C --> D(VS-003: Audit Report & Tailored Resume)
+        A(VS-001: Analysis & Strategy)
+        A --> B(VS-002: Resume Generation)
+        B --> C(VS-003: Audit Report & Tailored Resume)
+
     end
+A -- Strategy --> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+B -- Draft-Resume --> Context
+C -- (Audit Report & Finalized Resume) --> Context
 ```
 
 ### The Automation Step: Assembling the AI Prompt
