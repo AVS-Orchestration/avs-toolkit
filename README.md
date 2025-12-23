@@ -82,7 +82,7 @@ graph TD
 ```
 ## The Strategic Shift
 
-Under the **AVS Framework**, the highest-value human contributions complete the shift from "doing the work" to generating and improving the goals, instructions, and context used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
+Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
 ## 🤝 Getting Started
 
