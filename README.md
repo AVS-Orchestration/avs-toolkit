@@ -41,8 +41,12 @@ graph LR
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
 
-# 🛠️ The Value Story 
-This diagram illustrates the **Value Story** lifecycle: Plan (Human), Run (Agent), and Review (Human).
+## The Strategic Shift
+
+Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
+
+# 🛠️ The Value Story Lifecyle
+This diagram illustrates the **Value Story** lifecycle: **Plan** (Human), **Run** (Agent), and **Review** (Human).
 ```mermaid
 graph TD
     subgraph VS [" "]
@@ -65,8 +69,8 @@ graph TD
             Business-Review -- **Refine** --> Goal
             
         end
-        Business-Review == **Release** ==> Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
-        Context[(MCP,<br>Database,<br>File System,<br>URL, etc)] <==> Automation
+        Business-Review == **Release** ==> Context[(GitHub, MCP,<br>Local Files)]
+        Context <==> Automation
     end
     
     %% Syles
@@ -80,10 +84,6 @@ graph TD
     class plan,Plan, Plan;
     class review,Review Review;
 ```
-## The Strategic Shift
-
-Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
-
 ## 🤝 Getting Started
 
 Explore the Templates: Check the /templates folder for YAML schemas for creating your first Value Story.
