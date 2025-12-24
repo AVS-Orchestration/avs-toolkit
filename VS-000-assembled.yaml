@@ -1,0 +1,36 @@
+metadata:
+  story_id: VS-000
+  version: '1.2'
+  author: Patrick Heaney
+  status: assembled
+  assembled_at: '2025-12-24T17:53:24.499243'
+goal:
+  as_a: As a <customer/role who receives the value>
+  i_want: 'Define exactly what success looks like in at least 20 characters. Include
+    specific requirements as bullet points if necessary.
+
+    '
+  so_that: 'The agent understands the business value and rationale behind the task.
+
+    '
+instructions:
+- step_number: 1
+  action: Initial data gathering or analysis step [Minimum 10 chars].
+  validation_rule: Specific logic used to verify this step is correct.
+- step_number: 2
+  action: The primary production or transformation step.
+  validation_rule: Forensic check to ensure zero hallucinations.
+context_manifest:
+- key: null
+  description: null
+  default_path: path/to/source.md
+  content: null
+- key: null
+  description: null
+  default_path: path/to/reference.pdf
+  content: null
+product:
+  type: Analysis/Document
+  format: Markdown
+  output_path: ''
+  handoff_target: null

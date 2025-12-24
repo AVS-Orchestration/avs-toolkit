@@ -67,5 +67,5 @@ context_manifest:
 product:
   type: "Document" # e.g., Code, Analysis, Report
   format: "Markdown"
-  output_path: "outputs/"
+  output_path: ""
   handoff_target: "VS-001-Next-Step"
