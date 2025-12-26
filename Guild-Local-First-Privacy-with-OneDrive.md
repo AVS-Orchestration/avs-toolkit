@@ -30,13 +30,13 @@ OneDrive/
 Create a separate folder for your private content:
 ```
 mkdir -p ~/OneDrive/AVS-Management/My-Value-Streams
+cd cd ~/OneDrive/AVS-Management
 ```
 
 ### Step B: Clone the Tool
 
 Open your terminal and move to your OneDrive directory:
 ```
-cd ~/OneDrive/AVS-Management
 git clone https://github.com/PatrickHeaney/avs-value-story.git avs-toolkit
 cd avs-toolkit
 uv sync
