@@ -23,20 +23,18 @@ def parse_markdown_story(content: str) -> dict:
     try:
         yaml_data = yaml.safe_load(clean_yaml)
         if isinstance(yaml_data, dict):
-            # Story ID
-            story_id = str(yaml_data.get('story_id') or yaml_data.get('metadata', {}).get('story_id') or "VS-UNKNOWN")
-            
             # Metadata
             meta = yaml_data.get('metadata', {})
             data['metadata'] = {
-                "story_id": story_id,
-                "version": str(meta.get('version', "1.0")),
+                "story_id": str(yaml_data.get('story_id') or meta.get('story_id', "VS-UNKNOWN")),
+                "version": str(meta.get('version', "1.2")),
                 "author": meta.get('author'),
                 "status": meta.get('status', 'draft'),
+                "preferred_model": meta.get('preferred_model'), # US-002: Map preferred model from file
                 "assembled_at": meta.get('assembled_at')
             }
 
-            # Goal
+            # Goal (Mapping Agile Structure)
             goal_raw = yaml_data.get('goal', {})
             if isinstance(goal_raw, dict):
                 data['goal'] = {
@@ -45,15 +43,19 @@ def parse_markdown_story(content: str) -> dict:
                     "so_that": goal_raw.get('so_that', "value is created.")
                 }
             
-            # Instructions
+            # Instructions (Mapping Reasoning Pattern and Steps)
             instr_raw = yaml_data.get('instructions', {})
-            raw_steps = []
+            steps = []
+            reasoning = "Chain-of-Thought"
+            
             if isinstance(instr_raw, dict):
+                reasoning = instr_raw.get('reasoning_pattern', reasoning)
                 raw_steps = instr_raw.get('execution_steps') or instr_raw.get('steps', [])
             elif isinstance(instr_raw, list):
                 raw_steps = instr_raw
+            else:
+                raw_steps = []
 
-            steps = []
             for i, s in enumerate(raw_steps, 1):
                 if isinstance(s, dict):
                     steps.append({
@@ -61,18 +63,28 @@ def parse_markdown_story(content: str) -> dict:
                         "action": str(s.get('action', "")),
                         "validation_rule": str(s.get('validation_rule') or s.get('rule', "Verified."))
                     })
-            data['instructions'] = steps
+            
+            data['instructions'] = {
+                "reasoning_pattern": reasoning,
+                "execution_steps": steps
+            }
 
             # Context
             context_raw = yaml_data.get('context_manifest') or yaml_data.get('context', {}).get('mandatory_assets', [])
             assets = []
             if isinstance(context_raw, list):
                 for item in context_raw:
-                    path = item.get('default_path') if isinstance(item, dict) else item
-                    if path: assets.append({"default_path": str(path)})
+                    if isinstance(item, dict):
+                        assets.append({
+                            "key": item.get('key'),
+                            "description": item.get('description'),
+                            "default_path": str(item.get('default_path', ""))
+                        })
+                    else:
+                        assets.append({"default_path": str(item)})
             data['context_manifest'] = assets
 
-            # Product extraction (Fix for output path issue)
+            # Product extraction
             product_raw = yaml_data.get('product', {})
             if isinstance(product_raw, dict):
                 data['product'] = {
@@ -82,7 +94,7 @@ def parse_markdown_story(content: str) -> dict:
                     "handoff_target": product_raw.get('handoff_target')
                 }
 
-            if data.get('goal', {}).get('i_want') and len(data['instructions']) > 0:
+            if data.get('goal', {}).get('i_want') and len(data['instructions']['execution_steps']) > 0:
                 return data
     except Exception:
         pass
