@@ -9,6 +9,7 @@ metadata:
   version: "1.2"
   author: "Patrick Heaney"
   status: "active"
+  preferred_model: "llama3"
 
 # THE GOAL: The "North Star" for the Agentic-Agent.
 goal:

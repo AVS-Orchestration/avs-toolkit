@@ -9,6 +9,8 @@ metadata:
   version: "1.2"
   author: "Patrick Heaney"
   status: "active"
+  preferred_model: "llama3"
+
   # assembled_at: null  # Populated by 'avs assemble'
 
 # THE GOAL: The "North Star" for the Agentic-Agent.

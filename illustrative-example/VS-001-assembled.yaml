@@ -3,7 +3,8 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
-  assembled_at: '2025-12-24T14:26:24.582148'
+  preferred_model: gemma2:27b
+  assembled_at: '2025-12-26T17:17:37.663651'
 goal:
   as_a: As a Senior Career Strategist
   i_want: 'Identify key skills, experiences, and keywords from the job description
@@ -17,26 +18,29 @@ goal:
 
     '
 instructions:
-- step_number: 1
-  action: Parse provided job description to extract required skills, keywords, responsibilities,
-    and company culture cues.
-  validation_rule: List of extracted requirements is comprehensive and accurate.
-- step_number: 2
-  action: Parse provided candidate's raw resume to identify relevant experience, education,
-    achievements, and technical proficiencies.
-  validation_rule: List of candidate's relevant attributes is comprehensive and accurate.
-- step_number: 3
-  action: Perform a detailed gap analysis comparing job requirements with candidate
-    attributes.
-  validation_rule: Gap analysis report highlights crucial alignment points and discrepancies.
-- step_number: 4
-  action: Develop a strategic plan for tailoring the resume, including prioritization
-    of content and specific keywords.
-  validation_rule: Strategic plan is actionable and directly addresses the gap analysis
-    findings.
+  reasoning_pattern: Chain-of-Thought
+  execution_steps:
+  - step_number: 1
+    action: Parse provided job description to extract required skills, keywords, responsibilities,
+      and company culture cues.
+    validation_rule: List of extracted requirements is comprehensive and accurate.
+  - step_number: 2
+    action: Parse provided candidate's raw resume to identify relevant experience,
+      education, achievements, and technical proficiencies.
+    validation_rule: List of candidate's relevant attributes is comprehensive and
+      accurate.
+  - step_number: 3
+    action: Perform a detailed gap analysis comparing job requirements with candidate
+      attributes.
+    validation_rule: Gap analysis report highlights crucial alignment points and discrepancies.
+  - step_number: 4
+    action: Develop a strategic plan for tailoring the resume, including prioritization
+      of content and specific keywords.
+    validation_rule: Strategic plan is actionable and directly addresses the gap analysis
+      findings.
 context_manifest:
-- key: null
-  description: null
+- key: job_description
+  description: The full text of the target job description.
   default_path: illustrative-example/job-description.md
   content: '# Senior Product Manager - AI Solutions
 
@@ -139,8 +143,8 @@ context_manifest:
     InnovateCorp is an Equal Opportunity Employer.
 
     '
-- key: null
-  description: null
+- key: raw_resume
+  description: The candidate's original, untailored resume.
   default_path: illustrative-example/raw-resume.md
   content: '# John Doe
 

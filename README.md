@@ -228,6 +228,8 @@ Executes the Value Story. If the file has not been assembled yet, `run` will aut
 uv run avs run illustrative-example/VS-001-logic-analysis.md --local
 ```
 
+🧠 **Advanced**: See Model Orchestration Guide for using specialized models like Gemma or Mistral.
+
 ## 📂 Architecture: Value Story vs. Briefcase
 
 The AVS Toolkit manages the lifecycle of a Value Story through three distinct file types visible in the repository:
@@ -252,6 +254,7 @@ The AVS Toolkit manages the lifecycle of a Value Story through three distinct fi
 * `VS-000-template.md`: Master markdown template for new Value Stories.
 * `VS-000-template.yaml`: Master YAML template for Value Stories.
 * `Visual-Studio-Code-Setup-Guide.md`: Dev environment optimization.
+* `docs/`: A library of implementation guides to assist in your AVS adoption journey.
 * `ARCHITECTURE.md` & `SOURCES.md`: Framework documentation.
 
 ## 🏅 About the Author

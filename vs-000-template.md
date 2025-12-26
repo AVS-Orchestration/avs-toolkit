@@ -11,6 +11,7 @@ metadata:
   story_id: "VS-000"
   version: "1.2"
   author: "Patrick Heaney"
+  preferred_model: "llama3"
 
 # THE GOAL: The "North Star" for the Agentic-Agent.
 

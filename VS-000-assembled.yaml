@@ -3,34 +3,43 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
-  assembled_at: '2025-12-24T17:53:24.499243'
+  preferred_model: llama3
+  assembled_at: '2025-12-26T17:34:14.542029'
 goal:
   as_a: As a <customer/role who receives the value>
-  i_want: 'Define exactly what success looks like in at least 20 characters. Include
-    specific requirements as bullet points if necessary.
+  i_want: 'Define exactly what success looks like in at least 20 characters. Provide
+    a clear, descriptive statement of the final product. - "Requirement 1: Quantitative
+    or binary measure of success." - "Requirement 2: High-fidelity quality gate for
+    the human reviewer." Explain the "What" so the agent understands the specific
+    technical outcome.
 
     '
-  so_that: 'The agent understands the business value and rationale behind the task.
+  so_that: 'Explain the benefits of achieving this goal for the customer. - "Benefit
+    1: Improved efficiency or productivity." - "Benefit 2: Enhanced user experience
+    or satisfaction." Explain the "Why" to provide the agent with a rationale for
+    decision-making.
 
     '
 instructions:
-- step_number: 1
-  action: Initial data gathering or analysis step [Minimum 10 chars].
-  validation_rule: Specific logic used to verify this step is correct.
-- step_number: 2
-  action: The primary production or transformation step.
-  validation_rule: Forensic check to ensure zero hallucinations.
+  reasoning_pattern: Chain-of-Thought
+  execution_steps:
+  - step_number: 1
+    action: Describe the first action the agent must take [Min 10 chars].
+    validation_rule: How do we know step 1 was done correctly?
+  - step_number: 2
+    action: Describe the primary production or transformation step.
+    validation_rule: The forensic check to ensure zero hallucinations.
 context_manifest:
-- key: null
-  description: null
-  default_path: path/to/source.md
+- key: primary_data_source
+  description: The main document the agent needs to read.
+  default_path: path/to/your/file.md
   content: null
-- key: null
-  description: null
+- key: reference_guide
+  description: Supporting templates or style guides.
   default_path: path/to/reference.pdf
   content: null
 product:
-  type: Analysis/Document
+  type: Document
   format: Markdown
   output_path: ''
-  handoff_target: null
+  handoff_target: VS-001-Next-Step

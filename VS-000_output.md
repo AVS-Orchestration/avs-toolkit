@@ -1,33 +1,32 @@
-I'm a customer seeking a solution to define exactly what success looks like in at least 20 characters.
+I'm a customer seeking a specific outcome. To define success, I'll provide a clear and descriptive statement of the final product.
 
-**Goal:** Define a clear, descriptive statement of the final product that meets the requirements.
+**Success Definition:** A high-quality, binary measure of success is achieved when the agent delivers a technical report that accurately defines exactly what success looks like in at least 20 characters, providing a clear, descriptive statement of the final product.
 
-**Requirements:**
+**Requirement 1: Quantitative or Binary Measure of Success.**
+The report must include a concise, quantifiable statement that meets the minimum character count requirement (at least 20 characters).
 
-1. Quantitative or binary measure of success.
-2. High-fidelity quality gate for the human reviewer.
+**Requirement 2: High-Fidelity Quality Gate for the Human Reviewer.**
+The report must be written in a clear and descriptive manner, making it easy for a human reviewer to understand the specific technical outcome.
 
-**What:** The specific technical outcome is a concise, measurable description of what constitutes "success" in at least 20 characters.
+**What:** The agent should provide a detailed description of the final product, including its characteristics, features, and benefits. This will enable me, as the customer, to make informed decisions about the project's direction and requirements.
 
-**Benefits:**
+Now, let's explore the benefits of achieving this goal:
 
-1. Improved efficiency or productivity by providing a clear understanding of what needs to be achieved.
-2. Enhanced user experience or satisfaction by ensuring that the desired outcome is well-defined and achievable.
+**Benefit 1: Improved Efficiency or Productivity.**
+By providing a clear and concise definition of success, I can streamline my decision-making process, reducing the time spent on clarifying requirements and increasing productivity.
 
-Now, let's execute the steps:
+**Benefit 2: Enhanced User Experience or Satisfaction.**
+The agent's report will enable me to create a user-centered approach, ensuring that the final product meets the needs and expectations of its users, leading to increased satisfaction and loyalty.
 
-**Step 1:** Validate the goal by confirming that it meets the requirements.
+---
 
-To ensure step 1 was done correctly, I will review the goal against the requirements. The goal clearly defines a measurable description of success in at least 20 characters, meeting requirement 1. Additionally, the goal provides a clear and descriptive statement of the final product, satisfying requirement 2.
+Now that we've established the success definition and benefits, let's move on to the execution steps:
 
-**Step 2:** Describe the primary production or transformation step.
+**Step 1: Describe the First Action the Agent Must Take.**
+The agent should start by reviewing the provided context (file.md and reference.pdf) to understand my requirements and goals.
 
-To ensure zero hallucinations, I will provide a detailed explanation of the process:
+**Validation:** To ensure step 1 was done correctly, I'll provide additional context or clarification if needed. The agent will confirm that they have understood my requirements before proceeding with the next steps.
 
-The primary production step is to craft a well-defined, measurable description of success that meets the requirements. This involves:
+---
 
-* Identifying the key performance indicators (KPIs) that define success
-* Ensuring the KPIs are quantifiable and measurable
-* Developing a clear and concise statement that outlines what constitutes "success" in at least 20 characters
-
-By following these steps, we can ensure that the goal is well-defined, meeting the requirements and providing benefits to the customer.
+Please proceed with Step 2: Describe the Primary Production or Transformation Step.
