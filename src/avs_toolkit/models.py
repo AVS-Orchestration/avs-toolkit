@@ -34,6 +34,10 @@ class InstructionStep(BaseModel):
     action: str = Field(..., min_length=10)
     validation_rule: str = Field(..., min_length=5)
 
+class Instructions(BaseModel):
+    reasoning_pattern: str = "Chain-of-Thought"
+    execution_steps: List[InstructionStep]
+
 class ContextManifestItem(BaseModel):
     key: Optional[str] = None
     description: Optional[str] = None
@@ -49,7 +53,7 @@ class Product(BaseModel):
 class ValueStory(BaseModel):
     metadata: Metadata
     goal: Goal
-    instructions: List[InstructionStep]
+    instructions: Instructions
     context_manifest: List[ContextManifestItem]
     product: Product = Field(default_factory=Product)
     
