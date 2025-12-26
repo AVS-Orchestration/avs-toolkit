@@ -7,6 +7,10 @@ class Metadata(BaseModel):
     version: str = "1.0"
     author: Optional[str] = None
     status: str = "draft"
+    preferred_model: Optional[str] = Field(
+        None,
+        description="The specific Ollama model (e.g., llama3:70b) recommended by the Architect for this story."
+    )
     assembled_at: Optional[str] = Field(
         None, 
         description="ISO timestamp indicating when context was injected. If null, this is a template/definition."
