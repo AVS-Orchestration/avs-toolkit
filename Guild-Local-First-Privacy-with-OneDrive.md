@@ -37,7 +37,7 @@ mkdir -p ~/OneDrive/AVS-Management/My-Value-Streams
 Open your terminal and move to your OneDrive directory:
 ```
 cd ~/OneDrive/AVS-Management
-git clone [https://github.com/PatrickHeaney/avs-value-story.git](https://github.com/PatrickHeaney/avs-value-story.git) avs-toolkit
+git clone https://github.com/PatrickHeaney/avs-value-story.git avs-toolkit
 cd avs-toolkit
 uv sync
 ```
