@@ -3,8 +3,8 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
-  preferred_model: gemma2:27b
-  assembled_at: '2025-12-26T17:17:37.663651'
+  preferred_model: llama3
+  assembled_at: '2025-12-27T12:31:15.081605'
 goal:
   as_a: As a Senior Career Strategist
   i_want: 'Identify key skills, experiences, and keywords from the job description

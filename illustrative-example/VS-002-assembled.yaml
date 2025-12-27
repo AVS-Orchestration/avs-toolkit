@@ -3,7 +3,8 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
-  assembled_at: '2025-12-24T14:28:12.660068'
+  preferred_model: llama3
+  assembled_at: '2025-12-27T12:36:27.220071'
 goal:
   as_a: As a Career Transformation Agent
   i_want: 'Generate a fully tailored resume in Markdown format that strictly adheres
@@ -20,70 +21,83 @@ goal:
 
     '
 instructions:
-- step_number: 1
-  action: Review the 'Strategic Plan' to identify specific required changes, keyword
-    insertions, and thematic pivots.
-  validation_rule: Agent has a mental list of 'must-have' edits derived from the strategy.
-- step_number: 2
-  action: Rewrite the 'Professional Summary' of the Raw Resume, incorporating 'Key
-    Phrases' from the Strategic Plan.
-  validation_rule: Summary explicitly mentions 'Computer Science background' and 'MBA'.
-- step_number: 3
-  action: Reconstruct the 'Experience' section, applying 'Tailoring Actions' (e.g.,
-    changing 'specs' to 'PRDs').
-  validation_rule: All generic terms flagged in the plan are replaced with specific
-    keywords.
-- step_number: 4
-  action: Optimize the 'Skills' section by re-ordering and adding keywords as directed
-    by the plan.
-  validation_rule: Skills section prioritizes Technical and AI-relevant skills.
-- step_number: 5
-  action: Output the final resume in clean, standard Markdown format.
-  validation_rule: Output contains ONLY the resume content, with zero conversational
-    filler.
+  reasoning_pattern: Planning
+  execution_steps:
+  - step_number: 1
+    action: Review the 'Strategic Plan' to identify specific required changes, keyword
+      insertions, and thematic pivots.
+    validation_rule: Agent has a mental list of 'must-have' edits derived from the
+      strategy.
+  - step_number: 2
+    action: Rewrite the 'Professional Summary' of the Raw Resume, incorporating 'Key
+      Phrases' from the Strategic Plan.
+    validation_rule: Summary explicitly mentions 'Computer Science background' and
+      'MBA'.
+  - step_number: 3
+    action: Reconstruct the 'Experience' section, applying 'Tailoring Actions' (e.g.,
+      changing 'specs' to 'PRDs').
+    validation_rule: All generic terms flagged in the plan are replaced with specific
+      keywords.
+  - step_number: 4
+    action: Optimize the 'Skills' section by re-ordering and adding keywords as directed
+      by the plan.
+    validation_rule: Skills section prioritizes Technical and AI-relevant skills.
+  - step_number: 5
+    action: Output the final resume in clean, standard Markdown format.
+    validation_rule: Output contains ONLY the resume content, with zero conversational
+      filler.
 context_manifest:
-- key: null
-  description: null
-  default_path: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Strategic-Plan.md
-  content: "# Strategic Resume Tailoring Plan\n**Candidate:** John Doe\n**Target Role:**\
-    \ Senior Product Manager - AI Solutions @ InnovateCorp\n\n## 1. Executive Summary\
-    \ Strategy\n**Goal:** Position John as a Technical Product Manager who bridges\
-    \ the gap between business strategy and technical engineering.\n*   **Action:**\
-    \ Rewrite the summary to lead with his unique combination of **MBA + BS Computer\
-    \ Science**.\n*   **Reframing:** Highlight his 9+ years of experience managing\
-    \ **\"complex B2B software lifecycles\"** and his hands-on technical background\
-    \ (**Python, AWS**) as the foundation for leading AI/ML product initiatives.\n\
-    \n## 2. Experience Section Tailoring\n\n### Role: Senior Product Manager | Tech\
-    \ Innovations Inc.\n*   **Focus:** Scale and Data-Driven Decision Making.\n* \
-    \  **Tailoring Actions:**\n    *   *Bullet 1:* Reframe \"SaaS platform\" to **\"\
-    Data-driven SaaS platform\"** (if accurate to the product's nature, avoiding \"\
-    AI\" if not true). Focus on the *complexity* of the system.\n    *   *Bullet 4:*\
-    \ Highlight collaboration with **Engineering** to validate technical feasibility.\
-    \ Use this to prove he can handle the \"work closely with AI/ML engineers\" requirement\
-    \ by proxy.\n    *   *New Emphasis:* Explicitly mention utilizing **AWS** or cloud\
-    \ technologies if he managed them in this role, to hit the \"Cloud platforms\"\
-    \ requirement.\n\n### Role: Product Manager | Global Software Solutions\n*   **Focus:**\
-    \ Product Lifecycle & Requirements.\n*   **Tailoring Actions:**\n    *   Change\
-    \ \"detailed product specifications\" to **\"Product Requirements Documents (PRDs)\
-    \ and User Stories\"** to match the Job Description's exact terminology.\n   \
-    \ *   Emphasize the **\"B2B\"** nature of this role to align with InnovateCorp's\
-    \ B2B focus.\n\n### Role: Software Developer | Creative Digital Agency\n*   **Focus:**\
-    \ Technical Credibility.\n*   **Tailoring Actions:**\n    *   Ensure **Python**\
-    \ is bolded. This is his strongest proof point for technical aptitude.\n\n## 3.\
-    \ Skills Section Optimization\n**Goal:** Align taxonomy with the JD.\n*   **Re-order:**\
-    \ Move **\"Technical\"** skills higher or integrate them into a \"Core Competencies\"\
-    \ list.\n*   **Keywords to Prioritize:**\n    *   **Machine Learning Fundamentals**\
-    \ (Move to top of Technical list).\n    *   **AWS** (Ensure visibility).\n   \
-    \ *   **Agile/Scrum**.\n    *   **Product Lifecycle Management**.\n    *   **Go-to-Market\
-    \ Strategy**.\n\n## 4. Gap Mitigation (Honest Approach)\n*   **The Gap:** \"Deep\
-    \ understanding of AI/ML concepts\" and \"NLP.\"\n*   **The Fix:** Do **NOT**\
-    \ invent NLP experience. Instead, lean heavily on his **\"Machine Learning Fundamentals\"\
-    ** skill and **Computer Science degree**.\n*   **Recommendation:** If John has\
-    \ done any self-study or side projects in AI/NLP that aren't on the resume, he\
-    \ should add a **\"Projects\"** or **\"Professional Development\"** section to\
-    \ list them. This is the only compliant way to fill this gap."
-- key: null
-  description: null
+- key: strategic_plan
+  description: The execution plan generated by VS-001.
+  default_path: illustrative-example/VS-001_output.md
+  content: "**Strategic Alignment Matrix**\n\n**Job Description Keywords:**\n\n1.\
+    \ **AI/ML technologies**\n2. **Product vision & strategy**\n3. **Market research\
+    \ & competitive analysis**\n4. **Data-driven decision-making**\n5. **Agile methodologies**\n\
+    \n**Candidate Achievements:**\n\n1. **AI/ML technologies**: Led the development\
+    \ and launch of a new SaaS platform, leveraging AI-powered features to increase\
+    \ user engagement by 30% and revenue by 20%.\n\t* Mapping: Strong understanding\
+    \ of AI/ML concepts, data science workflows, and AI product development challenges.\n\
+    2. **Product vision & strategy**: Defined and tracked key performance indicators\
+    \ (KPIs) to measure product success and identify areas for improvement.\n\t* Mapping:\
+    \ Proven track record of defining, launching, and iterating on successful products;\
+    \ solid understanding of machine learning concepts.\n3. **Market research & competitive\
+    \ analysis**: Conducted extensive market research and competitive analysis to\
+    \ identify new product opportunities and define strategic direction.\n\t* Mapping:\
+    \ Strong analytical and problem-solving abilities, with a data-driven approach\
+    \ to decision-making.\n4. **Data-driven decision-making**: Defined and tracked\
+    \ key performance indicators (KPIs) to measure product success and identify areas\
+    \ for improvement.\n\t* Mapping: Excellent communication, presentation, and interpersonal\
+    \ skills, with the ability to influence cross-functional teams and stakeholders.\n\
+    5. **Agile methodologies**: Managed product backlog and roadmap for multiple products,\
+    \ gathering requirements from stakeholders and prioritizing features for agile\
+    \ sprints.\n\t* Mapping: Strong analytical and problem-solving abilities, with\
+    \ a data-driven approach to decision-making.\n\n**Strategic Plan:**\n\n1. Emphasize\
+    \ AI/ML technologies expertise in the resume, highlighting achievements that demonstrate\
+    \ understanding of AI-powered product development challenges.\n2. Highlight market\
+    \ research and competitive analysis skills by showcasing experience in conducting\
+    \ extensive market research and defining strategic direction.\n3. Showcase data-driven\
+    \ decision-making abilities by including metrics and KPIs used to measure product\
+    \ success and identify areas for improvement.\n4. Emphasize Agile methodologies\
+    \ expertise by highlighting experience managing product backlogs, roadmaps, and\
+    \ prioritizing features for agile sprints.\n5. Use keywords from the job description,\
+    \ such as \"product vision & strategy,\" \"market research & competitive analysis,\"\
+    \ and \"data-driven decision-making\" to describe achievements.\n\n**Actionable\
+    \ Recommendations:**\n\n1. Tailor the resume to highlight AI/ML technologies expertise\
+    \ and achievements that demonstrate understanding of AI-powered product development\
+    \ challenges.\n2. Emphasize market research and competitive analysis skills by\
+    \ showcasing experience in conducting extensive market research and defining strategic\
+    \ direction.\n3. Highlight data-driven decision-making abilities by including\
+    \ metrics and KPIs used to measure product success and identify areas for improvement.\n\
+    4. Showcase Agile methodologies expertise by highlighting experience managing\
+    \ product backlogs, roadmaps, and prioritizing features for agile sprints.\n5.\
+    \ Use keywords from the job description to describe achievements and increase\
+    \ visibility in applicant tracking systems (ATS) and human recruiter searches.\n\
+    \nBy following this strategic plan, John Doe can effectively align his skills,\
+    \ experiences, and achievements with the requirements of the Senior Product Manager\
+    \ - AI Solutions role at InnovateCorp, increasing his competitiveness for the\
+    \ position."
+- key: raw_resume
+  description: The candidate's original, untailored resume.
   default_path: illustrative-example/raw-resume.md
   content: '# John Doe
 
@@ -167,8 +181,8 @@ context_manifest:
     Cross-Functional Collaboration, Mentorship.
 
     '
-- key: null
-  description: null
+- key: job_description
+  description: The target job description for keyword reference.
   default_path: illustrative-example/job-description.md
   content: '# Senior Product Manager - AI Solutions
 

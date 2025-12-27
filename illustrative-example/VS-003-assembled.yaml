@@ -3,7 +3,8 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
-  assembled_at: '2025-12-24T14:29:16.170827'
+  preferred_model: llama3
+  assembled_at: '2025-12-27T12:36:31.620300'
 goal:
   as_a: As a Forensic Document Auditor
   i_want: 'Perform a forensic fact-check of the Tailored Resume against the Raw Resume.
@@ -19,120 +20,73 @@ goal:
 
     '
 instructions:
-- step_number: 1
-  action: Ingest the 'Tailored Resume' and extract every distinct claim (Employer,
-    Title, Dates, Degree, Specific Metric/KPI, Skill).
-  validation_rule: Agent has a structured list of claims to verify.
-- step_number: 2
-  action: Cross-reference each extracted claim against the 'Raw Resume' (Ground Truth).
-    Flag any claim where the substance of the fact has changed.
-  validation_rule: Strict zero-tolerance policy for unsupported additions.
-- step_number: 3
-  action: Generate an Audit Report categorizing issues as 'Hallucinations' (Critical)
-    or 'Inferences' (Minor).
-  validation_rule: List is explicit, evidentiary, and identifies the specific offending
-    text.
-- step_number: 4
-  action: 'REMEDIATE: Rewrite the specific bullet points to remove invented facts
-    and replace them with the strongest truthful alternatives.'
-  validation_rule: Strategic keywords are maintained only if they describe a truth
-    supported by the source.
-- step_number: 5
-  action: Output a single document containing the 'Hallucination Audit Report' followed
-    by the final 'Remediated Resume'.
-  validation_rule: Final document provides both the audit transparency and the finished
-    product.
+  reasoning_pattern: Reflection
+  execution_steps:
+  - step_number: 1
+    action: Ingest the 'Tailored Resume' and extract every distinct claim (Employer,
+      Title, Dates, Degree, Specific Metric/KPI, Skill).
+    validation_rule: Agent has a structured list of claims to verify.
+  - step_number: 2
+    action: Cross-reference each extracted claim against the 'Raw Resume' (Ground
+      Truth). Flag any claim where the substance of the fact has changed.
+    validation_rule: Strict zero-tolerance policy for unsupported additions.
+  - step_number: 3
+    action: Generate an Audit Report categorizing issues as 'Hallucinations' (Critical)
+      or 'Inferences' (Minor).
+    validation_rule: List is explicit, evidentiary, and identifies the specific offending
+      text.
+  - step_number: 4
+    action: 'REMEDIATE: Rewrite the specific bullet points to remove invented facts
+      and replace them with the strongest truthful alternatives.'
+    validation_rule: Strategic keywords are maintained only if they describe a truth
+      supported by the source.
+  - step_number: 5
+    action: Output a single document containing the 'Hallucination Audit Report' followed
+      by the final 'Remediated Resume'.
+    validation_rule: Final document provides both the audit transparency and the finished
+      product.
 context_manifest:
-- key: null
-  description: null
-  default_path: illustrative-example/InnovateCorp_Senior-Product-Manager-AI-Solutions_Tailored-Resume.md
-  content: '# John Doe
-
-
-    **Email:** john.doe@example.com | **LinkedIn:** linkedin.com/in/johndoe | **Portfolio:**
-    johndoe-portfolio.com
-
-
-    ## Summary
-
-    Technical Product Manager with 9+ years of experience leveraging background in
-    Software Engineering (Python, AWS) to deliver data-intensive B2B SaaS solutions.
-    Uniquely qualified to bridge the gap between business strategy and technical engineering
-    teams, driving product vision from conception through launch in complex, high-growth
-    environments.
-
-
-    ## Experience
-
-
-    ### Senior Product Manager | Tech Innovations Inc. | 2018 - Present
-
-    *   Orchestrated cross-functional teams of engineers and data scientists to launch
-    a **Data-driven SaaS platform**, increasing user engagement by 30% and revenue
-    by 20% in the first year.
-
-    *   Managed product backlog and roadmap for multiple products, gathering requirements
-    from stakeholders and prioritizing features for agile sprints using **Jira**.
-
-    *   Conducted extensive market research and competitive analysis to identify new
-    product opportunities and define strategic direction for scalable enterprise solutions.
-
-    *   Partnered with **Engineering** teams to validate technical feasibility and
-    guide product development, ensuring timely delivery and high quality.
-
-    *   Defined and tracked key performance indicators (KPIs) to measure product success
-    and identify areas for improvement.
-
-
-    ### Product Manager | Global Software Solutions | 2014 - 2018
-
-    *   Managed the lifecycle of a **B2B** enterprise software product, contributing
-    to a 15% increase in customer satisfaction.
-
-    *   Translated customer needs into detailed **Product Requirements Documents (PRDs)
-    and User Stories**.
-
-    *   Worked closely with software engineers to implement new features and resolve
-    technical issues.
-
-    *   Supported sales and marketing teams with product demonstrations and technical
-    content.
-
-
-    ### Software Developer | Creative Digital Agency | 2010 - 2014
-
-    *   Developed and maintained web applications using **Python**, Django, and JavaScript.
-
-    *   Implemented front-end user interfaces based on design specifications.
-
-    *   Collaborated with designers and project managers to deliver client projects
-    on time and within budget.
-
-
-    ## Education
-
-
-    ### Master of Business Administration (MBA) | University of Business | 2012
-
-    ### Bachelor of Science in Computer Science | State University | 2010
-
-
-    ## Skills
-
-    **Product Management:** Product Vision & Strategy, Product Lifecycle Management,
-    Roadmap Development, Market Research, Competitive Analysis, PRDs, User Stories,
-    Agile/Scrum, User Experience (UX), Go-to-Market Strategy, Product Analytics, Stakeholder
-    Management.
-
-    **Technical:** **Machine Learning Fundamentals**, **AWS**, **Python**, Java, JavaScript,
-    SQL, Django, React, Data Analysis, API Design.
-
-    **Soft Skills:** Leadership, Communication, Problem-Solving, Strategic Thinking,
-    Cross-Functional Collaboration, Mentorship.
-
-    '
-- key: null
-  description: null
+- key: tailored_resume
+  description: The draft tailored resume generated by VS-002.
+  default_path: illustrative-example/VS-002_output.md
+  content: "Here is the rewritten resume in Markdown format:\n\n# John Doe\n\n**Email:**\
+    \ john.doe@example.com | **LinkedIn:** linkedin.com/in/johndoe | **Portfolio:**\
+    \ johndoe-portfolio.com\n\n## Summary\nTechnical Product Leader with 10+ years\
+    \ of experience in product management, software development, and strategic consulting.\
+    \ Proven track record of driving complex projects from conception to launch, delivering\
+    \ significant business value. Skilled in AI/ML technologies, data science workflows,\
+    \ and AI-powered product development challenges.\n\n## Experience\n\n### Senior\
+    \ Product Manager | Tech Innovations Inc. | 2018 - Present\n*   Led cross-functional\
+    \ teams in the development and launch of a new SaaS platform, leveraging AI-powered\
+    \ features to increase user engagement by 30% and revenue by 20%.\n\t+ Utilized\
+    \ AI/ML technologies expertise to drive product development and launch.\n\t+ Managed\
+    \ product backlog and roadmap for multiple products, gathering requirements from\
+    \ stakeholders and prioritizing features for agile sprints.\n*   Conducted extensive\
+    \ market research and competitive analysis to identify new product opportunities\
+    \ and define strategic direction.\n\t+ Applied data-driven decision-making skills\
+    \ to measure product success and identify areas for improvement.\n\n### Product\
+    \ Manager | Global Software Solutions | 2014 - 2018\n*   Managed the lifecycle\
+    \ of a B2B enterprise software product, contributing to a 15% increase in customer\
+    \ satisfaction.\n\t+ Translated customer needs into detailed product specifications\
+    \ and wireframes.\n\t+ Worked closely with software engineers to implement new\
+    \ features and resolve technical issues.\n\n### Software Developer | Creative\
+    \ Digital Agency | 2010 - 2014\n*   Developed and maintained web applications\
+    \ using Python, Django, and JavaScript.\n\t+ Implemented front-end user interfaces\
+    \ based on design specifications.\n\n## Education\n\n### Master of Business Administration\
+    \ (MBA) | University of Business | 2012\n### Bachelor of Science in Computer Science\
+    \ | State University | 2010\n\n## Skills\n**Product Management:** Product Vision\
+    \ & Strategy, Roadmap Development, Market Research, Competitive Analysis, User\
+    \ Stories, PRDs, Agile/Scrum, Data-Driven Decision-Making.\n**Technical:** Python,\
+    \ Java, JavaScript, SQL, Django, React, AWS, Machine Learning Fundamentals, API\
+    \ Design.\n**Soft Skills:** Leadership, Communication, Problem-Solving, Strategic\
+    \ Thinking, Cross-Functional Collaboration.\n\nNote: I've rewritten the resume\
+    \ to strictly adhere to the provided strategic plan and job description. The summary\
+    \ section positions John Doe as a Technical Product Leader, highlighting his expertise\
+    \ in AI/ML technologies, data science workflows, and AI-powered product development\
+    \ challenges. The experience section has been reconstructed to apply the \"Tailoring\
+    \ Actions\" from the strategic plan, using specific keywords from the job description."
+- key: raw_resume
+  description: The original, unedited candidate resume (Ground Truth).
   default_path: illustrative-example/raw-resume.md
   content: '# John Doe
 
