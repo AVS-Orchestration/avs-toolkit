@@ -6,7 +6,7 @@ If you want to use the AVS Toolkit as a foundation for your own private **Value 
 
 Instead of a standard clone, specify your own project name for the folder.
 ```
-git clone https://github.com/PatrickHeaney/avs-value-story.git my-private-value-stream
+git clone https://github.com/PatrickHeaney/avs-value-story.git my-private-value-streams
 cd my-private-value-stream
 ```
 
