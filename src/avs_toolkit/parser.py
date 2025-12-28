@@ -30,11 +30,11 @@ def parse_markdown_story(content: str) -> dict:
                 "version": str(meta.get('version', "1.2")),
                 "author": meta.get('author'),
                 "status": meta.get('status', 'draft'),
-                "preferred_model": meta.get('preferred_model'), # US-002: Map preferred model from file
+                "preferred_model": meta.get('preferred_model'),
                 "assembled_at": meta.get('assembled_at')
             }
 
-            # Goal (Mapping Agile Structure)
+            # Goal
             goal_raw = yaml_data.get('goal', {})
             if isinstance(goal_raw, dict):
                 data['goal'] = {
@@ -43,7 +43,7 @@ def parse_markdown_story(content: str) -> dict:
                     "so_that": goal_raw.get('so_that', "value is created.")
                 }
             
-            # Instructions (Mapping Reasoning Pattern and Steps)
+            # Instructions
             instr_raw = yaml_data.get('instructions', {})
             steps = []
             reasoning = "Chain-of-Thought"
@@ -78,9 +78,11 @@ def parse_markdown_story(content: str) -> dict:
                         assets.append({
                             "key": item.get('key'),
                             "description": item.get('description'),
-                            "default_path": str(item.get('default_path', ""))
+                            "default_path": item.get('default_path'),
+                            "search_query": item.get('search_query')
                         })
                     else:
+                        # Simple string fallback assumes it's a path
                         assets.append({"default_path": str(item)})
             data['context_manifest'] = assets
 
