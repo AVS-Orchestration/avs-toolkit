@@ -41,8 +41,15 @@ class Instructions(BaseModel):
 class ContextManifestItem(BaseModel):
     key: Optional[str] = None
     description: Optional[str] = None
-    default_path: str
-    content: Optional[str] = Field(None, description="The actual text of the file, populated during assembly.")
+    default_path: Optional[str] = None
+    search_query: Optional[str] = Field(
+        None, 
+        description="An internet search query to execute during assembly to fetch current data."
+    )
+    content: Optional[str] = Field(
+        None, 
+        description="The actual text of the asset or search result, populated during assembly."
+    )
 
 class Product(BaseModel):
     type: str = "Document"
