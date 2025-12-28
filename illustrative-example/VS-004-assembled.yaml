@@ -1,0 +1,65 @@
+metadata:
+  story_id: VS-004
+  version: '1.2'
+  author: Patrick Heaney
+  status: assembled
+  preferred_model: null
+  assembled_at: '2025-12-27T23:03:02.658414'
+goal:
+  as_a: As a Corporate Intelligence Analyst
+  i_want: 'Research specific details about a target employer and generate a Company
+    Profile Matrix.
+
+    '
+  so_that: 'Tailoring agents have factual grounding for company size, culture, and
+    headquarters location.
+
+    '
+instructions:
+  reasoning_pattern: Chain-of-Thought
+  execution_steps:
+  - step_number: 1
+    action: Review the 'target_company_data' fetched from the internet.
+    validation_rule: The company's proper name and HQ are identified.
+  - step_number: 2
+    action: Determine if the company is public or private and its approximate size.
+    validation_rule: Size and status are explicitly stated.
+  - step_number: 3
+    action: Identify the primary industry and core business focus.
+    validation_rule: Industry and focus are accurately mapped.
+context_manifest:
+- key: target_company_data
+  description: Real-time research on the target employer.
+  default_path: null
+  search_query: NVIDIA Corporation headquarters, size, private or public status, and
+    core business
+  content: 'The factual summary for NVIDIA Corporation is as follows:
+
+
+    | Detail | Information |
+
+    | :--- | :--- |
+
+    | **Full Proper Name** | NVIDIA Corporation |
+
+    | **Headquarters Location** | Santa Clara, California, U.S. |
+
+    | **Size/Employee Count** | 36,000 employees (as of fiscal year 2025) |
+
+    | **Private or Public Status** | Public (Traded on NASDAQ as NVDA) |
+
+    | **Core Business** | Designing and developing graphics processing units (GPUs),
+    systems on chips (SoCs), and application programming interfaces (APIs) for markets
+    including data centers (AI and high-performance computing), gaming, professional
+    visualization, and automotive applications. The company''s hardware is central
+    to the development and deployment of artificial intelligence (AI) models. |
+
+
+    Sources:
+
+    '
+product:
+  type: Document
+  format: Markdown
+  output_path: illustrative-example/
+  handoff_target: null

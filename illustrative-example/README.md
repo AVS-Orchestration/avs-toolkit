@@ -8,6 +8,29 @@ Contribute: Fork this repo to share your own "Algorithmically Legible" instructi
 
 To demonstrate the power of Agentic Value Streams, consider the task of generating a tailored resume for a specific job application. This complex task can be broken down into a sequence of interconnected Value Stories:
 
+```mermaid
+graph LR
+    subgraph Process [The AVS Pattern]
+        direction TB
+        VS-004(Company Research)
+        VS-001(Strategy)
+        VS-002(Resume Draft)
+        VS-003(Audit & Final)
+        
+        %% Vertical flow connections
+        VS-004 ==> VS-001 ==> VS-002 ==> VS-003 
+    end
+
+    Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+
+    %% Connections to the right
+    VS-004 <-.-> Context
+    VS-001 <-.-> Context
+    VS-002 <-.-> Context
+    VS-003 <-.-> Context
+    VS-003 ==> Context
+```
+
 ### 1. VS-001: Analysis & Strategy
 
 - **Goal:** Understand the job description and the candidate's existing resume to identify key skills, experiences, and keywords for optimal matching.

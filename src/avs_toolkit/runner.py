@@ -27,7 +27,6 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
         "Follow these execution steps precisely:\n"
     )
     
-    # Handle the new 'execution_steps' structure from US-002
     steps = story['instructions'].get('execution_steps', [])
     for step in steps:
         system_prompt += f"- Step {step['step_number']}: {step['action']} (Validation: {step['validation_rule']})\n"
@@ -36,8 +35,15 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
     user_payload = "CONTEXT ASSETS:\n"
     for item in story['context_manifest']:
         content = item.get('content', '[Context Missing - Assemble required]')
-        # Use filename as identifier if default_path is complex
-        display_name = Path(item.get('default_path', 'unknown')).name
+        
+        # FIX: Handle cases where default_path is None (e.g., Web Research tasks)
+        raw_path = item.get('default_path')
+        if raw_path:
+            display_name = Path(raw_path).name
+        else:
+            # Fallback to key or search query snippet for the label
+            display_name = item.get('key') or "Web-Research-Result"
+            
         user_payload += f"--- START {display_name} ---\n{content}\n--- END ---\n"
 
     user_payload += "\n\nBased on the context above, produce the final product now."
@@ -60,7 +66,6 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
     with Live(Spinner("dots", text=f"Agent ({model}) is thinking..."), refresh_per_second=10, transient=True):
         try:
             async with httpx.AsyncClient(timeout=180.0) as client:
-                # Execute generation
                 response = await client.post(generate_url, json=payload)
                 
                 if response.status_code == 404:
@@ -86,7 +91,6 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
         output_dir = Path(product_cfg.get('output_path', 'outputs'))
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Determine Filename
         filename = f"{story['metadata']['story_id']}_output.md"
         save_path = output_dir / filename
         
