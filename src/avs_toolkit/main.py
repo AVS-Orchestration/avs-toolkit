@@ -29,8 +29,6 @@ async def web_research(query: str) -> str:
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key={api_key}"
     
-    # We pass the query directly as the prompt. 
-    # This allows the Architect to provide specific research instructions in the VS.
     payload = {
         "contents": [{
             "parts": [{ "text": query }]
@@ -69,6 +67,44 @@ def get_story_data(path: Path) -> dict:
     
     return parse_markdown_story(content)
 
+async def perform_assembly(path: Path) -> Path:
+    """Core logic for assembly, shared between commands."""
+    raw_data = get_story_data(path)
+    story = ValueStory(**raw_data)
+    
+    console.print(f"\n[bold blue]Assembling Briefcase for {story.metadata.story_id}...[/bold blue]")
+    
+    for item in story.context_manifest:
+        if item.search_query:
+            with Live(Spinner("dots", text=f"Researching: {item.search_query}..."), transient=True):
+                item.content = await web_research(item.search_query)
+                console.print(f"  [green]✓ Research complete:[/green] {item.key or 'Web Search'}")
+        
+        elif item.default_path:
+            asset_path = Path(item.default_path)
+            if not asset_path.exists():
+                asset_path = path.parent / item.default_path
+
+            if asset_path.exists() and asset_path.is_file():
+                item.content = asset_path.read_text()
+                console.print(f"  [green]✓ Injected file:[/green] {asset_path.name}")
+            else:
+                console.print(f"  [yellow]⚠ Warning:[/yellow] {item.default_path} not found.")
+
+    story.metadata.assembled_at = datetime.now().isoformat()
+    story.metadata.status = "assembled"
+    
+    final_data = story.model_dump()
+    # Use the Story ID to name the briefcase consistently
+    output_path = path.parent / f"{story.metadata.story_id}-assembled.yaml"
+    
+    with open(output_path, 'w') as f:
+        yaml.dump(final_data, f, sort_keys=False)
+    
+    console.print(f"\n[bold green]✓ Assembly Complete[/bold green]")
+    console.print(f"  Briefcase: {output_path}")
+    return output_path
+
 @app.command()
 def validate(path: Path):
     """Checks a Value Story against the Agile Standard Building Code."""
@@ -97,43 +133,8 @@ def validate(path: Path):
 @app.command()
 def assemble(path: Path):
     """The Information Hunt: Injects raw context and performs web research."""
-    data = get_story_data(path)
     try:
-        story = ValueStory(**data)
-        console.print(f"\n[bold blue]Assembling Briefcase for {story.metadata.story_id}...[/bold blue]")
-        
-        async def do_assembly():
-            for item in story.context_manifest:
-                if item.search_query:
-                    with Live(Spinner("dots", text=f"Researching: {item.search_query}..."), transient=True):
-                        item.content = await web_research(item.search_query)
-                        console.print(f"  [green]✓ Research complete:[/green] {item.key or 'Web Search'}")
-                
-                elif item.default_path:
-                    asset_path = Path(item.default_path)
-                    if not asset_path.exists():
-                        asset_path = path.parent / item.default_path
-
-                    if asset_path.exists() and asset_path.is_file():
-                        item.content = asset_path.read_text()
-                        console.print(f"  [green]✓ Injected file:[/green] {asset_path.name}")
-                    else:
-                        console.print(f"  [yellow]⚠ Warning:[/yellow] {item.default_path} not found.")
-
-        asyncio.run(do_assembly())
-
-        story.metadata.assembled_at = datetime.now().isoformat()
-        story.metadata.status = "assembled"
-        
-        final_data = story.model_dump()
-        output_path = path.with_name(f"{story.metadata.story_id}-assembled.yaml")
-        
-        with open(output_path, 'w') as f:
-            yaml.dump(final_data, f, sort_keys=False)
-        
-        console.print(f"\n[bold green]✓ Assembly Complete[/bold green]")
-        console.print(f"  Briefcase: {output_path}")
-        return output_path
+        asyncio.run(perform_assembly(path))
     except Exception as e:
         console.print(f"[red]Assembly failed: {e}[/red]")
         raise typer.Exit(1)
@@ -152,8 +153,13 @@ def run(
         target_path = path
 
         if not story.is_assembled:
-            target_path = assemble(path)
+            # Call the core logic function directly to ensure we get the Path object back
+            target_path = asyncio.run(perform_assembly(path))
         
+        if not target_path:
+            console.print("[red]Error:[/red] Could not determine the path for execution.")
+            raise typer.Exit(1)
+
         if local:
             asyncio.run(run_ollama_story(str(target_path), model=selected_model))
         else:
