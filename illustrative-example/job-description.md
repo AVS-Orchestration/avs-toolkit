@@ -5,7 +5,7 @@
 ## Location: Remote
 
 ## About InnovateCorp:
-InnovateCorp is a fast-growing tech company at the forefront of AI-driven solutions for enterprise clients. We leverage cutting-edge machine learning and natural language processing to build products that revolutionize workflows and create measurable business value. Our culture emphasizes innovation, collaboration, and continuous learning.
+Oracle is a fast-growing tech company at the forefront of AI-driven solutions for enterprise clients. We leverage cutting-edge machine learning and natural language processing to build products that revolutionize workflows and create measurable business value. Our culture emphasizes innovation, collaboration, and continuous learning.
 
 ## Role Overview:
 We are seeking a highly motivated and experienced Senior Product Manager to lead the development and launch of our next generation of AI-powered enterprise solutions. You will own the product lifecycle from conception through launch and iteration, working closely with engineering, data science, design, and sales teams. This role requires a deep understanding of AI/ML technologies, strong product instincts, and an ability to translate complex technical concepts into clear, user-centric product requirements.

@@ -1,13 +1,11 @@
 # VS-000: Intake & Extraction
 ```
 ARCHITECT'S GUIDE: VS-000
-This is the "Entry Gate" for the Resume Tailoring Stream.
-It uses Gemini + Google Search to scrape a URL and extract
-the fundamental identity of the opportunity.
+This is the "Entry Gate" for the Resume Tailoring Stream. It uses Gemini + Google to create a company profile to use as context for the resume creation process.
 ```
 metadata:
   story_id: "VS-000"
-  version: "1.2"
+  version: "1.4"
   author: "Patrick Heaney"
   status: "active"
   preferred_model: "llama3"
@@ -15,33 +13,40 @@ metadata:
 goal:
   as_a: "As a Career Intake Specialist"
   i_want: >
-    Extract the hiring company name and the exact position title from a 
-    specific job posting URL.
+    Generate a formatted Company Research Brief including the target URL,
+    official name, headquarters, scale, and mission statement.
   so_that: >
-    The Agentic Value Stream has a verified target for research (VS-004) 
-    and strategy analysis (VS-001).
+    The Agentic Value Stream has a grounded "Source of Truth" and a direct
+    link back to the original opportunity for all subsequent steps.
 
 instructions:
   reasoning_pattern: "Chain-of-Thought"
   execution_steps:
     - step: 1
-      action: "Review the 'raw_posting_content' fetched from the internet."
-      validation_rule: "The content must contain text related to a job vacancy."
+      action: "Review the 'company_profile' asset to identify the hiring entity and the original source URL."
+      validation_rule: "The Company Name and Target URL are successfully identified."
     - step: 2
-      action: "Identify and extract the official Name of the Company and the Job Title."
-      validation_rule: "Both fields must be extracted; use 'Unknown' if not found."
+      action: "Extract the Scale (Employees), Presence (HQ Address), and the Strategic Mission Statement."
+      validation_rule: "The corporate data points are extracted; use 'Not Provided' if missing."
     - step: 3
-      action: "Format the output as a clean header block: [Company] - [Job Title]."
-      validation_rule: "The output matches the handoff format for VS-001."
+      action: "Synthesize these findings into a 'Company Profile'. Ensure the 'Target URL' is displayed prominently at the top of the report."
+      validation_rule: "The report is professionally formatted in Markdown with the URL included."
+    - step: 4
+      action: "End the report with a 'Next Steps' section indicating that Job Title extraction is pending."
+      validation_rule: "The report acknowledges the missing title to prevent downstream confusion."
 
 context_manifest:
-  - key: "raw_posting_content"
-    description: "Core info from a job posting."
+  - key: "company_profile"
+    description: "Corporate and posting data retrieved via Google Search grounding."
     search_query: >
-      This website is a job posting, https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074 Read it and provide:
-      1. the company name
-      2. the approximate number of this company's employees
-      3. the "Mission Statement" of this company.
+      Target URL: https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074
+
+      Please research and provide a summary containing:
+      1. The original Target URL provided above.
+      2. The official name of the hiring company.
+      3. The mailing address for their corporate headquarters.
+      4. The approximate global employee headcount.
+      5. The company's official "Mission Statement" or stated core purpose.
 
 product:
   type: "Document"
