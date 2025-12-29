@@ -3,38 +3,46 @@ import yaml
 
 def parse_markdown_story(content: str) -> dict:
     """
-    Standardized AVS Parser. 
-    1. Strips Markdown artifacts (headers, code blocks).
-    2. Attempts YAML parse (Agile Standard).
-    3. Supports MCP server manifests and tool-based context fetching.
+    Standardized AVS Parser v1.6.
+    
+    Priority Logic:
+    1. Look for fenced ```yaml ... ``` blocks. If found, extract and parse ONLY those.
+    2. Fallback: Strip headers/guide blocks and parse the raw Markdown text as YAML (Hybrid mode).
     """
     # Normalize line endings
     content = content.replace('\r\n', '\n').replace('\r', '\n')
     
-    # Pre-process for YAML:
-    # 1. Remove entire code blocks (including content) used for guides
-    clean_yaml = re.sub(r'```[\s\S]*?```', '', content)
-    # 2. Comment out Markdown headers so they don't break YAML keys
-    clean_yaml = re.sub(r'^(#+.*)$', r'# \1', clean_yaml, flags=re.MULTILINE)
+    # --- STRATEGY 1: FENCED YAML BLOCKS ---
+    # This looks for blocks tagged specifically with 'yaml'
+    yaml_blocks = re.findall(r'```yaml\s*\n(.*?)\n\s*```', content, re.DOTALL)
+    
+    if yaml_blocks:
+        # Combine content from all YAML blocks in the file
+        clean_yaml = "\n".join(yaml_blocks)
+    else:
+        # --- STRATEGY 2: HYBRID FALLBACK ---
+        # 1. Remove entire code blocks (including Architect Guides)
+        clean_yaml = re.sub(r'```[\s\S]*?```', '', content)
+        # 2. Comment out Markdown headers so they don't break YAML keys
+        clean_yaml = re.sub(r'^(#+.*)$', r'# \1', clean_yaml, flags=re.MULTILINE)
     
     data = {}
 
-    # --- 1. YAML STRATEGY ---
     try:
         yaml_data = yaml.safe_load(clean_yaml)
         if isinstance(yaml_data, dict):
-            # Metadata
+            # Metadata extraction
             meta = yaml_data.get('metadata', {})
             data['metadata'] = {
                 "story_id": str(yaml_data.get('story_id') or meta.get('story_id', "VS-UNKNOWN")),
-                "version": str(meta.get('version', "1.4")),
+                "version": str(meta.get('version', "1.6")),
                 "author": meta.get('author'),
                 "status": meta.get('status', 'draft'),
                 "preferred_model": meta.get('preferred_model'),
                 "assembled_at": meta.get('assembled_at')
             }
 
-            # Goal
+            # Goal extraction
             goal_raw = yaml_data.get('goal', {})
             if isinstance(goal_raw, dict):
                 data['goal'] = {
@@ -43,7 +51,7 @@ def parse_markdown_story(content: str) -> dict:
                     "so_that": goal_raw.get('so_that', "value is created.")
                 }
             
-            # Instructions
+            # Instructions extraction
             instr_raw = yaml_data.get('instructions', {})
             steps = []
             reasoning = "Chain-of-Thought"
@@ -69,10 +77,10 @@ def parse_markdown_story(content: str) -> dict:
                 "execution_steps": steps
             }
 
-            # MCP Servers (Root level manifest)
+            # MCP Servers
             data['mcp_servers'] = yaml_data.get('mcp_servers', [])
 
-            # Context
+            # Context Manifest
             context_raw = yaml_data.get('context_manifest') or yaml_data.get('context', {}).get('mandatory_assets', [])
             assets = []
             if isinstance(context_raw, list):
@@ -100,9 +108,11 @@ def parse_markdown_story(content: str) -> dict:
                     "handoff_target": product_raw.get('handoff_target')
                 }
 
+            # Final verification of minimum requirements
             if data.get('goal', {}).get('i_want') and len(data['instructions']['execution_steps']) > 0:
                 return data
     except Exception:
+        # Fail gracefully if YAML is totally malformed
         pass
 
     return data
