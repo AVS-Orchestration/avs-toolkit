@@ -29,10 +29,11 @@ graph LR
     end
 
     Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
-    AI-CLoud[(Gemini 1.5 Flash<br>Web Search API)]
+    AI-CLoud[(Web Search API)]
 
     %% Connections to the right
     VS-000 <-.-> AI-CLoud
+    VS-000 <-.-> Context
     VS-001 <-.-> Context
     VS-002 <-.-> Context
     VS-003 <-.-> Context
@@ -55,12 +56,12 @@ Every Value Story in this repository follows the **Agile v1.2 Standard**, ensuri
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition." It supports local files and **Live Web Research** via the `search_query` field [cite: 2.2.3].
 
-
 ## 🧠 The Strategic Shift
 
 Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
 # 🛠️ The Value Story Lifecyle
+
 This diagram illustrates the **Value Story** lifecycle: **Plan** (Human), **Run** (Agent), and **Review** (Human).
 
 ```mermaid
@@ -99,6 +100,7 @@ graph TD
     class run Run;
     class review Review;
 ```
+
 ## Illustrative Example
 
 Before diving into the technical setup, you can explore a complete Illustrative Example focused on tailoring a resume. This walkthrough demonstrates how a sequence of Value Stories generates a high-fidelity "Strategic Alignment Matrix," mapping a candidate's background to specific job requirements to ensure the agent produces a competitive, fact-based product without context blindness.
@@ -108,11 +110,14 @@ Before diving into the technical setup, you can explore a complete Illustrative 
 ## 1. Prerequisites
 
 ### For Non-Developers
+
 Follow the detailed instructions in the [Guide-Setup-for-Non-Developers](./docs/Guide-Setup-for-Non-Developers.md)
 Ensure you have `homebrew` installed on your system:
 ### For Developers
+
 Verify installation on macOS and Windows (assuming Git Bash or similar shell on Windows)
-```
+
+```bin
 if command -v uv &> /dev/null; then
     echo "uv is installed. Version information:"
     uv --version
@@ -120,6 +125,7 @@ else
     echo "uv is not installed or not found in the system's PATH."
 fi
 ```
+
 If `uv` is not installed, I included instructions in Phase 5 of the [Setup for Non-Developers](./docs/Guide-Setup-for-Non-Developers.md) guide.
 
 * **Ollama**: Install [Ollama](https://ollama.com) and run `ollama pull llama3`.
@@ -128,17 +134,21 @@ If `uv` is not installed, I included instructions in Phase 5 of the [Setup for N
 ## 2. Installation
 
 Clone the repository and sync the environment:
-```
+
+```bin
 git clone https://github.com/PatrickHeaney/avs-value-story.git
 cd avs-value-story
 uv sync
 ```
+
 ## 3. Your First Governance Pass
 
 Validate the provided template to ensure your environment is configured correctly:
-```
+
+```bin
 uv run avs validate vs-000-template.yaml
 ```
+
 ## 🛠 The Toolkit CLI
 
 The `avs` toolkit provides a suite of commands to move from architectural intent to execution.
@@ -146,7 +156,8 @@ The `avs` toolkit provides a suite of commands to move from architectural intent
 ### `validate`
 
 Checks a Value Story against the "Building Code" (Pydantic models). It ensures your goal is properly framed and your instructions meet the minimum precision requirements.
-```
+
+```bin
 uv run avs validate illustrative-example/VS-001-logic-analysis.md
 ```
 
@@ -154,14 +165,15 @@ uv run avs validate illustrative-example/VS-001-logic-analysis.md
 
 The "Information Hunt" automation. It reads your `context_manifest`, **performs live web research via Gemini 1.5 Flash** (if `search_query` is present), and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
 
-```
+```bin
 uv run avs assemble illustrative-example/VS-001-logic-analysis.md
 ```
 
 ### `run`
 
 Executes the Value Story. If the file has not been assembled yet, `run` will automatically perform the assembly step before dispatching the payload to your local LLM (defaulting to Ollama/Llama3).
-```
+
+```bin
 uv run avs run illustrative-example/VS-001-logic-analysis.md --local
 ```
 
@@ -171,9 +183,9 @@ uv run avs run illustrative-example/VS-001-logic-analysis.md --local
 
 The AVS Toolkit manages the lifecycle of a Value Story through three distinct file types visible in the repository:
 
-1.  **The Value Story (`VS-XXX.md`)**: The human-editable source of truth. It contains the Goal, Instructions, and pointers to context. This is what you commit to Git.
-2.  **The Assembled VS (`VS-XXX-assembled.yaml`)**: An execution-ready snapshot. Created by `avs assemble`, it contains the logic plus the **full injected text** of all context assets.
-3.  **The Output Product (`VS-XXX_output.md`)**: The final deliverable generated by the Agent. This is saved to the `output_path` defined in your Blueprint (e.g., `outputs/` or `illustrative-example/`).
+1. **The Value Story (`VS-XXX.md`)**: The human-editable source of truth. It contains the Goal, Instructions, and pointers to context. This is what you commit to Git.
+2. **The Assembled VS (`VS-XXX-assembled.yaml`)**: An execution-ready snapshot. Created by `avs assemble`, it contains the logic plus the **full injected text** of all context assets.
+3. **The Output Product (`VS-XXX_output.md`)**: The final deliverable generated by the Agent. This is saved to the `output_path` defined in your Blueprint (e.g., `outputs/` or `illustrative-example/`).
 
 > **Tip:** We recommend adding `*-assembled.yaml` to your `.gitignore` to prevent repository bloat and accidental exposure of sensitive context data.
 
@@ -208,4 +220,3 @@ This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 Inte
 If you utilize this framework, templates, or logic in a professional, academic, or commercial context, please provide attribution as follows:
 
 Heaney, P. (2025). AVS Value Story: A Framework for Autonomous Orchestration. GitHub: PatrickHeaney/avs-value-story.
-

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 class Metadata(BaseModel):
@@ -46,10 +46,24 @@ class ContextManifestItem(BaseModel):
         None, 
         description="An internet search query to execute during assembly to fetch current data."
     )
+    mcp_tool_name: Optional[str] = Field(
+        None,
+        description="The name of the MCP tool to call (e.g., 'firecrawl_scrape')."
+    )
+    mcp_tool_args: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Arguments to pass to the MCP tool."
+    )
     content: Optional[str] = Field(
         None, 
-        description="The actual text of the asset or search result, populated during assembly."
+        description="The actual text of the asset, populated during assembly."
     )
+
+class MCPServerConfig(BaseModel):
+    name: str = Field(..., description="A unique identifier for the MCP server.")
+    command: str = Field(..., description="The command to launch the server (e.g., 'npx', 'uvx').")
+    args: List[str] = Field(default_factory=list, description="Arguments for the launch command.")
+    env: Optional[Dict[str, str]] = Field(None, description="Optional environment variables for the server.")
 
 class Product(BaseModel):
     type: str = "Document"
@@ -61,6 +75,10 @@ class ValueStory(BaseModel):
     metadata: Metadata
     goal: Goal
     instructions: Instructions
+    mcp_servers: List[MCPServerConfig] = Field(
+        default_factory=list,
+        description="Manifest of ephemeral MCP servers to spin up during assembly."
+    )
     context_manifest: List[ContextManifestItem]
     product: Product = Field(default_factory=Product)
     

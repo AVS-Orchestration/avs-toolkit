@@ -2,27 +2,26 @@ local_proxy.yaml
 .aider*
 
 
-Ignore local environment variables (API Keys)
+# Ignore local environment variables (API Keys)
 
 .env
 .env.local
 
---- Python / uv Specifics ---
+# --- Python / uv Specifics ---
 
-uv.lock
 .venv/
-pycache/
+**/__pycache__/
 *.py[cod]
 *$py.class
 .python-version
 
---- Distribution / Build ---
+# --- Distribution / Build ---
 
 dist/
 build/
 *.egg-info/
 
---- IDEs and OS ---
+# --- IDEs and OS ---
 
 .DS_Store
 .vscode/

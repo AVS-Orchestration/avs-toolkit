@@ -10,9 +10,16 @@
 
 metadata:
   story_id: "VS-000"
-  version: "1.3"
+  version: "1.5"
   author: "Patrick Heaney"
   preferred_model: "llama3"
+
+## THE MCP MANIFEST: Defines ephemeral servers (e.g., firecrawl, filesystem)
+
+mcp_servers:
+  - name: "firecrawl"
+    command: "npx"
+    args: ["-y", "firecrawl-mcp"]
 
 ## THE GOAL: The "North Star" for the Agentic-Agent
 
@@ -30,14 +37,14 @@ instructions:
   reasoning_pattern: "Chain-of-Thought"
   execution_steps:
     - step: 1
-      action: "Initial data gathering or analysis step [Minimum 10 chars]."
-      validation_rule: "Specific logic used to verify this step is correct."
+      action: "Review the raw JSON asset (e.g., 'scraped_data'). Locate the 'markdown' field; this contains the target text for extraction."
+      validation_rule: "The JSON is successfully parsed and the specific field is identified."
     - step: 2
-      action: "The primary production or transformation step."
-      validation_rule: "Forensic check to ensure zero hallucinations."
+      action: "Synthesize findings into a business report or summary."
+      validation_rule: "The synthesis is accurate and formatted in Markdown."
     - step: 3
-      action: "syncthesize the collected information into a business report"
-      validation_rule: "The report is professionally formatted in Markdown"
+      action: "Create a heading '# Appendix: Source Text'. Under this, reproduce the content of the field from Step 1 VERBATIM. Do NOT summarize or omit sections. Output the text exactly as it appears in the source."
+      validation_rule: "The full, un-summarized source text is included in the output."
 
 ## CONTEXT MANIFEST: The "Bill of Materials" for the Information Hunt
 
@@ -46,6 +53,13 @@ context_manifest:
   - key: "web_research"
     description: "Real-time data fetched from the internet using Gemini Search."
     search_query: "Current market news and competitor news for the `Agentic Value Stream`."
+
+  - key: "scraped_data"
+    description: "Data retrieved via an MCP tool call."
+    mcp_tool_name: "firecrawl_scrape"
+    mcp_tool_args:
+      url: "https://example.com"
+      formats: ["markdown"]
 
   - key: "primary_context"
     description: "The main source document."
