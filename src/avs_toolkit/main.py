@@ -16,111 +16,118 @@ from rich.spinner import Spinner
 from .parser import parse_markdown_story
 from .models import ValueStory
 from .runner import run_ollama_story
+from .mcp_client import MCPRuntime, execute_mcp_item
 
 app = typer.Typer(help="AVS Toolkit: Orchestrate Agentic Value Streams.")
 console = Console()
 
-async def web_research(query: str) -> str:
-    """
-    Performs live web research using Gemini Flash with Google Search grounding.
-    Implements a robust fallback and forensic error reporting for v1beta troubleshooting.
-    """
-    raw_api_key = os.getenv("GEMINI_API_KEY")
-    if not raw_api_key:
-        return "Error: GEMINI_API_KEY not found in environment variables."
-    
-    # Sanitize the key to prevent malformed URLs
-    api_key = raw_api_key.strip()
-
-    # Model Fallback Hierarchy based on your region's confirmed available models
-    models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-001", "gemini-flash-latest"]
-    
-    last_error_detail = "No attempts made."
-    
+async def web_research_tavily(query: str) -> str:
+    """Performs research using Tavily API (Optimized for Agents)."""
+    api_key = os.getenv("TAVILY_API_KEY")
+    if not api_key: return "Error: TAVILY_API_KEY not found."
+    url = "https://api.tavily.com/search"
+    payload = {
+        "api_key": api_key.strip(),
+        "query": query,
+        "search_depth": "basic",
+        "include_answer": True,
+        "max_results": 3
+    }
     async with httpx.AsyncClient() as client:
-        for model_id in models_to_try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={api_key}"
-            
-            payload = {
-                "contents": [{
-                    "parts": [{ "text": query }]
-                }],
-                "tools": [{ "google_search": {} }]
-            }
+        try:
+            response = await client.post(url, json=payload, timeout=30.0)
+            if response.status_code == 200:
+                result = response.json()
+                return result.get("answer") or "\n".join([r.get("content", "") for r in result.get("results", [])])
+            return f"Error: Tavily returned {response.status_code}"
+        except Exception as e: return f"Error: Tavily failed: {str(e)}"
 
-            for attempt in range(3):
-                try:
-                    # Grounding calls require significant time for the search index retrieval
-                    response = await client.post(url, json=payload, timeout=60.0)
-                    
-                    if response.status_code == 200:
-                        result = response.json()
-                        candidates = result.get('candidates', [])
-                        if candidates:
-                            content = candidates[0].get('content', {}).get('parts', [{}])[0].get('text', "")
-                            return content
-                        last_error_detail = f"[{model_id}] 200: Success but contained no candidates."
-                        break # Try the next model
-                    
-                    elif response.status_code == 429:
-                        # Rate limit hit: Capture the error and retry this specific model
-                        last_error_detail = f"[{model_id}] 429: Too Many Requests (Rate Limit)"
-                        await asyncio.sleep(2 ** (attempt + 1))
-                    
-                    else:
-                        # If we get a 404, 403, or 500, log the detail and move to the next model
-                        last_error_detail = f"[{model_id}] {response.status_code}: {response.text}"
-                        break # Try the next model in models_to_try
-                
-                except Exception as e:
-                    last_error_detail = f"[{model_id}] Connection/Timeout: {str(e)}"
-                    await asyncio.sleep(1) # Brief pause before retry
-        
-    return (
-        f"Error: Web research failed after trying {', '.join(models_to_try)}. "
-        f"Primary failure detail: {last_error_detail}"
-    )
+async def web_research_gemini(query: str) -> str:
+    """Original Gemini fallback logic with grounding."""
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key: return "Error: GEMINI_API_KEY not found."
+    api_key = api_key.strip()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": query}]}],
+        "tools": [{"google_search": {}}]
+    }
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(url, json=payload, timeout=60.0)
+            if response.status_code == 200:
+                result = response.json()
+                candidates = result.get('candidates', [])
+                if candidates:
+                    return candidates[0].get('content', {}).get('parts', [{}])[0].get('text', "")
+            return f"Error: Gemini failed with {response.status_code}"
+        except Exception as e: return f"Error: Gemini connection failed: {str(e)}"
+
+async def dispatch_research(query: str) -> str:
+    """Prioritizes Tavily for better agentic context."""
+    if os.getenv("TAVILY_API_KEY"):
+        return await web_research_tavily(query)
+    return await web_research_gemini(query)
 
 def get_story_data(path: Path) -> dict:
-    """Parses a file and returns the raw dictionary for model validation."""
     if not path.exists():
         console.print(f"[red]Error:[/red] File not found: {path}")
         raise typer.Exit(1)
-    
     content = path.read_text()
     if path.suffix == ".yaml" and "assembled_at" in content:
         return yaml.safe_load(content)
-    
     return parse_markdown_story(content)
 
 async def perform_assembly(path: Path) -> Path:
-    """Core logic for assembly, shared between CLI commands."""
+    """The Information Hunt: Now supports Web Research and MCP Tooling."""
     raw_data = get_story_data(path)
     story = ValueStory(**raw_data)
     
     console.print(f"\n[bold blue]Assembling Briefcase for {story.metadata.story_id}...[/bold blue]")
     
-    for item in story.context_manifest:
-        if item.search_query:
-            with Live(Spinner("dots", text=f"Researching: {item.search_query}..."), transient=True):
-                item.content = await web_research(item.search_query)
-                if item.content.startswith("Error:"):
-                    console.print(f"  [red]✗ Research failed:[/red] {item.key or 'Web Search'}")
-                    # PRINT THE FORENSIC DETAIL TO TERMINAL
-                    console.print(f"    [dim]{item.content}[/dim]")
-                else:
-                    console.print(f"  [green]✓ Research complete:[/green] {item.key or 'Web Search'}")
-        
-        elif item.default_path:
-            asset_path = Path(item.default_path)
-            if not asset_path.exists():
-                asset_path = path.parent / item.default_path
+    # Initialize MCP Runtime if servers are defined
+    mcp_runtime = None
+    if story.mcp_servers:
+        mcp_runtime = MCPRuntime(story.mcp_servers)
+        console.print(f"  [dim]Initializing {len(story.mcp_servers)} MCP server(s)...[/dim]")
 
-            if asset_path.exists() and asset_path.is_file():
-                item.content = asset_path.read_text()
-                console.print(f"  [green]✓ Injected file:[/green] {asset_path.name}")
-            else:
-                console.print(f"  [yellow]⚠ Warning:[/yellow] {item.default_path} not found.")
+    try:
+        for item in story.context_manifest:
+            # 1. Check for MCP Tool Calls
+            if item.mcp_tool_name and mcp_runtime:
+                with Live(Spinner("dots", text=f"Calling Tool: {item.mcp_tool_name}..."), transient=True):
+                    item.content = await execute_mcp_item(mcp_runtime, item)
+                    if item.content.startswith("Error:"):
+                        console.print(f"  [red]✗ MCP Tool failed:[/red] {item.mcp_tool_name}")
+                        console.print(f"    [dim]{item.content}[/dim]")
+                    else:
+                        console.print(f"  [green]✓ MCP Tool complete:[/green] {item.mcp_tool_name}")
+
+            # 2. Check for Web Research
+            elif item.search_query:
+                provider = "Tavily" if os.getenv("TAVILY_API_KEY") else "Gemini"
+                with Live(Spinner("dots", text=f"Researching ({provider}): {item.search_query}..."), transient=True):
+                    item.content = await dispatch_research(item.search_query)
+                    if item.content.startswith("Error:"):
+                        console.print(f"  [red]✗ Research failed:[/red] {item.key}")
+                    else:
+                        console.print(f"  [green]✓ Research complete:[/green] {item.key} ({provider})")
+            
+            # 3. Local File Fallback
+            elif item.default_path:
+                asset_path = Path(item.default_path)
+                if not asset_path.exists():
+                    asset_path = path.parent / item.default_path
+
+                if asset_path.exists() and asset_path.is_file():
+                    item.content = asset_path.read_text()
+                    console.print(f"  [green]✓ Injected file:[/green] {asset_path.name}")
+                else:
+                    console.print(f"  [yellow]⚠ Warning:[/yellow] {item.default_path} not found.")
+
+    finally:
+        if mcp_runtime:
+            await mcp_runtime.shutdown()
 
     story.metadata.assembled_at = datetime.now().isoformat()
     story.metadata.status = "assembled"
@@ -141,28 +148,17 @@ def validate(path: Path):
     try:
         data = get_story_data(path)
         story = ValueStory(**data)
-        
         panel_content = Table.grid(padding=(0, 1))
         panel_content.add_row("[bold]Story ID:[/bold]", story.metadata.story_id)
-        panel_content.add_row("[bold]Persona:[/bold]", story.goal.as_a)
-        panel_content.add_row("[bold]Context Assets:[/bold]", str(len(story.context_manifest)))
-        panel_content.add_row("[bold]Web Research:[/bold]", str(sum(1 for i in story.context_manifest if i.search_query)))
-        
-        console.print(Panel(
-            panel_content,
-            title=f"[bold green]Governance Pass[/bold green]",
-            border_style="green"
-        ))
+        panel_content.add_row("[bold]MCP Servers:[/bold]", str(len(story.mcp_servers)))
+        console.print(Panel(panel_content, title="Governance Pass", border_style="green"))
     except ValidationError as e:
-        console.print(f"\n[bold red]❌ Governance Failure in {path.name}[/bold red]")
-        for error in e.errors():
-            loc = " -> ".join([str(x) for x in error['loc']])
-            console.print(f"  • [yellow]{loc}[/yellow]: {error['msg']}")
+        console.print(f"\n[bold red]❌ Governance Failure[/bold red]")
         raise typer.Exit(1)
 
 @app.command()
 def assemble(path: Path):
-    """The Information Hunt: Injects raw context and performs web research."""
+    """The Information Hunt: Injects raw context, Web Research, and MCP Tools."""
     try:
         asyncio.run(perform_assembly(path))
     except Exception as e:
@@ -170,33 +166,16 @@ def assemble(path: Path):
         raise typer.Exit(1)
 
 @app.command()
-def run(
-    path: Path, 
-    local: bool = typer.Option(False, "--local"), 
-    model: Optional[str] = typer.Option(None, "--model")
-):
-    """Executes a Value Story. Auto-assembles if a briefcase doesn't exist."""
+def run(path: Path, local: bool = typer.Option(False, "--local"), model: Optional[str] = typer.Option(None)):
+    """Executes a Value Story. Auto-assembles if necessary."""
     data = get_story_data(path)
-    try:
-        story = ValueStory(**data)
-        selected_model = model or story.metadata.preferred_model or "llama3"
-        target_path = path
-
-        if not story.is_assembled:
-            target_path = asyncio.run(perform_assembly(path))
-        
-        if not target_path:
-            console.print("[red]Error:[/red] Could not determine the path for execution.")
-            raise typer.Exit(1)
-
-        if local:
-            asyncio.run(run_ollama_story(str(target_path), model=selected_model))
-        else:
-            console.print("[yellow]Cloud execution not implemented. Use --local.[/yellow]")
-            
-    except Exception as e:
-        console.print(f"[red]Run aborted: {e}[/red]")
-        raise typer.Exit(1)
+    story = ValueStory(**data)
+    selected_model = model or story.metadata.preferred_model or "llama3"
+    target_path = path
+    if not story.is_assembled:
+        target_path = asyncio.run(perform_assembly(path))
+    if local:
+        asyncio.run(run_ollama_story(str(target_path), model=selected_model))
 
 if __name__ == "__main__":
     app()
