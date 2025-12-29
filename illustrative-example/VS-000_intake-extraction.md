@@ -1,8 +1,10 @@
 # VS-000: Intake & Extraction
-```
-ARCHITECT'S GUIDE: VS-000
+
+```markdown
+**ARCHITECT'S GUIDE: VS-000**
 This is the "Entry Gate" for the Resume Tailoring Stream. It uses Gemini + Google to create a company profile to use as context for the resume creation process.
 ```
+
 metadata:
   story_id: "VS-000"
   version: "1.4"
