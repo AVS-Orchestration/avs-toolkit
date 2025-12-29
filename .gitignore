@@ -10,8 +10,7 @@ local_proxy.yaml
 # --- Python / uv Specifics ---
 
 .venv/
-pycache/
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 .python-version
