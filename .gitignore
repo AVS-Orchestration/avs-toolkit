@@ -11,7 +11,7 @@ local_proxy.yaml
 
 .venv/
 pycache/
-__pycache__
+__pycache__/
 *.py[cod]
 *$py.class
 .python-version
