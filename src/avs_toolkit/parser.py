@@ -6,7 +6,7 @@ def parse_markdown_story(content: str) -> dict:
     Standardized AVS Parser. 
     1. Strips Markdown artifacts (headers, code blocks).
     2. Attempts YAML parse (Agile Standard).
-    3. Falls back to Heuristic Regex for narrative drafts.
+    3. Supports MCP server manifests and tool-based context fetching.
     """
     # Normalize line endings
     content = content.replace('\r\n', '\n').replace('\r', '\n')
@@ -27,7 +27,7 @@ def parse_markdown_story(content: str) -> dict:
             meta = yaml_data.get('metadata', {})
             data['metadata'] = {
                 "story_id": str(yaml_data.get('story_id') or meta.get('story_id', "VS-UNKNOWN")),
-                "version": str(meta.get('version', "1.2")),
+                "version": str(meta.get('version', "1.4")),
                 "author": meta.get('author'),
                 "status": meta.get('status', 'draft'),
                 "preferred_model": meta.get('preferred_model'),
@@ -69,6 +69,9 @@ def parse_markdown_story(content: str) -> dict:
                 "execution_steps": steps
             }
 
+            # MCP Servers (Root level manifest)
+            data['mcp_servers'] = yaml_data.get('mcp_servers', [])
+
             # Context
             context_raw = yaml_data.get('context_manifest') or yaml_data.get('context', {}).get('mandatory_assets', [])
             assets = []
@@ -79,10 +82,11 @@ def parse_markdown_story(content: str) -> dict:
                             "key": item.get('key'),
                             "description": item.get('description'),
                             "default_path": item.get('default_path'),
-                            "search_query": item.get('search_query')
+                            "search_query": item.get('search_query'),
+                            "mcp_tool_name": item.get('mcp_tool_name'),
+                            "mcp_tool_args": item.get('mcp_tool_args', {})
                         })
                     else:
-                        # Simple string fallback assumes it's a path
                         assets.append({"default_path": str(item)})
             data['context_manifest'] = assets
 
