@@ -1,79 +1,59 @@
 metadata:
   story_id: VS-000
-  version: '1.5'
+  version: '1.3'
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-29T14:18:57.778657'
+  assembled_at: '2025-12-29T15:03:03.214346'
 goal:
   as_a: As a <customer/role who receives the value>
-  i_want: 'Define exactly what success looks like in at least 20 characters. Include
-    specific requirements as bullet points if necessary.
+  i_want: 'Define exactly what success looks like in at least 20 characters. Provide
+    a clear, descriptive statement of the final product. - "Requirement 1: Quantitative
+    or binary measure of success." - "Requirement 2: High-fidelity quality gate for
+    the human reviewer." Explain the "What" so the agent understands the specific
+    technical outcome.
 
     '
-  so_that: 'The agent understands the business value and rationale behind the task.
+  so_that: 'Explain the benefits of achieving this goal for the customer. - "Benefit
+    1: Improved efficiency or productivity." - "Benefit 2: Enhanced user experience
+    or satisfaction." Explain the "Why" to provide the agent with a rationale for
+    decision-making.
 
     '
 instructions:
   reasoning_pattern: Chain-of-Thought
   execution_steps:
   - step_number: 1
-    action: Review the raw JSON asset (e.g., 'scraped_data'). Locate the 'markdown'
-      field; this contains the target text for extraction.
-    validation_rule: The JSON is successfully parsed and the specific field is identified.
+    action: Describe the first action the agent must take [Min 10 chars].
+    validation_rule: How do we know step 1 was done correctly?
   - step_number: 2
-    action: Synthesize findings into a business report or summary.
-    validation_rule: The synthesis is accurate and formatted in Markdown.
-  - step_number: 3
-    action: 'Create a heading ''# Appendix: Source Text''. Under this, reproduce the
-      content of the field from Step 1 VERBATIM. Do NOT summarize or omit sections.
-      Output the text exactly as it appears in the source.'
-    validation_rule: The full, un-summarized source text is included in the output.
-mcp_servers:
-- name: firecrawl
-  command: npx
-  args:
-  - -y
-  - firecrawl-mcp
-  env: null
+    action: Describe the primary production or transformation step.
+    validation_rule: The forensic check to ensure zero hallucinations.
+mcp_servers: []
 context_manifest:
-- key: web_research
-  description: Real-time data fetched from the internet using Gemini Search.
+- key: web_intelligence
+  description: Live search results to prevent context blindness for current events.
   default_path: null
   search_query: Current market news and competitor news for the `Agentic Value Stream`.
   mcp_tool_name: null
   mcp_tool_args: {}
-  content: The Agentic AI market is rapidly growing due to high demand for autonomous
-    systems. Retailers view agentic AI as essential for competitive pricing but lack
-    implementation plans. Recent news highlights innovative developments and emerging
-    trends in the field.
-- key: scraped_data
-  description: Data retrieved via an MCP tool call.
-  default_path: null
+  content: 'Error: GEMINI_API_KEY not found.'
+- key: primary_data_source
+  description: The main document the agent needs to read.
+  default_path: path/to/your/file.md
   search_query: null
-  mcp_tool_name: firecrawl_scrape
-  mcp_tool_args:
-    url: https://example.com
-    formats:
-    - markdown
-  content: "{\n  \"markdown\": \"# Example Domain\\n\\nThis domain is for use in documentation\
-    \ examples without needing permission. Avoid use in operations.\\n\\n[Learn more](https://iana.org/domains/example)\"\
-    ,\n  \"metadata\": {\n    \"title\": \"Example Domain\",\n    \"language\": \"\
-    en\",\n    \"viewport\": \"width=device-width, initial-scale=1\",\n    \"scrapeId\"\
-    : \"019b6b8c-a294-725b-ba7a-d3b7ddba99c1\",\n    \"sourceURL\": \"https://example.com\"\
-    ,\n    \"url\": \"https://example.com/\",\n    \"statusCode\": 200,\n    \"contentType\"\
-    : \"text/html\",\n    \"proxyUsed\": \"basic\",\n    \"cacheState\": \"hit\",\n\
-    \    \"cachedAt\": \"2025-12-29T19:07:44.298Z\",\n    \"creditsUsed\": 1,\n  \
-    \  \"concurrencyLimited\": false\n  }\n}"
-- key: primary_context
-  description: The main source document.
-  default_path: path/to/source.md
+  mcp_tool_name: null
+  mcp_tool_args: {}
+  content: null
+- key: reference_guide
+  description: Supporting templates or style guides.
+  default_path: path/to/reference.pdf
   search_query: null
   mcp_tool_name: null
   mcp_tool_args: {}
   content: null
 product:
-  type: Analysis/Document
+  type: Document
   format: Markdown
   output_path: ''
-  handoff_target: null
+  handoff_target: VS-001-Next-Step

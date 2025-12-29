@@ -8,21 +8,28 @@
 # 4. Define your 'context_manifest' using local paths or MCP URIs.
 ```
 
+## Metadata
+
+```yaml
 metadata:
   story_id: "VS-000"
   version: "1.5"
   author: "Patrick Heaney"
   preferred_model: "llama3"
+```
 
 ## THE MCP MANIFEST: Defines ephemeral servers (e.g., firecrawl, filesystem)
 
+```yaml
 mcp_servers:
   - name: "firecrawl"
     command: "npx"
     args: ["-y", "firecrawl-mcp"]
+```
 
 ## THE GOAL: The "North Star" for the Agentic-Agent
 
+```yaml
 goal:
   as_a: "As a <customer/role who receives the value>"
   i_want: >
@@ -30,9 +37,11 @@ goal:
     Include specific requirements as bullet points if necessary.
   so_that: >
     The agent understands the business value and rationale behind the task.
+```
 
 ## INSTRUCTIONS: The Core Algorithm (Execution Logic)
 
+```yaml
 instructions:
   reasoning_pattern: "Chain-of-Thought"
   execution_steps:
@@ -45,11 +54,12 @@ instructions:
     - step: 3
       action: "Create a heading '# Appendix: Source Text'. Under this, reproduce the content of the field from Step 1 VERBATIM. Do NOT summarize or omit sections. Output the text exactly as it appears in the source."
       validation_rule: "The full, un-summarized source text is included in the output."
+```
 
 ## CONTEXT MANIFEST: The "Bill of Materials" for the Information Hunt
 
+```yaml
 context_manifest:
-
   - key: "web_research"
     description: "Real-time data fetched from the internet using Gemini Search."
     search_query: "Current market news and competitor news for the `Agentic Value Stream`."
@@ -64,10 +74,13 @@ context_manifest:
   - key: "primary_context"
     description: "The main source document."
     default_path: "path/to/source.md"
+```
 
 ## PRODUCT: The expected deliverable
 
+```yaml
 product:
   type: "Analysis/Document"
   format: "Markdown"
   output_path: ""
+```
