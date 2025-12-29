@@ -88,52 +88,59 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 **Adding to PATH**: The Windows installer usually handles the PATH automatically, but you must close your current PowerShell window and open a brand new one for the change to take effect. If it still isn't found, restart your computer.
 
-## Phase 6: Install Git
+## Phase 6: 
+
+
+## Phase 7: Install Git & Utilities
 
 ### For Mac Users:
 
 In your Terminal, type:
 ```
-brew install git
+brew install git tree
 ```
 
 ### For Windows Users:
 
 In PowerShell, type:
 ```
-winget install Git.Git
+winget install Git.Git GnuWin32.Tree
 ```
 
-## Phase 7: Final Utilities
+## Phase 8: Set up Search & Scraping Keys
 
-We need one last tool called tree that helps you visualize file structures.
+To unlock the full power of the "Information Hunt," you need to save your secret keys.
 
-- **Mac**: In Terminal, type brew install tree.
+### 1. Get your Keys (these all have generous free tiers)
 
-- **Windows**: In PowerShell, type winget install GnuWin32.Tree. (If prompted, type Y to agree to terms).
+- Gemini (Free): Google AI Studio
+- Tavily (Search): Tavily.com
+- Firecrawl (Scraping): Firecrawl.dev
 
-## Phase 8: Set up Web Research (Gemini)
+### 2. Save your Keys
 
-The AVS Toolkit uses Gemini to perform live web research. You need a free "API Key" to unlock this feature.
-
-1. **Get your Key**: Go to [Google AI Studio](https://aistudio.google.com/) and click "Get API Key."
-2. **Save your Key**: You need to save this key as a "Secret" on your computer so the Toolkit can find it.
-
-### Mac/Linux:
-
-Add this to your `~/.zshrc` or `~/.bash_profile`:
+#### Mac Users: Add these to your ~/.zshrc:
 ```
-export GEMINI_API_KEY="your_actual_key_here"
+export GEMINI_API_KEY="your_key"
+export TAVILY_API_KEY="your_key"
+export FIRECRAWL_API_KEY="your_key"
 ```
 
-Then run `source ~/.zshrc`.
-
-### Windows:
-
-In PowerShell, run:
+Then run 
 ```
-[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_actual_key_here', 'User')
+source ~/.zshrc.
 ```
+
+#### Windows Users: Run these in PowerShell:
+```
+[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_key', 'User')
+[System.Environment]::SetEnvironmentVariable('TAVILY_API_KEY', 'your_key', 'User')
+[System.Environment]::SetEnvironmentVariable('FIRECRAWL_API_KEY', 'your_key', 'User')
+```
+### How it Works: Ephemeral Tools
+
+The toolkit uses MCP (Model Context Protocol). When you run an assembly, the toolkit will briefly spin up a "Firecrawl" process using Node.js, get the data it needs, and shut it down immediately. This keeps your computer clean and your data fresh.
+
 ## Installation 
 
 **Congratulations** 🎉 you implemented all the Prerequisits.  Return to and continue with these [Installation](../README.md#2-installation) instructions.

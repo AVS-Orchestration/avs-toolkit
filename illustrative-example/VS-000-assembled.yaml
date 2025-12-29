@@ -1,55 +1,321 @@
 metadata:
   story_id: VS-000
-  version: '1.4'
+  version: '1.5'
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-28T20:16:28.151553'
+  assembled_at: '2025-12-29T13:26:19.414455'
 goal:
   as_a: As a Career Intake Specialist
-  i_want: 'Generate a formatted Company Research Brief including the target URL, official
+  i_want: 'Generate a formatted Company Research Brief including the target URL,  official
     name, headquarters, scale, and mission statement.
 
     '
-  so_that: 'The Agentic Value Stream has a grounded "Source of Truth" and a direct
-    link back to the original opportunity for all subsequent steps.
+  so_that: 'The Agentic Value Stream has a grounded "Source of Truth" and a direct  link
+    back to the original opportunity for all subsequent steps.
 
     '
 instructions:
   reasoning_pattern: Chain-of-Thought
   execution_steps:
   - step_number: 1
-    action: Review the 'company_profile' asset to identify the hiring entity and the
-      original source URL.
-    validation_rule: The Company Name and Target URL are successfully identified.
+    action: Review the 'company_profile_scraped' asset. Note that it is a JSON object.
+      Locate the 'markdown' field within it; this contains the full, raw job posting
+      text.
+    validation_rule: The JSON is parsed and the 'markdown' field is identified for
+      extraction.
   - step_number: 2
     action: Extract the Scale (Employees), Presence (HQ Address), and the Strategic
       Mission Statement.
     validation_rule: The corporate data points are extracted; use 'Not Provided' if
       missing.
   - step_number: 3
-    action: Synthesize these findings into a 'Company Profile'. Ensure the 'Target
-      URL' is displayed prominently at the top of the report.
+    action: Synthesize these findings under a heading '# Company Profile'. Ensure
+      the 'Target URL' is displayed prominently at the top of the report.
     validation_rule: The report is professionally formatted in Markdown with the URL
       included.
   - step_number: 4
-    action: End the report with a 'Next Steps' section indicating that Job Title extraction
-      is pending.
-    validation_rule: The report acknowledges the missing title to prevent downstream
-      confusion.
+    action: Create a heading '# Full Job Description'. Under this heading, reproduce
+      the content of the 'markdown' field from Step 1 VERBATIM. Do NOT summarize.
+      Do NOT omit sections. Output the text exactly as it appears in the source, stripped
+      only of JSON curly braces and quotes.
+    validation_rule: The full, un-summarized job posting is included in the output.
+mcp_servers:
+- name: firecrawl
+  command: npx
+  args:
+  - -y
+  - firecrawl-mcp
+  env: null
 context_manifest:
-- key: company_profile
+- key: company_profile_scraped
+  description: Corporate and posting data retrieved via Firecrawl MCP tool.
+  default_path: null
+  search_query: null
+  mcp_tool_name: firecrawl_scrape
+  mcp_tool_args:
+    url: https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074
+    formats:
+    - markdown
+    onlyMainContent: true
+  content: "{\n  \"markdown\": \"[Skip to main content.](https://careers.oracle.com/en/sites/jobsearch#main)\\\
+    n\\n[View More Jobs](https://careers.oracle.com/en/sites/jobsearch/jobs \\\"View\
+    \ More Jobs\\\")\\n\\n# Senior Technical Program Manager\\n\\nUnited States\\\
+    n\\nTrending\\n\\n- Job Identification316074\\n- Job CategoryProduct Development\\\
+    n- Posting Date12/03/2025, 03:29 PM\\n- RoleIndividual Contributor\\n- Job TypeRegular\
+    \ Employee\\n- Does this position require a security clearance?No\\n- Years6 to\
+    \ 10+ years\\n- ApplicantsLess than 10 applicants\\n- Applicants are required\
+    \ to read, write, and speak the following languagesEnglish\\n\\n## Job Description\\\
+    n\\nThis is a net new line of business, constructed with an entrepreneurial spirit\
+    \ that promotes an upbeat and creative environment. We are unencumbered and will\
+    \ need your contribution to make it a world class engineering center with the\
+    \ focus on excellence.\_At Oracle Health, our mission is to improve healthcare\
+    \ and quality of life globally through better experience and easier access to\
+    \ health and research data for patients and healthcare providers.\\n\\nWe are\
+    \ looking for hands-on TPM\u2019s with expertise and passion in solving difficult\
+    \ problems in all areas of software engineering: distributed systems, identity,\
+    \ security, observability, and user experience.\\n\\nThis is a greenfield opportunity\
+    \ to design and build new cloud centric applications from the ground up. We are\
+    \ growing fast, still at an early stage, and working on ambitious new initiatives.\
+    \ A TPM at any level can have significant technical and business impact here.\
+    \ You will be part of a team of hard-working, motivated, diverse people, and given\
+    \ the autonomy as well as support to do your best work. It is a dynamic and flexible\
+    \ workplace where you\u2019ll belong and be encouraged.\\n\\n**Who are we looking\
+    \ for?**\\n\\nIn this Principal Technical Program Management role, you will be\
+    \ working across a multi-functional team that understands our business and its\
+    \ objectives, to lead us through planning and designing technical solutions to\
+    \ solve the business\u2019s problems in a very agile, fast-paced, and collaborative\
+    \ environment. The position relies heavily on influence rather than authority\
+    \ to drive projects.\\n\\nYou will define project scopes, plan and direct schedules\
+    \ while focusing on regular and timely delivery of value; organize and lead project\
+    \ status and working meetings; prepare and distribute progress reports; handle\
+    \ risks and issues; correct deviations from plans; and perform delivery planning\
+    \ for assigned projects.\\n\\nYou will monitor the project from initiation through\
+    \ delivery. Organize the interdepartmental activities ensuring completion of the\
+    \ project/product on schedule and within budget constraints. You will assign and\
+    \ monitor work of systems analysis and program staff, providing technical support\
+    \ and direction.\\n\\nYou will collaborate closely with partners in program and\
+    \ product management to understand our customers and build the right solutions\
+    \ and products that makes their needs and businesses complete.\\n\\nYou should\
+    \ possess exceptional problem-solving skills, strong business judgment, and notable\
+    \ experience collaborating in hybrid teams. You are a self-starter technical leader\
+    \ with a shown ability to implement both strategically and tactically, and someone\
+    \ who is excited to take on new projects.\\n\\nYou have strong interpersonal skills\
+    \ including mentoring, coaching, collaborating, and team building. You should\
+    \ be customer-focused with a passion for the cloud. You will partner closely with\
+    \ peers, developers, and customers to create solutions, while simultaneously evolving\
+    \ existing capabilities.\\n\\n**Role Summary:**\\n\\nIn this IC4 Technical Program\
+    \ Management role, you will drive execution across a broad portfolio of special\
+    \ projects, federal/regulated programs, operational efficiency initiatives, and\
+    \ unplanned or urgent strategic efforts that span multiple engineering pillars.\\\
+    n\\nYou will serve as a strategic integrator and operational driver for programs\
+    \ that require clarity, structure, communication, and high-velocity execution.\
+    \ This role is ideal for someone who excels in ambiguity, can move fluidly across\
+    \ teams, and can support organizational leadership by enabling alignment, visibility,\
+    \ and predictable delivery \u2014 without being titled \u201CChief of Staff.\u201D\
+    \\n\\nYou will work closely with engineering, product, security, compliance, LCM,\
+    \ QE, release management, and senior leadership to ensure the organization delivers\
+    \ on high-priority commitments.\\n\\n**Special Projects & Strategic Initiatives**\\\
+    n\\n- Lead cross-functional special projects requiring rapid structure, alignment,\
+    \ and execution.\\n- Translate executive priorities into actionable, trackable\
+    \ programs with clear deliverables and owners.\\n- Drive complex and ambiguous\
+    \ initiatives from concept through completion across engineering pillars.\\n\\\
+    n**Federal / Regulated Programs**\\n\\n- Coordinate technical, compliance, and\
+    \ security work required for federal or regulated customer needs.\\n- Manage federal\
+    \ deliverables, evidence documentation, and audit or certification readiness.\\\
+    n- Partner with Legal, Compliance, Security, and Engineering to align with regulatory\
+    \ expectations.\\n\\n**Operational Efficiency & Organizational Effectiveness**\\\
+    n\\n- Identify and resolve operational bottlenecks across engineering, planning,\
+    \ release, and security workflows.\\n- Develop scalable processes, tools, templates,\
+    \ and reporting that improve execution predictability.\\n- Build and maintain\
+    \ dashboards and operational insights for leadership decision-making.\\n\\n**Ad-Hoc,\
+    \ Urgent, and Crisis Program Leadership**\\n\\n- Act as rapid-response TPM for\
+    \ urgent issues, escalations, and unplanned executive priorities.\\n- Stand up\
+    \ cross-team war rooms, define mitigation paths, and drive high-urgency resolutions.\\\
+    n- Deliver crisp, timely updates to leadership during high-pressure situations.\\\
+    n\\n**Leadership Alignment & Organizational Coordination**\\n\\n- Partner with\
+    \ senior leaders to ensure clarity, alignment, and follow-through on organizational\
+    \ priorities.\\n- Own operating rhythms, meeting structures, agenda planning,\
+    \ and accountability tracking.\\n- Synthesize complex information into decision-ready\
+    \ summaries, insights, and executive briefs.\\n- Ensure commitments are tracked,\
+    \ risks surfaced, and teams are delivering against expectations.\\n\\n**Core TPM\
+    \ Responsibilities**\\n\\n- Excellent oral and written communications skills and\
+    \ experience interacting with both business and Development/Engineering staff\
+    \ at all levels including the executive level.\\n- Solid analytical, planning,\
+    \ and interpersonal skills with an ability to handle competing demands.\\n- Strong\
+    \ knowledge and understanding of business need with the ability to establish/maintain\
+    \ high level of customer trust and confidence.\\n- Strong experience of software\
+    \ development process models as well as expert knowledge of both Agile and traditional\
+    \ project management principles and practices and the ability to blend them together\
+    \ in the right proportions to fit a project and business environment.\\n- Strong\
+    \ skills to evaluate product performance metrics, as well as diagnose and resolve\
+    \ issues.\\n- Experience with technical design discussions and ability to summarize\
+    \ complex trade-offs and options in presentation and technical documentation.\\\
+    n- Ability to effectively represent engineering perspectives to partner organizations,\
+    \ product teams, and executive leadership.\\n- Ability to work across and engage\
+    \ individuals and teams located across multiple geographies and or cultures.\\\
+    n- Work as a lead contributor individually, and as a team member, providing direction\
+    \ and mentoring to others as needed/requested.\\n- Drive other obligations management\
+    \ duties, as needed.\\n\\n## Responsibilities\\n\\n**Minimum Qualifications:**\\\
+    n\\n- Bachelor's degree in computer sciences, software engineering, technology\
+    \ management, business management, or similar.\\n- 8+ years of experience as hands-on\
+    \ technical project / program manager; preferably in a related industry.\\n- Advanced\
+    \ knowledge of the full life cycle of product development and experience launching\
+    \ and operating customer-facing cloud services.\\n\\n**Preferred Qualifications:**\\\
+    n\\n- 8+ years of project management, product design or related experience.\\\
+    n- Master\u2019s degree in Computer Science, Business Administration or equivalent\
+    \ work experience\\n- Thorough understanding of public cloud infrastructure services,\
+    \ such as Compute, Storage, Identity and Networking.\\n- Experience in the healthcare\
+    \ industry and / or electronic medical records systems.\\n- Demonstrated knowledge\
+    \ of OCI or AWS, Azure, Google IaaS, SaaS and PaaS services.\\n\\n## Qualifications\\\
+    n\\nDisclaimer:\\n\\n**Certain US customer or client-facing roles may be required\
+    \ to comply with applicable requirements, such as immunization and occupational\
+    \ health mandates.**\\n\\n**Range and benefit information provided in this posting\
+    \ are specific to the stated locations only**\\n\\nUS: Hiring Range in USD from:\
+    \ $78,000 to $158,200 per annum. May be eligible for bonus and equity.\\n\\nOracle\
+    \ maintains broad salary ranges for its roles in order to account for variations\
+    \ in knowledge, skills, experience, market conditions and locations, as well as\
+    \ reflect Oracle\u2019s differing products, industries and lines of business.\\\
+    n\\nCandidates are typically placed into the range based on the preceding factors\
+    \ as well as internal peer equity.\\n\\nOracle US offers a comprehensive benefits\
+    \ package which includes the following:\\n\\n1\\\\. Medical, dental, and vision\
+    \ insurance, including expert medical opinion\\n\\n2\\\\. Short term disability\
+    \ and long term disability\\n\\n3\\\\. Life insurance and AD&D\\n\\n4\\\\. Supplemental\
+    \ life insurance (Employee/Spouse/Child)\\n\\n5\\\\. Health care and dependent\
+    \ care Flexible Spending Accounts\\n\\n6\\\\. Pre-tax commuter and parking benefits\\\
+    n\\n7\\\\. 401(k) Savings and Investment Plan with company match\\n\\n8\\\\. Paid\
+    \ time off: Flexible Vacation is provided to all eligible employees assigned to\
+    \ a salaried (non-overtime eligible) position. Accrued Vacation is provided to\
+    \ all other employees eligible for vacation benefits. For employees working at\
+    \ least 35 hours per week, the vacation accrual rate is 13 days annually for the\
+    \ first three years of employment and 18 days annually for subsequent years of\
+    \ employment. Vacation accrual is prorated for employees working between 20 and\
+    \ 34 hours per week. Employees working fewer than 20 hours per week are not eligible\
+    \ for vacation.\\n\\n9\\\\. 11 paid holidays\\n\\n10\\\\. Paid sick leave: 72\
+    \ hours of paid sick leave upon date of hire. Refreshes each calendar year. Unused\
+    \ balance will carry over each year up to a maximum cap of 112 hours.\\n\\n11\\\
+    \\. Paid parental leave\\n\\n12\\\\. Adoption assistance\\n\\n13\\\\. Employee\
+    \ Stock Purchase Plan\\n\\n14\\\\. Financial planning and group legal\\n\\n15\\\
+    \\. Voluntary benefits including auto, homeowner and pet insurance\\n\\nThe role\
+    \ will generally accept applications for at least three calendar days from the\
+    \ posting date or as long as the job remains posted.\\n\\nCareer Level - IC3\\\
+    n\\n## About Us\\n\\nAs a world leader in cloud solutions, Oracle uses tomorrow\u2019\
+    s technology to tackle today\u2019s challenges. We\u2019ve partnered with industry-leaders\
+    \ in almost every sector\u2014and continue to thrive after 40+ years of change\
+    \ by operating with integrity.\\n\\nWe know that true innovation starts when everyone\
+    \ is empowered to contribute. That\u2019s why we\u2019re committed to growing\
+    \ an inclusive workforce that promotes opportunities for all.\\n\\nOracle careers\
+    \ open the door to global opportunities where work-life balance flourishes. We\
+    \ offer competitive benefits based on parity and consistency and support our people\
+    \ with flexible medical, life insurance, and retirement options. We also encourage\
+    \ employees to give back to their communities through our volunteer programs.\\\
+    n\\nWe\u2019re committed to including people with disabilities at all stages of\
+    \ the employment process. If you require accessibility assistance or accommodation\
+    \ for a disability at any point, let us know by emailing\_[accommodation-request\\\
+    \\_mb@oracle.com](mailto:accommodation-request_mb@oracle.com)\_or by calling +1\
+    \ 888 404 2494 in the United States.\\n\\nOracle is an Equal Employment Opportunity\
+    \ Employer. All qualified applicants will receive consideration for employment\
+    \ without regard to race, color, religion, sex, national origin, sexual orientation,\
+    \ gender identity, disability and protected veterans\u2019 status, or any other\
+    \ characteristic protected by law. Oracle will consider for employment qualified\
+    \ applicants with arrest and conviction records pursuant to applicable law.\\\
+    n\\nApply Now\\n\\nRequest a referral from an Oracle employee.\\n\\nCompany Connections\
+    \ \\\\| LinkedIn\\n\\nSee who works here\\n\\n\\n### Sign in to see your connections\
+    \ who work at Oracle\\n\\n197,678 employees are on LinkedIn\\n\\n\\nSign in\\\
+    n\\n\\n- Oracle Careers l Create the Future With Us - YouTube\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n[Photo image of Oracle Careers](https://www.youtube.com/channel/UCPe0ulfPgXtndUKPs5WNyEA?embeds_referring_euri=https%3A%2F%2Fcareers.oracle.com%2F)\\\
+    n\\n\\n\\n\\n\\nOracle Careers\\n\\n\\n\\n4.56K subscribers\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n[Oracle Careers l Create the Future With Us](https://www.youtube.com/watch?v=BV0GMCITXg4)\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOracle Careers\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\nSearch\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nInfo\\n\\n\\n\\nShopping\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nTap to unmute\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nIf playback doesn't\
+    \ begin shortly, try restarting your device.\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\nYou're signed out\\n\\n\\n\\nVideos you watch may be\
+    \ added to the TV's watch history and influence TV recommendations. To avoid this,\
+    \ cancel and sign in to YouTube on your computer.\\n\\n\\n\\nCancelConfirm\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\nShare\\n\\nInclude playlist\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nAn error occurred\
+    \ while retrieving sharing information. Please try again later.\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nWatch later\\n\\n\\n\\nShare\\n\\n\\n\\nCopy link\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\nWatch on\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n0:00\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\\
+    n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n/\\n\\n\\n\\n\u2022Live\\n\\\
+    n\\n\\n\u2022\\n\\n\\nSimilar Jobs\\n\\nAmerican English\\n\\n- Fran\xE7ais\\\
+    n- \u65E5\u672C\u8A9E\\n- American English\\n\\n[I am an employee](https://eeho.fa.us2.oraclecloud.com/fscmUI/faces/deeplink?objType=IRC_RECRUITING&action=ICE_JOB_DETAILS_RESP&objKey=pRequisitionNo=316074;pCalledFrom=FUSESHELL\
+    \ \\\"I am an employee\\\")\\n\\n# Are You Still With Us?\\n\\nIt seems you've\
+    \ been gone for a while. For security reasons we will end your session automatically\
+    \ in 03:00 unless you would like to continue working.\\n\\nEnd SessionContinue\
+    \ Working\\n\\n# Work Summary\\n\\nThis summary is generated by AI Assist. Click\
+    \ inside the summary text box to make changes as necessary.\\n\\nDiscardAdd Summary\\\
+    n\\nPage Senior Technical Program Manager - Oracle Careers loaded\\n\\nOracle\
+    \ Assistant\\n\\nType a message\\n\\n- Attachment\",\n  \"metadata\": {\n    \"\
+    ogTitle\": \"Senior Technical Program Manager\",\n    \"language\": \"en\",\n\
+    \    \"title\": \"Senior Technical Program Manager - Oracle Careers\",\n    \"\
+    ogImage\": \"https://www.oracle.com/a/ocom/img/logo-950x500.png\",\n    \"viewport\"\
+    : [\n      \"width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1\"\
+    ,\n      \"width=device-width, initial-scale=1\"\n    ],\n    \"og:title\": [\n\
+    \      \"Senior Technical Program Manager\",\n      \" Company Connections | LinkedIn\"\
+    \n    ],\n    \"og:description\": [\n      \"Building off our Cloud momentum,\
+    \ Oracle has formed a new organization - Oracle Health Applications & Infrastructure.\
+    \ This team focuses on product development and product strategy for Oracle Health,\
+    \ while building out a complete platform supporting modernized, automated healthcare.\"\
+    ,\n      \"Connect with your LinkedIn connections who work at Oracle\"\n    ],\n\
+    \    \"og:image\": [\n      \"https://www.oracle.com/a/ocom/img/logo-950x500.png\"\
+    ,\n      \"Your pages share image url goes here\"\n    ],\n    \"ogSiteName\"\
+    : \"Oracle\",\n    \"og:site_name\": \"Oracle\",\n    \"pageKey\": \"d_company-connections-widget\"\
+    ,\n    \"robots\": [\n      \"noindex, nofollow\",\n      \"noarchive\"\n    ],\n\
+    \    \"locale\": \"en_US\",\n    \"description\": \"Connect with your LinkedIn\
+    \ connections who work at Oracle\",\n    \"og:url\": \"https://www.linkedin.com/careersite/extensions\"\
+    ,\n    \"ogDescription\": \"Building off our Cloud momentum, Oracle has formed\
+    \ a new organization - Oracle Health Applications & Infrastructure. This team\
+    \ focuses on product development and product strategy for Oracle Health, while\
+    \ building out a complete platform supporting modernized, automated healthcare.\"\
+    ,\n    \"twitter:card\": [\n      \"summary_large_image\",\n      \"summary\"\n\
+    \    ],\n    \"twitter:site\": \"@linkedin\",\n    \"og:type\": [\n      \"website\"\
+    ,\n      \"article\"\n    ],\n    \"twitter:title\": \" Company Connections |\
+    \ LinkedIn\",\n    \"twitter:description\": \"Connect with your LinkedIn connections\
+    \ who work at Oracle\",\n    \"twitter:image\": \"Your pages share image url goes\
+    \ here\",\n    \"asset-url\": \"https://static.licdn.com/sc/h/6sz1e821vgereyxaakx87tt4z\"\
+    ,\n    \"favicon\": \"https://eeho.fa.us2.oraclecloud.com/hcmRestApi/CandidateExperience/siteFavicon/favicon-16x16.png?siteNumber=CX_45001&size=16x16\"\
+    ,\n    \"scrapeId\": \"019b6b5c-6f30-743b-b427-34c8d5a5fa60\",\n    \"sourceURL\"\
+    : \"https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074\",\n   \
+    \ \"url\": \"https://careers.oracle.com/en/sites/jobsearch/job/316074\",\n   \
+    \ \"statusCode\": 200,\n    \"contentType\": \"text/html;charset=utf-8\",\n  \
+    \  \"proxyUsed\": \"basic\",\n    \"cacheState\": \"hit\",\n    \"cachedAt\":\
+    \ \"2025-12-29T18:06:20.558Z\",\n    \"creditsUsed\": 1,\n    \"concurrencyLimited\"\
+    : false\n  }\n}"
+- key: company_profile_search
   description: Corporate and posting data retrieved via Google Search grounding.
   default_path: null
   search_query: 'Target URL: https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074
 
-    Please research and provide a summary containing: 1. The original Target URL provided
-    above. 2. The official name of the hiring company. 3. The mailing address for
-    their corporate headquarters. 4. The approximate global employee headcount. 5.
-    The company''s official "Mission Statement" or stated core purpose.
+    Please research and provide a summary containing: 1. The official name of the
+    hiring company. 2. The mailing address for their corporate headquarters. 3. The
+    approximate global employee headcount. 4. The company''s official "Mission Statement"
+    or stated core purpose.
 
     '
-  content: 'Error: Web research failed after multiple retries.'
+  mcp_tool_name: null
+  mcp_tool_args: {}
+  content: Oracle's official name is Oracle Corporation. The corporate headquarters
+    is located at 2300 Cloud Way, Austin, Texas. Oracle employs approximately 140,000
+    people globally.
 product:
   type: Document
   format: Markdown

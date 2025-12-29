@@ -1,10 +1,10 @@
 metadata:
   story_id: VS-000
-  version: '1.3'
+  version: '1.5'
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-28T21:26:26.637635'
+  assembled_at: '2025-12-29T14:18:57.778657'
 goal:
   as_a: As a <customer/role who receives the value>
   i_want: 'Define exactly what success looks like in at least 20 characters. Include
@@ -18,26 +18,59 @@ instructions:
   reasoning_pattern: Chain-of-Thought
   execution_steps:
   - step_number: 1
-    action: Initial data gathering or analysis step [Minimum 10 chars].
-    validation_rule: Specific logic used to verify this step is correct.
+    action: Review the raw JSON asset (e.g., 'scraped_data'). Locate the 'markdown'
+      field; this contains the target text for extraction.
+    validation_rule: The JSON is successfully parsed and the specific field is identified.
   - step_number: 2
-    action: The primary production or transformation step.
-    validation_rule: Forensic check to ensure zero hallucinations.
+    action: Synthesize findings into a business report or summary.
+    validation_rule: The synthesis is accurate and formatted in Markdown.
   - step_number: 3
-    action: syncthesize the collected information into a business report
-    validation_rule: The report is professionally formatted in Markdown
+    action: 'Create a heading ''# Appendix: Source Text''. Under this, reproduce the
+      content of the field from Step 1 VERBATIM. Do NOT summarize or omit sections.
+      Output the text exactly as it appears in the source.'
+    validation_rule: The full, un-summarized source text is included in the output.
+mcp_servers:
+- name: firecrawl
+  command: npx
+  args:
+  - -y
+  - firecrawl-mcp
+  env: null
 context_manifest:
 - key: web_research
   description: Real-time data fetched from the internet using Gemini Search.
   default_path: null
-  search_query: What is the weather in Austin?
-  content: 'Error: Web research failed after trying gemini-2.5-flash, gemini-2.0-flash,
-    gemini-2.0-flash-001, gemini-flash-latest. Primary failure detail: [gemini-flash-latest]
-    429: Too Many Requests (Rate Limit)'
+  search_query: Current market news and competitor news for the `Agentic Value Stream`.
+  mcp_tool_name: null
+  mcp_tool_args: {}
+  content: The Agentic AI market is rapidly growing due to high demand for autonomous
+    systems. Retailers view agentic AI as essential for competitive pricing but lack
+    implementation plans. Recent news highlights innovative developments and emerging
+    trends in the field.
+- key: scraped_data
+  description: Data retrieved via an MCP tool call.
+  default_path: null
+  search_query: null
+  mcp_tool_name: firecrawl_scrape
+  mcp_tool_args:
+    url: https://example.com
+    formats:
+    - markdown
+  content: "{\n  \"markdown\": \"# Example Domain\\n\\nThis domain is for use in documentation\
+    \ examples without needing permission. Avoid use in operations.\\n\\n[Learn more](https://iana.org/domains/example)\"\
+    ,\n  \"metadata\": {\n    \"title\": \"Example Domain\",\n    \"language\": \"\
+    en\",\n    \"viewport\": \"width=device-width, initial-scale=1\",\n    \"scrapeId\"\
+    : \"019b6b8c-a294-725b-ba7a-d3b7ddba99c1\",\n    \"sourceURL\": \"https://example.com\"\
+    ,\n    \"url\": \"https://example.com/\",\n    \"statusCode\": 200,\n    \"contentType\"\
+    : \"text/html\",\n    \"proxyUsed\": \"basic\",\n    \"cacheState\": \"hit\",\n\
+    \    \"cachedAt\": \"2025-12-29T19:07:44.298Z\",\n    \"creditsUsed\": 1,\n  \
+    \  \"concurrencyLimited\": false\n  }\n}"
 - key: primary_context
   description: The main source document.
   default_path: path/to/source.md
   search_query: null
+  mcp_tool_name: null
+  mcp_tool_args: {}
   content: null
 product:
   type: Analysis/Document
