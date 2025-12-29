@@ -9,7 +9,7 @@
 
 metadata:
   story_id: "VS-000"
-  version: "1.2"
+  version: "1.3"
   author: "Patrick Heaney"
   status: "Draft"
   preferred_model: "llama3"
@@ -51,9 +51,14 @@ instructions:
 # Engineering 'Context Blindness' out of the runtime loop.
 # ------------------------------------------------------------------------------
 context_manifest:
+  - key: "web_intelligence"
+    description: "Live search results to prevent context blindness for current events."
+    search_query: "Current market news and competitor news for the `Agentic Value Stream`."
+    required: true
+
   - key: "primary_data_source"
     description: "The main document the agent needs to read."
-    default_path: "path/to/your/file.md" # Relative to project root
+    default_path: "path/to/your/file.md"
     required: true
 
   - key: "reference_guide"

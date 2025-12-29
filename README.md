@@ -29,7 +29,7 @@ graph LR
     end
 
     Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
-    AI-CLoud[(Gemini 2.5 Flash<br>Web Search API)]
+    AI-CLoud[(Gemini 1.5 Flash<br>Web Search API)]
 
     %% Connections to the right
     VS-000 <-.-> AI-CLoud
@@ -152,7 +152,7 @@ uv run avs validate illustrative-example/VS-001-logic-analysis.md
 
 ### `assemble`
 
-The "Information Hunt" automation. It reads your `context_manifest`, **performs live web research via Gemini 2.5 Flash** (if `search_query` is present), and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
+The "Information Hunt" automation. It reads your `context_manifest`, **performs live web research via Gemini 1.5 Flash** (if `search_query` is present), and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
 
 ```
 uv run avs assemble illustrative-example/VS-001-logic-analysis.md

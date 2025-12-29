@@ -1,5 +1,6 @@
 # VS-000: Template for New Value Stories
-```
+
+```txt
 # ARCHITECT'S GUIDE: How to use this template
 # 1. Provide a Story ID (VS-XXX) in the title above.
 # 2. Fill in the 'goal' with a statement longer than 20 characters.
@@ -9,11 +10,11 @@
 
 metadata:
   story_id: "VS-000"
-  version: "1.2"
+  version: "1.3"
   author: "Patrick Heaney"
   preferred_model: "llama3"
 
-# THE GOAL: The "North Star" for the Agentic-Agent.
+## THE GOAL: The "North Star" for the Agentic-Agent
 
 goal:
   as_a: "As a <customer/role who receives the value>"
@@ -23,7 +24,7 @@ goal:
   so_that: >
     The agent understands the business value and rationale behind the task.
 
-# INSTRUCTIONS: The Core Algorithm (Execution Logic).
+## INSTRUCTIONS: The Core Algorithm (Execution Logic)
 
 instructions:
   reasoning_pattern: "Chain-of-Thought"
@@ -34,20 +35,23 @@ instructions:
     - step: 2
       action: "The primary production or transformation step."
       validation_rule: "Forensic check to ensure zero hallucinations."
+    - step: 3
+      action: "syncthesize the collected information into a business report"
+      validation_rule: "The report is professionally formatted in Markdown"
 
-# CONTEXT MANIFEST: The "Bill of Materials" for the Information Hunt.
+## CONTEXT MANIFEST: The "Bill of Materials" for the Information Hunt
 
 context_manifest:
+
+  - key: "web_research"
+    description: "Real-time data fetched from the internet using Gemini Search."
+    search_query: "Current market news and competitor news for the `Agentic Value Stream`."
 
   - key: "primary_context"
     description: "The main source document."
     default_path: "path/to/source.md"
 
-  - key: "reference_data"
-    description: "Supporting data for the agent."
-    default_path: "path/to/reference.pdf"
-
-# PRODUCT: The expected deliverable.
+## PRODUCT: The expected deliverable
 
 product:
   type: "Analysis/Document"

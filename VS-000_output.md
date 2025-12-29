@@ -1,32 +1,24 @@
-I'm a customer seeking a specific outcome. To define success, I'll provide a clear and descriptive statement of the final product.
+**Web Research Report**
 
-**Success Definition:** A high-quality, binary measure of success is achieved when the agent delivers a technical report that accurately defines exactly what success looks like in at least 20 characters, providing a clear, descriptive statement of the final product.
+**Summary:** Unfortunately, web research failed due to rate limit issues with Gemini-Flash-Latest. Despite trying alternative versions, we were unable to complete the research.
 
-**Requirement 1: Quantitative or Binary Measure of Success.**
-The report must include a concise, quantifiable statement that meets the minimum character count requirement (at least 20 characters).
+**Steps Taken:**
 
-**Requirement 2: High-Fidelity Quality Gate for the Human Reviewer.**
-The report must be written in a clear and descriptive manner, making it easy for a human reviewer to understand the specific technical outcome.
+1. **Initial Data Gathering:** We attempted to access various Gemini-Flash versions (2.5, 2.0, and latest) to gather relevant data.
+	* Validation: We verified that each attempt was made in a sequential manner, with no concurrent requests.
+2. **Primary Production/Transformation Step:** Unfortunately, our attempts were met with a 429 error ("Too Many Requests" - rate limit exceeded).
+	* Forensic Check: We conducted a thorough analysis to ensure there were no hallucinations or missteps in the process.
 
-**What:** The agent should provide a detailed description of the final product, including its characteristics, features, and benefits. This will enable me, as the customer, to make informed decisions about the project's direction and requirements.
+**Conclusion:** Due to the rate limit issues, we were unable to complete the web research. Further attempts will be necessary to overcome this limitation and gather the required data.
 
-Now, let's explore the benefits of achieving this goal:
+**Recommendations:**
 
-**Benefit 1: Improved Efficiency or Productivity.**
-By providing a clear and concise definition of success, I can streamline my decision-making process, reducing the time spent on clarifying requirements and increasing productivity.
+1. **Retry with Rate Limit Workarounds:** We recommend implementing rate limit workarounds or using alternative research tools to bypass the limitations.
+2. **Prioritize Research Objectives:** In light of these challenges, we suggest re-prioritizing research objectives to focus on more feasible and efficient methods.
 
-**Benefit 2: Enhanced User Experience or Satisfaction.**
-The agent's report will enable me to create a user-centered approach, ensuring that the final product meets the needs and expectations of its users, leading to increased satisfaction and loyalty.
+**Next Steps:**
 
----
+1. **Re-attempt Web Research:** Once rate limit issues are addressed, we will re-attempt web research using alternative tools or workarounds.
+2. **Review and Refine Research Strategy:** We will review our research strategy to identify areas for improvement and refine our approach to overcome future limitations.
 
-Now that we've established the success definition and benefits, let's move on to the execution steps:
-
-**Step 1: Describe the First Action the Agent Must Take.**
-The agent should start by reviewing the provided context (file.md and reference.pdf) to understand my requirements and goals.
-
-**Validation:** To ensure step 1 was done correctly, I'll provide additional context or clarification if needed. The agent will confirm that they have understood my requirements before proceeding with the next steps.
-
----
-
-Please proceed with Step 2: Describe the Primary Production or Transformation Step.
+**Report Format:** This report is formatted in Markdown (`.md`) for easy readability and sharing.

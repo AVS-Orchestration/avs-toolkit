@@ -4,7 +4,7 @@ metadata:
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-28T14:22:36.036640'
+  assembled_at: '2025-12-28T20:16:28.151553'
 goal:
   as_a: As a Career Intake Specialist
   i_want: 'Generate a formatted Company Research Brief including the target URL, official
@@ -49,32 +49,7 @@ context_manifest:
     The company''s official "Mission Statement" or stated core purpose.
 
     '
-  content: 'Based on the research, here is a summary containing the requested information
-    for the company associated with the Target URL:
-
-
-    | Item | Detail |
-
-    | :--- | :--- |
-
-    | **1. Target URL** | `https://careers.oracle.com/en/sites/jobsearch/jobs/preview/316074`
-    |
-
-    | **2. Official Name of the Hiring Company** | Oracle Corporation |
-
-    | **3. Mailing Address for Corporate Headquarters** | Oracle Corporation<br>2300
-    Oracle Way<br>Austin, TX 78741 |
-
-    | **4. Approximate Global Employee Headcount** | Approximately **162,000** (as
-    of May 2025) |
-
-    | **5. Company''s Official Mission Statement** | "Our mission is to help people
-    see data in new ways, discover insights, and unlock endless possibilities." |
-
-
-    Sources:
-
-    '
+  content: 'Error: Web research failed after multiple retries.'
 product:
   type: Document
   format: Markdown

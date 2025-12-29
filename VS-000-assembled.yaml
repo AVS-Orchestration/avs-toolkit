@@ -1,45 +1,46 @@
 metadata:
   story_id: VS-000
-  version: '1.2'
+  version: '1.3'
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-26T17:34:14.542029'
+  assembled_at: '2025-12-28T21:26:26.637635'
 goal:
   as_a: As a <customer/role who receives the value>
-  i_want: 'Define exactly what success looks like in at least 20 characters. Provide
-    a clear, descriptive statement of the final product. - "Requirement 1: Quantitative
-    or binary measure of success." - "Requirement 2: High-fidelity quality gate for
-    the human reviewer." Explain the "What" so the agent understands the specific
-    technical outcome.
+  i_want: 'Define exactly what success looks like in at least 20 characters. Include
+    specific requirements as bullet points if necessary.
 
     '
-  so_that: 'Explain the benefits of achieving this goal for the customer. - "Benefit
-    1: Improved efficiency or productivity." - "Benefit 2: Enhanced user experience
-    or satisfaction." Explain the "Why" to provide the agent with a rationale for
-    decision-making.
+  so_that: 'The agent understands the business value and rationale behind the task.
 
     '
 instructions:
   reasoning_pattern: Chain-of-Thought
   execution_steps:
   - step_number: 1
-    action: Describe the first action the agent must take [Min 10 chars].
-    validation_rule: How do we know step 1 was done correctly?
+    action: Initial data gathering or analysis step [Minimum 10 chars].
+    validation_rule: Specific logic used to verify this step is correct.
   - step_number: 2
-    action: Describe the primary production or transformation step.
-    validation_rule: The forensic check to ensure zero hallucinations.
+    action: The primary production or transformation step.
+    validation_rule: Forensic check to ensure zero hallucinations.
+  - step_number: 3
+    action: syncthesize the collected information into a business report
+    validation_rule: The report is professionally formatted in Markdown
 context_manifest:
-- key: primary_data_source
-  description: The main document the agent needs to read.
-  default_path: path/to/your/file.md
-  content: null
-- key: reference_guide
-  description: Supporting templates or style guides.
-  default_path: path/to/reference.pdf
+- key: web_research
+  description: Real-time data fetched from the internet using Gemini Search.
+  default_path: null
+  search_query: What is the weather in Austin?
+  content: 'Error: Web research failed after trying gemini-2.5-flash, gemini-2.0-flash,
+    gemini-2.0-flash-001, gemini-flash-latest. Primary failure detail: [gemini-flash-latest]
+    429: Too Many Requests (Rate Limit)'
+- key: primary_context
+  description: The main source document.
+  default_path: path/to/source.md
+  search_query: null
   content: null
 product:
-  type: Document
+  type: Analysis/Document
   format: Markdown
   output_path: ''
-  handoff_target: VS-001-Next-Step
+  handoff_target: null

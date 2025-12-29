@@ -21,42 +21,68 @@ app = typer.Typer(help="AVS Toolkit: Orchestrate Agentic Value Streams.")
 console = Console()
 
 async def web_research(query: str) -> str:
-    """Uses Gemini API with Google Search grounding to fetch context."""
-    api_key = os.getenv("GEMINI_API_KEY", "")
+    """
+    Performs live web research using Gemini Flash with Google Search grounding.
+    Implements a robust fallback and forensic error reporting for v1beta troubleshooting.
+    """
+    raw_api_key = os.getenv("GEMINI_API_KEY")
+    if not raw_api_key:
+        return "Error: GEMINI_API_KEY not found in environment variables."
     
-    if not api_key:
-        return "Error: GEMINI_API_KEY not found. See docs/GUIDE_GEMINI_SEARCH_SETUP.md"
+    # Sanitize the key to prevent malformed URLs
+    api_key = raw_api_key.strip()
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key={api_key}"
+    # Model Fallback Hierarchy based on your region's confirmed available models
+    models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-001", "gemini-flash-latest"]
     
-    payload = {
-        "contents": [{
-            "parts": [{ "text": query }]
-        }],
-        "tools": [{ "google_search": {} }]
-    }
-
-    for delay in [1, 2, 4, 8, 16]:
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(url, json=payload)
-                response.raise_for_status()
-                result = response.json()
-                
-                text = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', "")
-                grounding = result.get('candidates', [{}])[0].get('groundingMetadata', {}).get('groundingAttributions', [])
-                
-                if text:
-                    footer = "\n\nSources:\n" + "\n".join([f"- {a.get('web', {}).get('title')}: {a.get('web', {}).get('uri')}" for a in grounding if a.get('web')])
-                    return text + footer
-                return "No research results found."
-        except Exception:
-            await asyncio.sleep(delay)
+    last_error_detail = "No attempts made."
+    
+    async with httpx.AsyncClient() as client:
+        for model_id in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={api_key}"
             
-    return "Error: Web research failed after multiple retries."
+            payload = {
+                "contents": [{
+                    "parts": [{ "text": query }]
+                }],
+                "tools": [{ "google_search": {} }]
+            }
+
+            for attempt in range(3):
+                try:
+                    # Grounding calls require significant time for the search index retrieval
+                    response = await client.post(url, json=payload, timeout=60.0)
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        candidates = result.get('candidates', [])
+                        if candidates:
+                            content = candidates[0].get('content', {}).get('parts', [{}])[0].get('text', "")
+                            return content
+                        last_error_detail = f"[{model_id}] 200: Success but contained no candidates."
+                        break # Try the next model
+                    
+                    elif response.status_code == 429:
+                        # Rate limit hit: Capture the error and retry this specific model
+                        last_error_detail = f"[{model_id}] 429: Too Many Requests (Rate Limit)"
+                        await asyncio.sleep(2 ** (attempt + 1))
+                    
+                    else:
+                        # If we get a 404, 403, or 500, log the detail and move to the next model
+                        last_error_detail = f"[{model_id}] {response.status_code}: {response.text}"
+                        break # Try the next model in models_to_try
+                
+                except Exception as e:
+                    last_error_detail = f"[{model_id}] Connection/Timeout: {str(e)}"
+                    await asyncio.sleep(1) # Brief pause before retry
+        
+    return (
+        f"Error: Web research failed after trying {', '.join(models_to_try)}. "
+        f"Primary failure detail: {last_error_detail}"
+    )
 
 def get_story_data(path: Path) -> dict:
-    """Parses a file and returns the raw dictionary."""
+    """Parses a file and returns the raw dictionary for model validation."""
     if not path.exists():
         console.print(f"[red]Error:[/red] File not found: {path}")
         raise typer.Exit(1)
@@ -68,7 +94,7 @@ def get_story_data(path: Path) -> dict:
     return parse_markdown_story(content)
 
 async def perform_assembly(path: Path) -> Path:
-    """Core logic for assembly, shared between commands."""
+    """Core logic for assembly, shared between CLI commands."""
     raw_data = get_story_data(path)
     story = ValueStory(**raw_data)
     
@@ -78,7 +104,12 @@ async def perform_assembly(path: Path) -> Path:
         if item.search_query:
             with Live(Spinner("dots", text=f"Researching: {item.search_query}..."), transient=True):
                 item.content = await web_research(item.search_query)
-                console.print(f"  [green]✓ Research complete:[/green] {item.key or 'Web Search'}")
+                if item.content.startswith("Error:"):
+                    console.print(f"  [red]✗ Research failed:[/red] {item.key or 'Web Search'}")
+                    # PRINT THE FORENSIC DETAIL TO TERMINAL
+                    console.print(f"    [dim]{item.content}[/dim]")
+                else:
+                    console.print(f"  [green]✓ Research complete:[/green] {item.key or 'Web Search'}")
         
         elif item.default_path:
             asset_path = Path(item.default_path)
@@ -95,7 +126,6 @@ async def perform_assembly(path: Path) -> Path:
     story.metadata.status = "assembled"
     
     final_data = story.model_dump()
-    # Use the Story ID to name the briefcase consistently
     output_path = path.parent / f"{story.metadata.story_id}-assembled.yaml"
     
     with open(output_path, 'w') as f:
@@ -145,7 +175,7 @@ def run(
     local: bool = typer.Option(False, "--local"), 
     model: Optional[str] = typer.Option(None, "--model")
 ):
-    """Executes a Value Story. Auto-assembles if necessary."""
+    """Executes a Value Story. Auto-assembles if a briefcase doesn't exist."""
     data = get_story_data(path)
     try:
         story = ValueStory(**data)
@@ -153,7 +183,6 @@ def run(
         target_path = path
 
         if not story.is_assembled:
-            # Call the core logic function directly to ensure we get the Path object back
             target_path = asyncio.run(perform_assembly(path))
         
         if not target_path:
