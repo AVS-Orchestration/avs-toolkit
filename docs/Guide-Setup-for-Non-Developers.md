@@ -112,7 +112,29 @@ We need one last tool called tree that helps you visualize file structures.
 
 - **Windows**: In PowerShell, type winget install GnuWin32.Tree. (If prompted, type Y to agree to terms).
 
-## Phase 8:  Installation
+## Phase 8: Set up Web Research (Gemini)
+
+The AVS Toolkit uses Gemini to perform live web research. You need a free "API Key" to unlock this feature.
+
+1. **Get your Key**: Go to [Google AI Studio](https://aistudio.google.com/) and click "Get API Key."
+2. **Save your Key**: You need to save this key as a "Secret" on your computer so the Toolkit can find it.
+
+### Mac/Linux:
+
+Add this to your `~/.zshrc` or `~/.bash_profile`:
+```
+export GEMINI_API_KEY="your_actual_key_here"
+```
+
+Then run `source ~/.zshrc`.
+
+### Windows:
+
+In PowerShell, run:
+```
+[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_actual_key_here', 'User')
+```
+## Installation 
 
 **Congratulations** 🎉 you implemented all the Prerequisits.  Return to and continue with these [Installation](../README.md#2-installation) instructions.
 

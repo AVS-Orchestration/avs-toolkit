@@ -1,32 +1,38 @@
 # AVS Value Story
 
-## A Framework for Multiplying Human Value in the Era of Autonomous Orchestration.
+## A Framework for Making AI your personal Force Multiplier.
 
 Developed by **Patrick Heaney**, this framework provides a rigorous methodological shift from "automating work" to **multiplying value** by externalizing tacit knowledge into **Algorithmically Legible Instructions**.
 
 ## 🚀 **The Problem: The Information Hunt**
 
-The current crisis in knowledge work is characterized by the **"5–15 hour information hunt"**—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This **"context blindness"** is the primary reason AI deployments fail, lead to hallucinations, or require excessive human oversight [cite: 2.4, 6.2].
+The current crisis in knowledge work is characterized by the **"5–15 hour information hunt"**—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This **"context blindness"** is the primary reason AI requires excessive human oversight [cite: 2.4, 6.2] and fails to produce acceptable results.
 
 # 💡 **The Solution: Agentic Value Streams (AVS)**
 
 The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a **cascading, iterative, and cumulative sequence** of value creation centered around the Value Story [cite: 1.1].
 
+**Web Research Integration:** AVS now integrates **Live Web Research** via Gemini 2.5 Flash with Google Search grounding to automate the retrieval of public information and market data.
+
 ```mermaid
 graph LR
     subgraph Process [The AVS Pattern]
         direction TB
-        VS-001(Value Story 1)
-        VS-002(Value Story 2)
-        VS-003(Value Story 3)
+        VS-000(Intake & Research)
+        VS-001(Analysis & Strategy)
+        VS-002(Product Generation)
+        VS-003(Review & Refine)
+
         
         %% Vertical flow connections
-        VS-001 ==> VS-002 ==> VS-003 
+        VS-000 ==> VS-001 ==> VS-002 ==> VS-003 
     end
 
     Context[(MCP,<br>Database,<br>File System,<br>URL, etc)]
+    AI-CLoud[(Gemini 2.5 Flash<br>Web Search API)]
 
     %% Connections to the right
+    VS-000 <-.-> AI-CLoud
     VS-001 <-.-> Context
     VS-002 <-.-> Context
     VS-003 <-.-> Context
@@ -47,7 +53,8 @@ Every Value Story in this repository follows the **Agile v1.2 Standard**, ensuri
 
 **Algorithmically Legible Instructions**: Precise enough for an AI-Agent to execute with zero "context blindness," yet semantically clear enough for Human-Agents to oversee and audit [cite: 2.2.2].
 
-**Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition," effectively eliminating the "Information Hunt" [cite: 2.2.3].
+**Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition." It supports local files and **Live Web Research** via the `search_query` field [cite: 2.2.3].
+
 
 ## 🧠 The Strategic Shift
 
@@ -114,6 +121,10 @@ else
 fi
 ```
 If `uv` is not installed, I included instructions in Phase 5 of the [Setup for Non-Developers](./docs/Guide-Setup-for-Non-Developers.md) guide.
+
+* **Ollama**: Install [Ollama](https://ollama.com) and run `ollama pull llama3`.
+* **Gemini API Key**: Required for live web research. Set it in your environment: `export GEMINI_API_KEY="your_key"`.
+
 ## 2. Installation
 
 Clone the repository and sync the environment:
@@ -141,7 +152,8 @@ uv run avs validate illustrative-example/VS-001-logic-analysis.md
 
 ### `assemble`
 
-The "Information Hunt" automation. It reads your `context_manifest`, fetches the raw text from your local files, and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
+The "Information Hunt" automation. It reads your `context_manifest`, **performs live web research via Gemini 2.5 Flash** (if `search_query` is present), and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
+
 ```
 uv run avs assemble illustrative-example/VS-001-logic-analysis.md
 ```
@@ -176,7 +188,7 @@ The AVS Toolkit manages the lifecycle of a Value Story through three distinct fi
 
 * `VS-000-template.md`: Master markdown template for new Value Stories.
 * `Visual-Studio-Code-Setup-Guide.md`: Dev environment optimization.
-* `docs/`: A library of implementation guides to assist in your AVS adoption journey.
+* `docs/`: A library of implementation guides including [Gemini Search Setup](./docs/GUIDE_GEMINI_SEARCH_SETUP.md).
 * `ARCHITECTURE.md` & `SOURCES.md`: Framework documentation.
 
 ## 🏅 About the Author
