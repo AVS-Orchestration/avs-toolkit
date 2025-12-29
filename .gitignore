@@ -1,2 +1,11 @@
 local_proxy.yaml
 .aider*
+.DS*
+pycache/
+*.py[cod]
+*$py.class
+.venv/
+.python-version
+uv.lock
+.env
+.env.local
