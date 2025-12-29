@@ -70,6 +70,22 @@ class MCPRuntime:
         except Exception as e:
             return f"Error calling MCP tool '{tool_name}' on server '{server_name}': {str(e)}"
 
+    async def discover_server_for_tool(self, tool_name: str) -> Optional[str]:
+        """
+        Identifies which of the defined servers provides the requested tool.
+        This enables 'Auto-Routing' for tools like firecrawl_scrape.
+        """
+        for name in self.configs.keys():
+            try:
+                session = await self._get_session(name)
+                tools_result = await session.list_tools()
+                if any(t.name == tool_name for t in tools_result.tools):
+                    return name
+            except Exception:
+                # If a server fails to list tools, we move to the next one
+                continue
+        return None
+
     async def shutdown(self):
         """
         Closes all active server sessions and transports.
@@ -77,27 +93,18 @@ class MCPRuntime:
         await self.exit_stack.aclose()
         self.sessions.clear()
 
-async def execute_mcp_item(runtime: MCPRuntime, item: Any, server_map: Dict[str, str]) -> str:
+async def execute_mcp_item(runtime: MCPRuntime, item: Any) -> str:
     """
     Helper to route a ContextManifestItem to the correct MCP server and tool.
-    Uses the tool name to look up which server provides it if not explicitly mapped.
     """
     if not item.mcp_tool_name:
         return "Error: No MCP tool name provided for this context item."
 
-    # In a simple implementation, we assume the user maps tools to servers in their manifest
-    # or we search the available servers. For now, we look for a server that provides the tool.
-    # Architecture Note: In the future, we could call 'list_tools' on all servers to auto-discover.
-    
-    server_name = None
-    for s_name in runtime.configs.keys():
-        # Heuristic: The user often prefixes tool names or we can just try the first available
-        # if the manifest is simple. For the Firecrawl example, we expect one server.
-        server_name = s_name
-        break
+    # Look up which server provides this tool
+    server_name = await runtime.discover_server_for_tool(item.mcp_tool_name)
 
     if not server_name:
-        return "Error: No MCP servers available to handle tool call."
+        return f"Error: No MCP servers found that provide the tool '{item.mcp_tool_name}'."
 
     return await runtime.call_tool(
         server_name=server_name,
