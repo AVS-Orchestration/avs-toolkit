@@ -11,6 +11,8 @@ metadata:
   story_id: "VS-000"
   version: "1.5"
   author: "Patrick Heaney"
+  repository: "https://github.com/AVS-Orchestration/avs-toolkit"
+  license: "CC BY-SA 4.0"
   status: "active"
   preferred_model: "llama3"
 

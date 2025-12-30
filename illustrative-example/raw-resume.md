@@ -1,6 +1,6 @@
-# John Doe
+# Candidate Name
 
-**Email:** john.doe@example.com | **LinkedIn:** linkedin.com/in/johndoe | **Portfolio:** johndoe-portfolio.com
+**Email:** candidate@example.com | **Phone:** 555-0199 | **Address:** 123 Agentic Way, AI City
 
 ## Summary
 Highly motivated and results-oriented professional with 10+ years of experience in product management, software development, and strategic consulting. Proven ability to drive complex projects from conception to launch, delivering significant business value. Passionate about leveraging technology to solve challenging problems and improve user experiences.
