@@ -13,10 +13,12 @@ from rich.table import Table
 from rich.live import Live
 from rich.spinner import Spinner
 
+# Internal Imports
 from .parser import parse_markdown_story
 from .models import ValueStory
 from .runner import run_ollama_story
 from .mcp_client import MCPRuntime, execute_mcp_item
+from .diagnostics.mcp_doctor import run_diagnostics
 
 app = typer.Typer(help="AVS Toolkit: Orchestrate Agentic Value Streams.")
 console = Console()
@@ -68,7 +70,7 @@ async def research_gemini(query: str) -> Optional[str]:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key: return None
     
-    # Using gemini-2.5-flash
+    # Restored to use gemini-2.5-flash as per user requirements
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     payload = {"contents": [{"parts": [{"text": query}]}], "tools": [{"google_search": {}}]}
     
@@ -131,6 +133,7 @@ async def perform_assembly(path_or_url: str) -> Path:
             # 3. Local Files
             elif item.default_path:
                 p = Path(item.default_path)
+                # Handle relative pathing for stories fetched from specific directories
                 if not p.exists() and not path_or_url.startswith("http"):
                     p = Path(path_or_url).parent / item.default_path
                 
@@ -152,6 +155,14 @@ async def perform_assembly(path_or_url: str) -> Path:
     console.print(f"\n[bold green]✓ Assembly Complete[/bold green]")
     console.print(f"  Briefcase: {output_path}")
     return output_path
+
+@app.command()
+def doctor():
+    """
+    Run infrastructure diagnostics to ensure your environment is AVS-ready.
+    Checks Node.js, uv, npx, Ollama, and API key configurations.
+    """
+    run_diagnostics()
 
 @app.command()
 def validate(path_or_url: str):
