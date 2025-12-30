@@ -89,6 +89,24 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 **Adding to PATH**: The Windows installer usually handles the PATH automatically, but you must close your current PowerShell window and open a brand new one for the change to take effect. If it still isn't found, restart your computer.
 
 ## Phase 6: 
+The toolkit uses Model Context Protocol (MCP) servers to perform automated research, such as scraping websites with Firecrawl. These servers require Node.js to run on your computer.
+
+### For Mac Users:
+
+In your Terminal, type:
+```
+brew install node
+```
+
+### For Windows Users:
+
+In PowerShell, type:
+```
+winget install OpenJS.NodeJS
+```
+
+*Note: After installation, you can verify it by typing node -v in your terminal. You should see a version number starting with v.*
+
 
 
 ## Phase 7: Install Git & Utilities
