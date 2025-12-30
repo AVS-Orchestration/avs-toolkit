@@ -130,6 +130,7 @@ If `uv` is not installed, I included instructions in Phase 5 of the [Setup for N
 
 * **Ollama**: Install [Ollama](https://ollama.com) and run `ollama pull llama3`.
 * **Gemini API Key**: Required for live web research. Set it in your environment: `export GEMINI_API_KEY="your_key"`.
+* **Firecrawl API Key**: Required for web scraping. Set export FIRECRAWL_API_KEY="your_key".
 
 ## 2. Installation
 
