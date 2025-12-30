@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
@@ -7,24 +7,17 @@ class Metadata(BaseModel):
     version: str = "1.0"
     author: Optional[str] = None
     status: str = "draft"
-    preferred_model: Optional[str] = Field(
-        None,
-        description="The specific Ollama model (e.g., llama3:70b) recommended by the Architect for this story."
-    )
-    assembled_at: Optional[str] = Field(
-        None, 
-        description="ISO timestamp indicating when context was injected. If null, this is a template/definition."
-    )
+    preferred_model: Optional[str] = Field(None)
+    assembled_at: Optional[str] = Field(None)
 
 class Goal(BaseModel):
-    as_a: str = Field(..., description="The persona or role receiving the value.")
-    i_want: str = Field(..., min_length=20, description="The technical outcome or product required.")
-    so_that: str = Field(..., description="The business value or rationale for the agent.")
+    as_a: str = Field(...)
+    i_want: str = Field(..., min_length=20)
+    so_that: str = Field(...)
 
     @field_validator('as_a')
     @classmethod
     def validate_as_a(cls, v: str):
-        """Self-healing validator: ensures the persona starts with 'As a'."""
         if not v.lower().startswith("as a"):
             return f"As a {v}"
         return v
@@ -42,28 +35,16 @@ class ContextManifestItem(BaseModel):
     key: Optional[str] = None
     description: Optional[str] = None
     default_path: Optional[str] = None
-    search_query: Optional[str] = Field(
-        None, 
-        description="An internet search query to execute during assembly to fetch current data."
-    )
-    mcp_tool_name: Optional[str] = Field(
-        None,
-        description="The name of the MCP tool to call (e.g., 'firecrawl_scrape')."
-    )
-    mcp_tool_args: Optional[Dict[str, Any]] = Field(
-        None,
-        description="Arguments to pass to the MCP tool."
-    )
-    content: Optional[str] = Field(
-        None, 
-        description="The actual text of the asset, populated during assembly."
-    )
+    search_query: Optional[str] = None
+    mcp_tool_name: Optional[str] = None
+    mcp_tool_args: Optional[Dict[str, Any]] = None
+    content: Optional[str] = None
 
 class MCPServerConfig(BaseModel):
-    name: str = Field(..., description="A unique identifier for the MCP server.")
-    command: str = Field(..., description="The command to launch the server (e.g., 'npx', 'uvx').")
-    args: List[str] = Field(default_factory=list, description="Arguments for the launch command.")
-    env: Optional[Dict[str, str]] = Field(None, description="Optional environment variables for the server.")
+    name: str = Field(...)
+    command: str = Field(...)
+    args: List[str] = Field(default_factory=list)
+    env: Optional[Dict[str, str]] = None
 
 class Product(BaseModel):
     type: str = "Document"
@@ -75,14 +56,24 @@ class ValueStory(BaseModel):
     metadata: Metadata
     goal: Goal
     instructions: Instructions
-    mcp_servers: List[MCPServerConfig] = Field(
-        default_factory=list,
-        description="Manifest of ephemeral MCP servers to spin up during assembly."
-    )
+    mcp_servers: List[MCPServerConfig] = Field(default_factory=list)
     context_manifest: List[ContextManifestItem]
     product: Product = Field(default_factory=Product)
-    
+
+    @model_validator(mode='after')
+    def validate_mcp_alignment(self) -> 'ValueStory':
+        """
+        Governance Check: Ensures any requested MCP tools have 
+        at least one server defined in the manifest.
+        """
+        has_tool_call = any(item.mcp_tool_name for item in self.context_manifest)
+        if has_tool_call and not self.mcp_servers:
+            raise ValueError(
+                "Context Manifest contains MCP tool calls, but no 'mcp_servers' are defined. "
+                "The Agent will have 'Context Blindness' for these items."
+            )
+        return self
+
     @property
     def is_assembled(self) -> bool:
-        """Determines if the story has already been packaged with context."""
         return self.metadata.assembled_at is not None
