@@ -1,59 +1,404 @@
 metadata:
   story_id: VS-000
-  version: '1.3'
+  version: '1.5'
   author: Patrick Heaney
   status: assembled
   preferred_model: llama3
-  assembled_at: '2025-12-29T15:03:03.214346'
+  assembled_at: '2025-12-30T12:10:13.102238'
 goal:
   as_a: As a <customer/role who receives the value>
-  i_want: 'Define exactly what success looks like in at least 20 characters. Provide
-    a clear, descriptive statement of the final product. - "Requirement 1: Quantitative
-    or binary measure of success." - "Requirement 2: High-fidelity quality gate for
-    the human reviewer." Explain the "What" so the agent understands the specific
-    technical outcome.
+  i_want: 'Define exactly what success looks like in at least 20 characters. Include
+    specific requirements as bullet points if necessary.
 
     '
-  so_that: 'Explain the benefits of achieving this goal for the customer. - "Benefit
-    1: Improved efficiency or productivity." - "Benefit 2: Enhanced user experience
-    or satisfaction." Explain the "Why" to provide the agent with a rationale for
-    decision-making.
+  so_that: 'The agent understands the business value and rationale behind the task.
 
     '
 instructions:
   reasoning_pattern: Chain-of-Thought
   execution_steps:
   - step_number: 1
-    action: Describe the first action the agent must take [Min 10 chars].
-    validation_rule: How do we know step 1 was done correctly?
+    action: Review the raw JSON asset (e.g., 'scraped_data'). Locate the 'markdown'
+      field; this contains the target text for extraction.
+    validation_rule: The JSON is successfully parsed and the specific field is identified.
   - step_number: 2
-    action: Describe the primary production or transformation step.
-    validation_rule: The forensic check to ensure zero hallucinations.
-mcp_servers: []
+    action: Synthesize findings into a business report or summary.
+    validation_rule: The synthesis is accurate and formatted in Markdown.
+  - step_number: 3
+    action: 'Create a heading ''# Appendix: Source Text''. Under this, reproduce the
+      content of the field from Step 1 VERBATIM. Do NOT summarize or omit sections.
+      Output the text exactly as it appears in the source.'
+    validation_rule: The full, un-summarized source text is included in the output.
+mcp_servers:
+- name: firecrawl
+  command: npx
+  args:
+  - -y
+  - firecrawl-mcp
+  env: null
 context_manifest:
-- key: web_intelligence
-  description: Live search results to prevent context blindness for current events.
+- key: web_research
+  description: Real-time data fetched from the internet using Gemini Search.
   default_path: null
   search_query: Current market news and competitor news for the `Agentic Value Stream`.
   mcp_tool_name: null
   mcp_tool_args: {}
-  content: 'Error: GEMINI_API_KEY not found.'
-- key: primary_data_source
-  description: The main document the agent needs to read.
-  default_path: path/to/your/file.md
+  content: '**Agentic AI Set to Revolutionize Enterprise Workflows in 2026, Driving
+    Significant Market Growth**
+
+
+    The concept of an "Agentic Value Stream" centers around Agentic AI, which refers
+    to autonomous artificial intelligence systems designed to independently set goals,
+    make decisions, and execute complex tasks with minimal human intervention. These
+    systems move beyond traditional automation by learning, adapting, and orchestrating
+    multi-step processes to achieve specific outcomes. The market for Agentic AI and
+    its integrated workflows is experiencing rapid expansion, with 2026 predicted
+    to be a pivotal year for its widespread adoption across federal and consumer sectors.
+
+
+    **Current Market News and Trends:**
+
+
+    The Agentic AI market is in a significant growth phase, transitioning from experimental
+    stages to full-scale production deployments. Industry leaders anticipate that
+    agentic AI tools will dominate both federal and consumer markets in the coming
+    year, with a strong emphasis on data organization and cloud computing as critical
+    enablers for tailored agentic solutions.
+
+
+    *   **Rapid Market Expansion:** The global AI agent market is projected to grow
+    from USD 5.1 billion in 2024 to USD 47.1 billion by 2030, at a compound annual
+    growth rate (CAGR) of 44.8%. The broader Agentic AI market is estimated to reach
+    USD 199.05 billion by 2034, growing at a CAGR of 43.84% from 2025. North America
+    currently holds the largest market share, with the U.S. Agentic AI market alone
+    valued at USD 2.43 billion in 2025.
+
+    *   **Shift to Agentic Workflows:** Businesses are moving beyond deploying single
+    AI agents to building robust, multi-agent workflows that can tackle end-to-end
+    business challenges. This evolution allows for seamless, automated processes that
+    reduce operational costs and improve decision-making accuracy.
+
+    *   **Enterprise Adoption:** Enterprises are making substantial progress with
+    agentic AI, driven by the realization that they cannot afford to wait. Leading
+    organizations are establishing internal "agent platforms" to handle planning,
+    tool selection, memory, workflow coordination, and human-in-the-loop approvals.
+
+    *   **Key Drivers:** Increased demand for automation, advancements in natural
+    language processing (NLP), and the pursuit of personalized customer experiences
+    are primary drivers for the AI agents industry.
+
+    *   **Infrastructure Focus:** Major vendors are adopting a holistic infrastructure
+    approach to meet the demand for agentic technology, highlighting the importance
+    of modernizing legacy infrastructure and refining data to create actionable information.
+    Cloud computing infrastructures are seen as crucial for scaling data-reliant agentic
+    AI tools.
+
+    *   **Security and Governance Concerns:** As agentic AI moves into production,
+    security specialists and ethics researchers are raising concerns about new exploit
+    techniques and the need for robust governance and safety frameworks designed specifically
+    for autonomous agent workflows.
+
+
+    **Competitor News:**
+
+
+    The Agentic Value Stream market is highly competitive, dominated by a mix of established
+    technology giants and innovative startups.
+
+
+    *   **Google (DeepMind, Cloud):** Google DeepMind is a leading AI research lab
+    focusing on goal-directed autonomous systems and artificial general intelligence
+    (AGI). Google Cloud is heavily utilized in the AI startup space and by frontier
+    model companies, providing the necessary flexibility for consuming AI services.
+    Google LLC led global sales in the autonomous AI and autonomous agents market
+    in 2023.
+
+    *   **Microsoft (Azure AI, Copilot):** Microsoft is a prominent pioneer in agentic
+    AI. Its offerings include Copilot and Copilot Studio, which allow businesses to
+    build custom agents using internal business data. Azure AI Foundry Agent service
+    provides a cloud-based core agent development service for designing, testing,
+    deploying, and orchestrating multi-agent systems.
+
+    *   **Amazon Web Services (AWS):** AWS has released AgentCore, a tool that includes
+    policy and evaluation tools for agentic AI. AWS emphasizes a broad journey for
+    delivering agentic AI solutions, focusing on modernizing legacy infrastructure
+    and refining data.
+
+    *   **Oracle:** Oracle is heavily involved in modernizing current data resources
+    to enable "context-aware AI," a core feature of agentic solutions. They are working
+    on synchronizing data from different applications for clients like the U.S. Army
+    and partnering with the Department of Energy to create an AI "cluster" network
+    on Oracle''s cloud product.
+
+    *   **OpenAI:** OpenAI''s tools are widely used by software development teams
+    to build, integrate, and scale AI-driven workflows and agents. They recently introduced
+    AgentKit, a platform for developers to design workflows visually and embed agentic
+    UIs faster, along with expanded evaluation capabilities.
+
+    *   **UiPath:** A global leader in automation, UiPath is positioning itself as
+    a frontrunner in "agentic automation," offering autonomous AI agents that plan,
+    act, and adapt to complete complex business workflows.
+
+    *   **Deloitte:** Deloitte has introduced Zora AI, a digital workforce leveraging
+    NVIDIA''s AI technology to simplify enterprise operations and enhance decision-making
+    through specialized AI agents.
+
+    *   **Accenture:** Accenture has expanded its AI Refinery platform with an AI
+    agent builder to help organizations accelerate the adoption of agentic functionality
+    and is growing its collection of pre-configured industry agent solutions with
+    NVIDIA.
+
+    *   **Zycus:** Zycus integrates agentic AI throughout the source-to-pay lifecycle,
+    transforming procurement processes with its Merlin agentic AI-powered S2P suite.
+
+    *   **Pactum:** Pactum is a key player in agentic AI transformation for procurement,
+    providing solutions that empower CPOs to use AI agents for tasks like negotiations
+    and closing supplier deals at scale.
+
+    *   **Other Notables:** Companies like Anthropic focus on building safe and capable
+    large language models for advanced reasoning, while Adept.ai automates complete
+    computer workflows. Moveworks and Aisera specialize in enterprise AI agents for
+    IT and customer service. NVIDIA is a leader in AI acceleration hardware, and x402
+    is aiming to enable agentic payments with digital dollars. Capital One is already
+    utilizing multi-agent systems for customer workflows.'
+- key: scraped_data
+  description: Data retrieved via an MCP tool call.
+  default_path: null
   search_query: null
-  mcp_tool_name: null
-  mcp_tool_args: {}
-  content: null
-- key: reference_guide
-  description: Supporting templates or style guides.
-  default_path: path/to/reference.pdf
+  mcp_tool_name: firecrawl_scrape
+  mcp_tool_args:
+    url: https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html
+    formats:
+    - markdown
+  content: "{\n  \"markdown\": \"![social share alt icon](https://www.mphasis.com/content/dam/mphasis-com/global/en/icons/share.png)\\\
+    n\\n- [Share on Facebook](https://www.facebook.com/sharer/sharer.php?u=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&network=facebook\
+    \ \\\"Share on Facebook\\\")\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n- [Share on email](mailto:?subject=Mphasis%20-%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI?%20&body=https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html\
+    \ \\\"Share on email\\\")\\n\\n[Home](https://www.mphasis.com/home.html) / [Thought\
+    \ Leadership](https://www.mphasis.com/home/thought-leadership.html) / How Can\
+    \ Enterprises Transform Value Streams with Agentic AI?\\n\\nThoughtLeadership\\\
+    n\\n[ARCHIVE](https://www.mphasis.com/home/thought-leadership/archive.archivePost.true.html)\\\
+    n\\n![How Can Enterprises Transform Value Streams with Agentic AI?](https://www.mphasis.com/content/dam/mphasis-com/global/en/home/innovation/thought-leadership/how-can-enterprises-transform-value-streams-with-agentic-ai.png)\\\
+    n\\nDecember 11, 2025\\n\\nHow Can Enterprises Transform Value Streams with Agentic\
+    \ AI?\\n\\n![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/message.png)0\\\
+    \\|![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/view.png)\\\
+    \\|\\n\\n[![Tweet about this on Twitter](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/twitter_2.png)](https://twitter.com/share?url=https://www.mphasis.com/content/mphasis-com/global/en/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html)\
+    \ 0 [![Share on Facebook](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/facebook_2.png)](https://www.facebook.com/sharer.php?u=https://www.mphasis.com/content/mphasis-com/global/en/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html)\
+    \ 0 [![Share on LinkedIn](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/linkedin_2.png)](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/content/mphasis-com/global/en/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html)\
+    \ 0\\n\\nMohammed Rupawalla\\n\\nVice President & Chief Solutions Officer, Mphasis.ai.\\\
+    n\\n**How Can Enterprises Transform Value Streams with Agentic AI?**\\n\\nEnterprise\
+    \ innovation often begins with excitement, wherein teams align quickly, prototypes\
+    \ impress, and customer feedback is encouraging. Yet, sustaining this momentum\
+    \ from concept through launch remains elusive.\\n\\nAccording to McKinsey, high-performing\
+    \ organizations release software up to [three times faster](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/how-an-ai-enabled-software-product-development-life-cycle-will-fuel-innovation)\
+    \ than their peers. Yet nearly [70 percent](https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/building-the-ai-muscle-of-your-business-leaders)\
+    \ of digital initiatives still miss their time-to-value targets as legacy processes\
+    \ fail to keep pace. While the teams are skilled, tools are modern, complexity\
+    \ can stall the very flow of innovation.\\n\\nThis happens because automation\
+    \ can complete steps, but it cannot interpret why those steps matter or how they\
+    \ influence the rest of the system. Enterprises today need workflows that understand\
+    \ themselves. They need intelligence flowing through the process, not just efficiency\
+    \ within the process. And this is the point where agentic AI begins reshaping\
+    \ how work moves across the enterprise.\\n\\n**Why Traditional Automation Cannot\
+    \ Support Modern Enterprise Value Streams**\\n\\nModern value streams behave like\
+    \ interconnected ecosystems rather than straight paths. A decision in design can\
+    \ trigger unexpected impacts in testing. A minor code update can reshape security\
+    \ requirements. Customer feedback mid-cycle can alter product direction or reshape\
+    \ service operations.\\n\\nTraditional IT workflow automation was built for stability.\
+    \ It operated well when tasks followed a defined pattern. But once the workflow\
+    \ encounters an unexpected condition, automation waits. It cannot reason, weigh\
+    \ trade-offs, nor learn from past cycles.\\n\\nThis is why organizations now acknowledge\
+    \ that faster tools do not guarantee faster outcomes. They need connected living\
+    \ memory that moves between teams, contextual learning loops that help workflows\
+    \ evolve, and semantic data modelling that ensures systems speak the same language.\
+    \ Without this understanding, the value stream keeps relying on people to fill\
+    \ in the gaps.\\n\\nThis is why enterprises are now shifting from task automation\
+    \ to process intelligence, where the emphasis moves from executing steps to understanding\
+    \ how those steps connect. Agentic transformation builds on existing environments\
+    \ through API orchestration and data harmonization so intelligence can flow without\
+    \ replacing legacy systems.\\n\\n[KPMG\u2019s](https://assets.kpmg.com/content/dam/kpmgsites/xx/pdf/2024/05/the-importance-of-value-streams-in-the-age-of-ai.pdf)\
+    \ analysis reinforces this reality. Enterprises that have introduced connected\
+    \ intelligence into their value streams have seen up to a 40 percent improvement\
+    \ in end-to-end reliability because decisions stop being made in isolation. This\
+    \ is the foundational insight that sets the stage for agentic AI.\\n\\n**How Agentic\
+    \ AI Enables Intelligent, Self-Evolving Value Streams**\\n\\nAgentic AI introduces\
+    \ a capability that traditional automation could never deliver. It allows the\
+    \ system to reason about decisions, plan its next steps, and act toward a larger\
+    \ business goal. AI agents do not wait for direction. They interpret signals,\
+    \ anticipate outcomes, and guide work forward with awareness.\\n\\nImagine a new\
+    \ product feature moving through development. Requirements evolve. Code changes.\
+    \ Testing teams need clarity. Security wants to review specific modules. Infrastructure\
+    \ wants insight into expected load. Compliance needs updated documentation. All\
+    \ these groups are aligned in purpose but disconnected in flow, a pattern that\
+    \ mirrors many business processes where handoffs slow the movement of work.\\\
+    n\\nNow imagine an AI agent equipped with enterprise memory. It reads the updated\
+    \ requirements, recognizes which components changed, recalls similar patterns\
+    \ from past releases, and alerts the right teams instantly. It prepares test sequencing,\
+    \ initiates early security assessments, begins compliance drafts, and aligns infrastructure\
+    \ planning while the feature is still evolving.\\n\\nThis is continuous intelligent\
+    \ engineering in motion. The value stream stops reacting and starts reasoning.\
+    \ Human-in-the-loop oversight ensures that people remain at the center while the\
+    \ workflow becomes far more aware of itself. This also reinforces responsible\
+    \ AI principles by ensuring that autonomy is paired with oversight.\\n\\nHence,\
+    \ AI Without Intelligence is ArtificialTM. Once workflows begin to understand\
+    \ and reason, they naturally set the stage for agentification, where intelligence\
+    \ starts shaping how the work moves, not just how it\u2019s executed.\\n\\n**How\
+    \ Agentification with Mphasis NeoIP\u2122 Enables Intelligent Enterprise Operations**\\\
+    n\\nAgentification does not arrive as a dramatic shift. It begins with small changes\
+    \ that gradually reshape how work moves. Teams find themselves aligned more naturally\
+    \ because the right context reaches them at the right moment. What once required\
+    \ handoffs and check-ins starts flowing on its own, and the value stream begins\
+    \ to behave less like a sequence of tasks and more like a connected system.\\\
+    n\\nThis progression becomes real with Mphasis NeoIP\u2122, a unified AI platform\
+    \ that brings together connected memory and a contextual intelligence engine to\
+    \ give agents a deep, situational understanding of enterprise knowledge and relationships.\
+    \ Instead of relying on fixed rules, agents use this shared context to interpret\
+    \ intent, anticipate needs, and guide work forward with awareness.\\n\\nOntosphere\u2122\
+    , the intelligence ecosystem powering Mphasis NeoIP\u2122, strengthens this capability\
+    \ by delivering context exactly when decisions are made, turning every interaction\
+    \ a part of the living enterprise memory. As this memory expands, workflows adapt\
+    \ more fluidly and integrate with existing legacy and cloud systems without disruption.\\\
+    n\\nEarly client deployments of Mphasis NeoIP\u2122 have delivered measurable\
+    \ outcomes of up to [60 percent](https://www.mphasis.com/content/dam/mphasis-com/global/en/news/press_releases/mphasis-launches-neoip-a-unified-ai-platform-for-continuous-enterprise-transformation.pdf)\
+    \ improvement in development and modernization efficiency, a 50 percent reduction\
+    \ in mean time to detect and resolve IT incidents, and 3\u20135 hour early warnings\
+    \ for major outages through predictive anomaly detection. This marks the early\
+    \ stages of the agentification maturity curve, where workflows evolve from guided\
+    \ automation to augmented reasoning, and eventually toward adaptive, self-adjusting\
+    \ systems.\\n\\n**How Intelligent Value Streams Unlock Enterprise Scale and Continuous\
+    \ Transformation**\\n\\nThe most meaningful shift appears when the value stream\
+    \ begins learning from itself. With every cycle, enterprise memory expands; with\
+    \ every decision, reasoning becomes sharper; and with every refinement, the value\
+    \ stream grows more capable. Over time, the workflow develops the ability to adjust\
+    \ without waiting for constant human orchestration, creating a pace of delivery\
+    \ that feels smoother and more intentional.\\n\\nThis marks an important inflection\
+    \ point across IT and operational value streams. It points to a future where work\
+    \ becomes wiser as it moves, where systems refine themselves through use, and\
+    \ where transformation is shaped by the quality of intelligence flowing through\
+    \ the organization. This shift also prepares the ground for intelligence to flow\
+    \ across value streams, creating the early pathways for enterprise-scale transformation\
+    \ and forming the connective tissue of an emerging AI Superhighway.\\n\\nEnterprises\
+    \ that progress in this direction will not just automate or optimize. They will\
+    \ cultivate continuous innovation through intelligent engineering that compounds\
+    \ across the organization and create environments where technology and teams evolve\
+    \ together. And in that future, the real differentiator will be how deeply intelligence\
+    \ is woven into the fabric of work itself.\\n\\nTo accelerate your shift into\
+    \ the next era of agility and resilience, connect with the Mphasis NeoIP\u2122\
+    \ advisory team. Together, we can help your enterprise unlock intelligence that\
+    \ moves with your business and turns every process, decision, and experience into\
+    \ a strategic advantage. It\u2019s time to make intelligent engineering the standard\
+    \ for transformation.\\n\\nComments\\n\\ntempest.services.disqus.com\\n\\n# tempest.services.disqus.com\
+    \ is blocked\\n\\nThis content is blocked. Contact the site owner to fix the issue.\\\
+    n\\nERR\\\\_BLOCKED\\\\_BY\\\\_CSP\\n\\nThis content is blocked. Contact the site\
+    \ owner to fix the issue.\\n\\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\\\
+    n\\nDisqus Comments\\n\\nWe were unable to load Disqus. If you are a moderator\
+    \ please see our [troubleshooting guide](https://docs.disqus.com/help/83/).\\\
+    n\\nG\\n\\nStart the discussion\u2026\\n\\n\uFEFF\\n\\nComment\\n\\n###### Log\
+    \ in with\\n\\n###### or sign up with Disqus  or pick a name\\n\\n### Disqus is\
+    \ a discussion network\\n\\n- Don't be a jerk or do anything illegal. Everything\
+    \ is easier that way.\\n\\n[Read full terms and conditions](https://docs.disqus.com/kb/terms-and-policies/)\\\
+    n\\nThis comment platform is hosted by Disqus, Inc. I authorize Disqus and its\
+    \ affiliates to:\\n\\n- Use, sell, and share my information to enable me to use\
+    \ its comment services and for marketing purposes, including cross-context behavioral\
+    \ advertising, as described in our [Terms of Service](https://help.disqus.com/customer/portal/articles/466260-terms-of-service)\
+    \ and [Privacy Policy](https://disqus.com/privacy-policy), including supplementing\
+    \ that information with other data about me, such as my browsing and location\
+    \ data.\\n- Contact me or enable others to contact me by email with offers for\
+    \ goods or services\\n- Process any sensitive personal information that I submit\
+    \ in a comment. See our [Privacy Policy](https://disqus.com/privacy-policy) for\
+    \ more information\\n\\nAcknowledge I am 18 or older\\n\\n- [Favorite this discussion](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#\
+    \ \\\"Favorite this discussion\\\")\\n\\n- ## Discussion Favorited!\\n\\n\\n\\\
+    nFavoriting means this is a discussion worth sharing. It gets shared to your followers'\
+    \ Disqus feeds, and gives the creator kudos!\\n\\n\\n[Find More Discussions](https://disqus.com/home/?utm_source=disqus_embed&utm_content=recommend_btn)\\\
+    n\\n[Share](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#)\\\
+    n\\n- Tweet this discussion\\n- Share this discussion on Facebook\\n- Share this\
+    \ discussion via email\\n- Copy link to discussion\\n\\n  - [Best](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#)\\\
+    n  - [Newest](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#)\\\
+    n  - [Oldest](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#)\\\
+    n\\nBe the first to comment.\\n\\n[Load more comments](https://disqus.com/embed/comments/?base=default&f=thoughtleadershipmphasis&t_u=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html&t_d=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&t_t=Mphasis%20%7C%20How%20Can%20Enterprises%20Transform%20Value%20Streams%20with%20Agentic%20AI%3F&s_o=default#)\\\
+    n\\n![](https://io.narrative.io/?companyId=19&id=disqus_id%3Ac6ifilss238m475&ret=img&ref=https%3A%2F%2Fwww.mphasis.com%2Fhome%2Fthought-leadership%2Fblog%2Fhow-can-enterprises-transform-value-streams-with-agentic-ai.html)![](https://io.narrative.io/?companyId=1952&id=disqus_id%3Ac6ifilss238m475&red=https%3A%2F%2Fpx.ads.linkedin.com%2Fdb_sync%3Fpid%3D16269%26puuid%3D%24%7Bnarrative.id.value%7D%26rand%3D0.287291301614)\\\
+    n\\nlive.rezync.com\\n\\n# live.rezync.com is blocked\\n\\nThis page has been\
+    \ blocked by an extension\\n\\n- Try disabling your extensions.\\n\\nERR\\\\_BLOCKED\\\
+    \\_BY\\\\_CLIENT\\n\\nReload\\n\\n\\nThis page has been blocked by an extension\\\
+    n\\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\\n\\npippio.com\\n\\\
+    n# pippio.com is blocked\\n\\nThis page has been blocked by an extension\\n\\\
+    n- Try disabling your extensions.\\n\\nERR\\\\_BLOCKED\\\\_BY\\\\_CLIENT\\n\\\
+    nReload\\n\\n\\nThis page has been blocked by an extension\\n\\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\\\
+    n\\ntempest.services.disqus.com\\n\\n# tempest.services.disqus.com is blocked\\\
+    n\\nThis content is blocked. Contact the site owner to fix the issue.\\n\\nERR\\\
+    \\_BLOCKED\\\\_BY\\\\_CSP\\n\\nThis content is blocked. Contact the site owner\
+    \ to fix the issue.\\n\\n![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\\\
+    n\\nMORE ARTICLES BY THE AUTHOR\\n\\n\\n![](https://www.mphasis.com/content/dam/mphasis-com/global/en/home/innovation/thought-leadership/why-agentic-ai-needs-a-living-enterprise-memory.png.thumb.319.319.png)\\\
+    n\\nNOVEMBER 20, 2025\\n\\n### [Why Agentic AI Needs a Living Enterprise Memory](https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html)\\\
+    n\\n[Read Article](https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html)\\\
+    n\\n[![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/share.png)](https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html#)\\\
+    n\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n\\n![](https://www.mphasis.com/content/dam/mphasis-ai/neocrux/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.png.thumb.319.319.png)\\\
+    n\\nJANUARY 07, 2025\\n\\n### [Boosting Developer Productivity with Mphasis NeoCrux\u2122\
+    \ - A Generative AI Approach](https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html)\\\
+    n\\n[Read Article](https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html)\\\
+    n\\n[![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/share.png)](https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html#)\\\
+    n\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/boosting-developer-productivity-with-mphasis-neocrux-generative-ai-approach.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n\\n[View More](https://www.mphasis.com/home/thought-leadership.authorid.00123.html)\\\
+    n\\nRECENT ARTICLES\\n\\n\\n![](https://www.mphasis.com/content/dam/mphasis-com/global/en/home/innovation/thought-leadership/why-agentic-ai-needs-a-living-enterprise-memory.png.thumb.319.319.png)\\\
+    n\\nNOVEMBER 20, 2025\\n\\n### [Why Agentic AI Needs a Living Enterprise Memory](https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html)\\\
+    n\\n[Read Article](https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html)\\\
+    n\\n[![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/share.png)](https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html#)\\\
+    n\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/why-agentic-ai-needs-a-living-enterprise-memory.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n\\n![](https://www.mphasis.com/content/dam/mphasis-com/global/en/home/innovation/thought-leadership/enhancing-code-quality-with-dqe.png.thumb.319.319.png)\\\
+    n\\nNOVEMBER 11, 2025\\n\\n### [Enhancing Code Quality with DQE: From Basic to\
+    \ Brilliant in Data Quality](https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html)\\\
+    n\\n[Read Article](https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html)\\\
+    n\\n[![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/share.png)](https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html#)\\\
+    n\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/enhancing-code-quality-with-dqe-from-basic-to-brilliant-in-data-quality.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n\\n![](https://www.mphasis.com/content/dam/mphasis-com/global/en/home/innovation/thought-leadership/rethinking-the-future-of-cx-with-ai-led-contact-centers.jpg.thumb.319.319.png)\\\
+    n\\nOCTOBER 08, 2025\\n\\n### [Mphasis NextOps - Rethinking the Future of CX with\
+    \ AI-Led Contact Centers](https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html)\\\
+    n\\n[Read Article](https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html)\\\
+    n\\n[![](https://www.mphasis.com/content/dam/blogs/common/icons/desktop/share.png)](https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html#)\\\
+    n\\n- [Share on Twitter](https://twitter.com/intent/tweet?url=https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html&network=twitter\
+    \ \\\"Share on Twitter\\\")\\n- [Share on LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html&name=asset&linktype=socialnetworksharemodule%3Ashare+intent&url=https://www.mphasis.com/home/thought-leadership/blog/mphasis-nextops-rethinking-the-future-of-cx-with-ai-led-contact-centers.html&network=linkedin\
+    \ \\\"Share on LinkedIn\\\")\\n\\n[View More](https://www.mphasis.com/home/thought-leadership.html)\\\
+    n\\nRELATED ARTICLES\\n\\n\\n[View More](https://www.mphasis.com/home/thought-leadership.type.ai%2Bdevops%2Bagentic-ai.html)\\\
+    n\\n[Contact Us](https://www.mphasis.com/home/corporate/contactus.html)\\n\\nTwitter\
+    \ Widget Iframe\",\n  \"metadata\": {\n    \"description\": \"How Can Enterprises\
+    \ Transform Value Streams with Agentic AI?\",\n    \"title\": \"Mphasis | How\
+    \ Can Enterprises Transform Value Streams with Agentic AI?\",\n    \"language\"\
+    : \"en\",\n    \"viewport\": [\n      \"width=device-width, initial-scale=1, maximum-scale=1,\
+    \ user-scalable=no\",\n      \"width=device-width, initial-scale=1.0,\\n     \
+    \                            maximum-scale=1.0, user-scalable=no\",\n      \"\
+    width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\",\n  \
+    \    \"width=device-width, initial-scale=1.0,\\n                             \
+    \    maximum-scale=1.0, user-scalable=no\",\n      \"width=device-width, initial-scale=1.0,\\\
+    n                                 maximum-scale=1.0, user-scalable=no\",\n   \
+    \   \"width=device-width, initial-scale=1.0,\\n                              \
+    \   maximum-scale=1.0, user-scalable=no\"\n    ],\n    \"color-scheme\": [\n \
+    \     \"light dark\",\n      \"light dark\",\n      \"light dark\",\n      \"\
+    light dark\"\n    ],\n    \"twitter:card\": \"summary\",\n    \"theme-color\"\
+    : [\n      \"#fff\",\n      \"#fff\",\n      \"#fff\",\n      \"#fff\"\n    ],\n\
+    \    \"favicon\": \"https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico\"\
+    ,\n    \"scrapeId\": \"019b703d-13e3-77cc-b2cd-dd4cace25672\",\n    \"sourceURL\"\
+    : \"https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html\"\
+    ,\n    \"url\": \"https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html\"\
+    ,\n    \"statusCode\": 200,\n    \"contentType\": \"text/html;charset=utf-8\"\
+    ,\n    \"timezone\": \"America/New_York\",\n    \"proxyUsed\": \"basic\",\n  \
+    \  \"cacheState\": \"miss\",\n    \"indexId\": \"91260263-763f-4078-a28b-47caeaeceea5\"\
+    ,\n    \"creditsUsed\": 1,\n    \"concurrencyLimited\": false\n  }\n}"
+- key: primary_context
+  description: The main source document.
+  default_path: path/to/source.md
   search_query: null
   mcp_tool_name: null
   mcp_tool_args: {}
   content: null
 product:
-  type: Document
+  type: Analysis/Document
   format: Markdown
   output_path: ''
-  handoff_target: VS-001-Next-Step
+  handoff_repo: null
+  handoff_path: null

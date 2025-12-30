@@ -68,7 +68,7 @@ context_manifest:
     description: "Data retrieved via an MCP tool call."
     mcp_tool_name: "firecrawl_scrape"
     mcp_tool_args:
-      url: "https://example.com"
+      url: "https://www.mphasis.com/home/thought-leadership/blog/how-can-enterprises-transform-value-streams-with-agentic-ai.html"
       formats: ["markdown"]
 
   - key: "primary_context"
