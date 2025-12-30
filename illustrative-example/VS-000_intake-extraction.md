@@ -1,12 +1,9 @@
 # VS-000: Intake & Extraction
 
-```markdown
 **ARCHITECT'S GUIDE: VS-000**
-# This is the "Entry Gate" for the Resume Tailoring Stream.
-# It uses an ephemeral Firecrawl MCP server to scrape a job URL
-# and extract the fundamental identity of the opportunity.
-```
+This is the "Entry Gate" for the Resume Tailoring Stream. It uses an ephemeral Firecrawl MCP server to scrape a job URL and extract the fundamental identity of the opportunity.
 
+```yaml
 metadata:
   story_id: "VS-000"
   version: "1.5"
@@ -15,12 +12,16 @@ metadata:
   license: "CC BY-SA 4.0"
   status: "active"
   preferred_model: "llama3"
+```
 
+```yaml
 mcp_servers:
   - name: "firecrawl"
     command: "npx"
     args: ["-y", "firecrawl-mcp"]
+```
 
+```yaml
 goal:
   as_a: "As a Career Intake Specialist"
   i_want: >
@@ -29,7 +30,9 @@ goal:
   so_that: >
     The Agentic Value Stream has a grounded "Source of Truth" and a direct 
     link back to the original opportunity for all subsequent steps.
+```
 
+```yaml
 instructions:
   reasoning_pattern: "Chain-of-Thought"
   execution_steps:
@@ -45,7 +48,9 @@ instructions:
     - step: 4
       action: "Create a heading '# Full Job Description'. Under this heading, reproduce the content of the 'markdown' field from Step 1 VERBATIM. Do NOT summarize. Do NOT omit sections. Output the text exactly as it appears in the source, stripped only of JSON curly braces and quotes."
       validation_rule: "The full, un-summarized job posting is included in the output."
+```
 
+```yaml
 context_manifest:
   - key: "company_profile_scraped"
     description: "Corporate and posting data retrieved via Firecrawl MCP tool."
@@ -64,8 +69,11 @@ context_manifest:
       2. The mailing address for their corporate headquarters.
       3. The approximate global employee headcount.
       4. The company's official "Mission Statement" or stated core purpose.
+```
 
+```yaml
 product:
   type: "Document"
   format: "Markdown"
   output_path: "illustrative-example/"
+```

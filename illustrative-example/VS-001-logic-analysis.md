@@ -1,9 +1,9 @@
 # VS-001 Analysis & Strategy
-```
-# ARCHITECT'S GUIDE: VS-001
-# This story extracts the "Winning Strategy" by mapping candidate history
-# to the specific semantic requirements of a job description.
-```
+
+ARCHITECT'S GUIDE: VS-001
+This story extracts the "Winning Strategy" by mapping candidate history to the specific semantic requirements of a job description.
+
+```yaml
 metadata:
   story_id: "VS-001"
   version: "1.2"
@@ -12,7 +12,9 @@ metadata:
   license: "CC BY-SA 4.0"
   status: "active"
   preferred_model: "llama3"
+```
 
+```yaml
 # THE GOAL: The "North Star" for the Agentic-Agent.
 goal:
   as_a: "As a Senior Career Strategist"
@@ -24,7 +26,9 @@ goal:
   so_that: >
     The candidate has a clear blueprint for alignment that maximizes their 
     competitiveness for the specific role and eliminates "Context Blindness."
+```
 
+```yaml
 # INSTRUCTIONS: Must be "Algorithmically Legible."
 instructions:
   reasoning_pattern: "Chain-of-Thought"
@@ -47,7 +51,9 @@ instructions:
   constraints:
     - "You MUST NOT invent, embellish, or infer any new facts outside of the sources."
     - "Output must be formatted as a structured strategic plan."
+```
 
+```yaml
 # CONTEXT MANIFEST: The "Bill of Materials" for this Value Story.
 context_manifest:
   - key: "intake_report"
@@ -59,10 +65,13 @@ context_manifest:
   - key: "raw_resume"
     description: "The candidate's original, untailored resume."
     default_path: "./illustrative-example/raw-resume.md"
+```
 
+```yaml
 # PRODUCT: The expected deliverable.
 product:
   type: "Document"
   format: "Markdown"
   output_path: "illustrative-example/"
   handoff_target: "VS-002-resume-generation"
+```
