@@ -1,3 +1,11 @@
+---
+name: User Story
+about: Smallest unit of releasable value for new development.
+title: ''
+labels: ''
+assignees: ''
+
+---
 **as_a:**  user, protagonist of this story
 **i_want:**  what the user wants to achieve
 **so_that:**  why the user wants to achieve this
