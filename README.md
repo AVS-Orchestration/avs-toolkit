@@ -137,7 +137,7 @@ If `uv` is not installed, I included instructions in Phase 5 of the [Setup for N
 Clone the repository and sync the environment:
 
 ```bin
-git clone https://github.com/PatrickHeaney/avs-value-story.git
+git clone https://github.com/AVS-Orchestration/avs-toolkit.git
 cd avs-value-story
 uv sync
 ```

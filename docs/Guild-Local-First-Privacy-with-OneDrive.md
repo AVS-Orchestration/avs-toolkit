@@ -37,7 +37,7 @@ cd cd ~/OneDrive/AVS-Management
 
 Open your terminal and move to your OneDrive directory:
 ```
-git clone https://github.com/PatrickHeaney/avs-value-story.git avs-toolkit
+git clone https://github.com/AVS-Orchestration/avs-toolkit.git avs-toolkit
 cd avs-toolkit
 uv sync
 ```
