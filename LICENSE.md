@@ -1,6 +1,6 @@
 # Creative Commons Attribution-ShareAlike 4.0 International Public License
 
-This license covers the **Agentic Value Stream (AVS)** framework logic, the **Value Story** YAML schemas, and all associated documentation (the "Licensed Material").
+This license covers the **Agentic Value Stream (AVS)** framework logic, the ** AVS Toolkit** schemas, and all associated documentation (the "Licensed Material").
 
 ## 1. Summary of Rights
 
@@ -15,7 +15,7 @@ This license covers the **Agentic Value Stream (AVS)** framework logic, the **Va
 To encourage enterprise adoption and protect user privacy, the Licensor (Patrick Heaney) explicitly clarifies the following:
 
 **The "Empty Container" Principle:**
-The application of this license applies only to the structure, keys, and logic of the templates and schemas. The specific data, proprietary context, and sensitive information populated within a Value Story by a user (the "Content") is NOT considered a derivative work of the Licensed Material.
+The application of this license applies only to the structure, keys, and logic of the templates and schemas. The **specific data, proprietary context, and sensitive information** populated within a Value Story by a user (the "Content") is NOT considered a derivative work of the Licensed Material.
 
 - **You OWN your data.**
 
@@ -27,3 +27,6 @@ The application of this license applies only to the structure, keys, and logic o
 
 If you utilize the AVS framework or templates in a professional or commercial context, please provide attribution to the architectural source:
 
+```
+Heaney, P. (2025). AVS Toolkit: A Framework for Autonomous Orchestration. GitHub: AVS-Orchestration/avs-toolkit.
+```
