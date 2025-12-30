@@ -1,6 +1,6 @@
 # Creative Commons Attribution-ShareAlike 4.0 International Public License
 
-This license covers the **Agentic Value Stream (AVS)** framework logic, the **Value Story** YAML schemas, and all associated documentation (the "Licensed Material").
+This license covers the **Agentic Value Stream (AVS)** framework logic, the **AVS Toolkit** schemas, and all associated documentation (the "Licensed Material").
 
 ## 1. Summary of Rights
 
@@ -26,4 +26,3 @@ The application of this license applies only to the structure, keys, and logic o
 ## 3. Attribution Notice
 
 If you utilize the AVS framework or templates in a professional or commercial context, please provide attribution to the architectural source:
-
