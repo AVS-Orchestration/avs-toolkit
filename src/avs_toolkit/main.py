@@ -12,6 +12,10 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.live import Live
 from rich.spinner import Spinner
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Internal Imports
 from .parser import parse_markdown_story

@@ -140,37 +140,49 @@ winget install Git.Git GnuWin32.Tree
 
 ## Phase 8: Set up Search & Scraping Keys
 
-To unlock the full power of the "Information Hunt," you need to save your secret keys.
+To unlock the full power of the "Information Hunt," you need to save your secret keys in a special file called `.env`. This file acts as a secure vault for your credentials.
 
 ### 1. Get your Keys (these all have generous free tiers)
 
-- Gemini (Free): Google AI Studio
-- Tavily (Search): Tavily.com
-- Firecrawl (Scraping): Firecrawl.dev
+- **Gemini** (Free): [Google AI Studio](https://aistudio.google.com/)
+- **Tavily** (Search): [Tavily.com](https://tavily.com/)
+- **Firecrawl** (Scraping): [Firecrawl.dev](https://firecrawl.dev/)
 
-### 2. Save your Keys
+### 2. Create the .env File
 
-#### For Mac Users: Add these to your ~/.zshrc
+In your Terminal or PowerShell, run the following commands to create your configuration file:
 
+**Mac/Linux:**
 ```bash
-export GEMINI_API_KEY="your_key"
-export TAVILY_API_KEY="your_key"
-export FIRECRAWL_API_KEY="your_key"
+cp .env.template .env
+code .env
 ```
 
-Then run
-
-```bash
-source ~/.zshrc.
+**Windows:**
+```powershell
+copy .env.template .env
+code .env
 ```
 
-#### For Windows Users: Run these in PowerShell
+### 3. Configure your Keys
 
-```Powershell
-[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_key', 'User')
-[System.Environment]::SetEnvironmentVariable('TAVILY_API_KEY', 'your_key', 'User')
-[System.Environment]::SetEnvironmentVariable('FIRECRAWL_API_KEY', 'your_key', 'User')
+Once the file opens in VS Code, replace the placeholders with your actual API keys. Your file should look like this:
+
+```env
+# AVS Toolkit API Keys
+GEMINI_API_KEY="your_actual_gemini_key_here"
+TAVILY_API_KEY="your_actual_tavily_key_here"
+FIRECRAWL_API_KEY="your_actual_firecrawl_key_here"
+
+# Optional: GitHub Personal Access Token
+GITHUB_PAT="your_optional_github_token_here"
 ```
+
+1. Paste your keys inside the quotes.
+2. Save the file (`Cmd+S` or `Ctrl+S`).
+
+**Privacy Note**: The `.env` file is automatically ignored by Git. Your keys stay on your computer and are never uploaded to the public internet.
+
 
 ## Phase 9: Set up your Local Workspace (OneDrive)
 

@@ -10,27 +10,17 @@ The AVS Toolkit uses the Gemini API to perform "The Information Hunt" for real-t
 4. Click "Create API key".
 5. Important: Copy this key. You will need it for the Toolkit to function.
 
-## 2. Setting the Key in your Environment
+## 2. Setting the Key in your Environment (.env)
 
-To keep your key secure, do not hardcode it into your Value Stories. Instead, the AVS Toolkit looks for an environment variable.
+To keep your key secure and easy to manage, the AVS Toolkit looks for a file named `.env` in the project root.
 
-## Mac/Linux:
+1. Locate the file named `.env.template` in the AVS Toolkit folder.
+2. Create a copy of it and rename the copy to `.env`.
+3. Open `.env` in VS Code or any text editor.
+4. Find the line `GEMINI_API_KEY="your_gemini_key_here"` and replace the placeholder with your actual key from Step 1.
+5. Save the file.
 
-Add this to your `~/.zshrc` or `~/.bash_profile`:
-```
-export GEMINI_API_KEY="your_actual_key_here"
-```
-
-Then run `source ~/.zshrc`.
-
-### Windows:
-
-In PowerShell, run:
-```
-[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_actual_key_here', 'User')
-```
-
-*Note: Restart your terminal after setting this.*
+**Note**: The `.env` file is hidden by default on many systems. In VS Code, it will be visible in the file explorer.
 
 ## 3. Usage in a Value Story
 
@@ -57,5 +47,5 @@ As of late 2025, using the `gemini-2.5-flash` model is **Free of Charge** within
 If you see an "Authentication Error" during the `assemble` phase:
 
 1. Verify your API key is active in AI Studio.
-
-2. Type echo $GEMINI_API_KEY (Mac) or $env:GEMINI_API_KEY (Windows) in your terminal to ensure the computer can "see" the key.
+2. Ensure your `.env` file is saved in the root of the `avs-value-story` folder.
+3. Ensure the key is inside quotes: `GEMINI_API_KEY="AIza..."`.

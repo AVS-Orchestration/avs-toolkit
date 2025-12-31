@@ -3,6 +3,10 @@ import httpx
 import json
 from rich.console import Console
 from rich.table import Table
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 console = Console()
 

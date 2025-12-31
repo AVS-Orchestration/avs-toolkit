@@ -2,6 +2,10 @@ import os
 import httpx
 import base64
 from mcp.server.fastmcp import FastMCP
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 mcp = FastMCP("AVS-GitHub-Context")
 
