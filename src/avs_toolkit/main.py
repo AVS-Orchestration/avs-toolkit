@@ -153,7 +153,13 @@ async def perform_assembly(path_or_url: str) -> Path:
     story.metadata.assembled_at = datetime.now().isoformat()
     story.metadata.status = "assembled"
     
-    output_path = Path.cwd() / f"{story.metadata.story_id}-assembled.yaml"
+    # Determine output path based on story configuration
+    target_dir = Path.cwd()
+    if story.product and story.product.output_path:
+        target_dir = target_dir / story.product.output_path
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+    output_path = target_dir / f"{story.metadata.story_id}-assembled.yaml"
     output_path.write_text(yaml.dump(story.model_dump(), sort_keys=False))
     
     console.print(f"\n[bold green]✓ Assembly Complete[/bold green]")
