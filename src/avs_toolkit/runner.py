@@ -65,7 +65,7 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
     generated_text = ""
     with Live(Spinner("dots", text=f"Agent ({model}) is thinking..."), refresh_per_second=10, transient=True):
         try:
-            async with httpx.AsyncClient(timeout=180.0) as client:
+            async with httpx.AsyncClient(timeout=600.0) as client:
                 response = await client.post(generate_url, json=payload)
                 
                 if response.status_code == 404:
