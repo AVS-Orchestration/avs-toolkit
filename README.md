@@ -167,26 +167,32 @@ The `avs` toolkit provides a suite of commands to move from architectural intent
 
 ### `validate`
 
+`uv run avs validate `
+
 Checks a Value Story against the "Building Code" (Pydantic models). It ensures your goal is properly framed and your instructions meet the minimum precision requirements.
 
 ```bin
-uv run avs validate illustrative-example/VS-001-logic-analysis.md
+uv run avs validate avs-standard-library/templates/vs-000-template.md
 ```
 
 ### `assemble`
 
+`uv run avs assemble `
+
 The "Information Hunt" automation. It reads your `context_manifest`, **performs live web research via Gemini 1.5 Flash** (if `search_query` is present), and packages everything into a **Briefcase** (`*-assembled.yaml`) stamped with a unique `assembled_at` timestamp.
 
 ```bin
-uv run avs assemble illustrative-example/VS-001-logic-analysis.md
+uv run avs assemble avs-standard-library/templates/vs-000-template.md
 ```
 
 ### `run`
 
+`uv run avs run `
+
 Executes the Value Story. If the file has not been assembled yet, `run` will automatically perform the assembly step before dispatching the payload to your local LLM (defaulting to Ollama/Llama3).
 
 ```bin
-uv run avs run illustrative-example/VS-001-logic-analysis.md --local
+uv run avs run avs-standard-library/templates/vs-000-template.md --local
 ```
 
 🧠 **Advanced**: See [Model Orchestration Guide](docs/GUIDE_MODEL_ORCHESTRATION.md) for using specialized models like Gemma or Mistral.
