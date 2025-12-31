@@ -88,12 +88,19 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
     # 4. The Filing Clerk: Save the Product
     if generated_text:
         product_cfg = story.get('product', {})
-        output_dir = Path(product_cfg.get('output_path', 'outputs'))
-        output_dir.mkdir(parents=True, exist_ok=True)
-
-        filename = f"{story['metadata']['story_id']}_output.md"
-        save_path = output_dir / filename
+        raw_output_path = product_cfg.get('output_path', 'outputs')
+        output_path = Path(raw_output_path)
         
+        # If output_path looks like a file (has an extension), use it directly
+        if output_path.suffix:
+            save_path = output_path
+            output_dir = save_path.parent
+        else:
+            output_dir = output_path
+            filename = f"{story['metadata']['story_id']}_output.md"
+            save_path = output_dir / filename
+            
+        output_dir.mkdir(parents=True, exist_ok=True)
         save_path.write_text(generated_text)
         
         console.print(f"\n[bold green]✓ Product Saved Successfully[/bold green]")
