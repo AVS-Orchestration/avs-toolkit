@@ -15,7 +15,7 @@ This license covers the **Agentic Value Stream (AVS)** framework logic, the **AV
 To encourage enterprise adoption and protect user privacy, the Licensor (Patrick Heaney) explicitly clarifies the following:
 
 **The "Empty Container" Principle:**
-The application of this license applies only to the structure, keys, and logic of the templates and schemas. The specific data, proprietary context, and sensitive information populated within a Value Story by a user (the "Content") is NOT considered a derivative work of the Licensed Material.
+The application of this license applies only to the structure, keys, and logic of the templates and schemas. The **specific data, proprietary context, and sensitive information** populated within a Value Story by a user (the "Content") is NOT considered a derivative work of the Licensed Material.
 
 - **You OWN your data.**
 
