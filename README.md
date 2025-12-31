@@ -134,13 +134,24 @@ If `uv` is not installed, I included instructions in Phase 5 of the [Setup for N
 
 ## 2. Installation
 
-Clone the repository and sync the environment:
+Clone the repository and install the toolkit. You have two options:
 
-```bin
+### Option A: Global System-Wide (Recommended)
+This makes the `avs` command available in any folder on your computer.
+```bash
 git clone https://github.com/AVS-Orchestration/avs-toolkit.git
-cd avs-value-story
+cd avs-toolkit
+uv tool install .
+```
+
+### Option B: Local Developer Mode
+Use this if you plan on modifying the toolkit's source code.
+```bash
+git clone https://github.com/AVS-Orchestration/avs-toolkit.git
+cd avs-toolkit
 uv sync
 ```
+*Note: In local mode, you must prefix commands with `uv run avs`.*
 
 ## 3. Your First Governance Pass
 

@@ -220,4 +220,17 @@ The toolkit uses MCP (Model Context Protocol). When you run an assembly, the too
 
 ## Installation
 
-**Congratulations** 🎉 you implemented all the Prerequisits.  Return to and continue with these [Installation](../README.md#2-installation) instructions.
+**Congratulations** 🎉 you implemented all the Prerequisits.
+
+To install the toolkit and make the `avs` command available globally on your computer, run these commands in your Terminal or PowerShell:
+
+```bash
+git clone https://github.com/AVS-Orchestration/avs-toolkit.git
+cd avs-toolkit
+uv tool install .
+```
+
+You can now run the `avs` command from any folder! Test it by typing:
+```bash
+avs doctor
+```
