@@ -156,7 +156,13 @@ async def perform_assembly(path_or_url: str) -> Path:
     # Determine output path based on story configuration
     target_dir = Path.cwd()
     if story.product and story.product.output_path:
-        target_dir = target_dir / story.product.output_path
+        specified_path = Path(story.product.output_path)
+        # If the path has a suffix (like .md), assume it's a file and use its parent
+        if specified_path.suffix:
+            target_dir = target_dir / specified_path.parent
+        else:
+            target_dir = target_dir / specified_path
+            
         target_dir.mkdir(parents=True, exist_ok=True)
 
     output_path = target_dir / f"{story.metadata.story_id}-assembled.yaml"
