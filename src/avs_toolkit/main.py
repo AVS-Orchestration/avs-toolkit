@@ -202,7 +202,7 @@ def assemble(path_or_url: str):
         raise typer.Exit(1)
 
 @app.command()
-def run(path_or_url: str, local: bool = typer.Option(False, "--local"), model: Optional[str] = typer.Option(None)):
+def run(path_or_url: str, local: bool = typer.Option(True, "--local"), model: Optional[str] = typer.Option(None)):
     """Executes a Value Story. Supports Local files or GitHub URLs."""
     try:
         content = asyncio.run(get_story_content(path_or_url))
