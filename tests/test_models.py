@@ -50,3 +50,11 @@ def test_valuestory_mcp_alignment_success():
         ]
     )
     assert story.metadata.story_id == "TEST-PASS"
+
+def test_metadata_provider_default():
+    """Test that the 'provider' field defaults to 'ollama'."""
+    meta = Metadata(story_id="TEST-DEFAULT")
+    assert meta.provider == "ollama"
+
+    meta_cloud = Metadata(story_id="TEST-CLOUD", provider="google-gemini")
+    assert meta_cloud.provider == "google-gemini"

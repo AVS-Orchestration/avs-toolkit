@@ -11,6 +11,7 @@ class Metadata(BaseModel):
     version: str = Field("1.0", description="Semantic version of this story logic.")
     author: Optional[str] = Field(None, description="The Human Architect who designed this story.")
     status: str = Field("draft", description="Lifecycle status: draft, active, or archived.")
+    provider: str = Field("ollama", description="The LLM backend provider (e.g., ollama, google-gemini).")
     preferred_model: Optional[str] = Field(
         None, 
         description="The recommended LLM (e.g., llama3, gemma2:27b) for this specific logic."

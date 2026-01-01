@@ -38,6 +38,7 @@ def parse_markdown_story(content: str) -> dict:
                 "version": str(meta.get('version', "1.6")),
                 "author": meta.get('author'),
                 "status": meta.get('status', 'draft'),
+                "provider": meta.get('provider', 'ollama'),
                 "preferred_model": meta.get('preferred_model'),
                 "assembled_at": meta.get('assembled_at')
             }

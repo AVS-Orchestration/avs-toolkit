@@ -1,5 +1,4 @@
 import yaml
-import httpx
 import json
 from pathlib import Path
 from rich.console import Console
@@ -7,11 +6,14 @@ from rich.live import Live
 from rich.markdown import Markdown
 from rich.spinner import Spinner
 
+from .providers.ollama import OllamaProvider
+from .providers.gemini import GeminiProvider
+
 console = Console()
 
-async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
+async def run_story(briefcase_path: str, model: str = "llama3"):
     """
-    Executes a Value Story against a local Ollama instance.
+    Executes a Value Story against the configured LLM provider.
     Handles Prompt Construction, Execution, and Product Saving.
     """
     path = Path(briefcase_path)
@@ -48,44 +50,24 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
 
     user_payload += "\n\nBased on the context above, produce the final product now."
 
-    # 3. Call Ollama with a Spinner
-    base_url = "http://127.0.0.1:11434"
-    generate_url = f"{base_url}/api/generate"
+    # 3. Select Provider
+    metadata = story.get('metadata', {})
+    provider_name = metadata.get('provider', 'ollama').lower()
     
-    payload = {
-        "model": model,
-        "prompt": user_payload,
-        "system": system_prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.2
-        }
-    }
+    if provider_name == 'google-gemini':
+        provider = GeminiProvider()
+        # Ensure model is appropriate for Gemini if not specified
+        if not model or model == "llama3":
+            model = "gemini-1.5-flash" # Default fallback for cloud
+    else:
+        provider = OllamaProvider()
 
+    # 4. Execute
     generated_text = ""
-    with Live(Spinner("dots", text=f"Agent ({model}) is thinking..."), refresh_per_second=10, transient=True):
-        try:
-            async with httpx.AsyncClient(timeout=600.0) as client:
-                response = await client.post(generate_url, json=payload)
-                
-                if response.status_code == 404:
-                    console.print(f"[red]Error:[/red] Ollama endpoint not found.")
-                    return
-                elif response.status_code == 400:
-                    console.print(f"[red]Error:[/red] Bad request. Does model '{model}' exist? Run 'ollama pull {model}'")
-                    return
-                    
-                response.raise_for_status()
-                result = response.json()
-                generated_text = result.get("response", "")
-        except httpx.ConnectError:
-            console.print(f"[red]Error:[/red] Could not connect to Ollama. Is the app running?")
-            return
-        except Exception as e:
-            console.print(f"[red]Error communicating with Ollama:[/red] {e}")
-            return
+    with Live(Spinner("dots", text=f"Agent ({provider_name}:{model}) is thinking..."), refresh_per_second=10, transient=True):
+        generated_text = await provider.generate(system_prompt, user_payload, model)
 
-    # 4. The Filing Clerk: Save the Product
+    # 5. The Filing Clerk: Save the Product
     if generated_text:
         product_cfg = story.get('product', {})
         raw_output_path = product_cfg.get('output_path', 'outputs')
@@ -109,3 +91,6 @@ async def run_ollama_story(briefcase_path: str, model: str = "llama3"):
         console.print(Markdown(generated_text[:500] + "..." if len(generated_text) > 500 else generated_text))
     else:
         console.print("[yellow]Agent returned an empty response.[/yellow]")
+
+# Backward compatibility alias
+run_ollama_story = run_story
