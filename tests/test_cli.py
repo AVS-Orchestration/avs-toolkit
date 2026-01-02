@@ -87,6 +87,8 @@ instructions:
 context_manifest:
   - key: "research"
     search_query: "Test"
+product:
+  output_path: ""
 """)
     
     # We need to run this in the tmp_path so the output file is written there
