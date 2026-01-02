@@ -31,10 +31,10 @@ async def test_gemini_provider_call(mocker, monkeypatch):
     mock_post = mocker.patch("httpx.AsyncClient.post", return_value=mock_response)
     
     provider = GeminiProvider()
-    response = await provider.generate("System", "User Payload", "gemini-1.5-flash")
+    response = await provider.generate("System", "User Payload", "gemini-2.5-flash")
     
     assert response == "Gemini says hello"
     # Verify URL structure contains model and key
     args, kwargs = mock_post.call_args
-    assert "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent" in args[0]
+    assert "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" in args[0]
     assert "key=test-key-123" in args[0]

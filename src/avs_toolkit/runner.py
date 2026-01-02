@@ -58,7 +58,7 @@ async def run_story(briefcase_path: str, model: str = "llama3"):
         provider = GeminiProvider()
         # Ensure model is appropriate for Gemini if not specified
         if not model or model == "llama3":
-            model = "gemini-1.5-flash" # Default fallback for cloud
+            model = "gemini-2.5-flash" # Default fallback for cloud
     else:
         provider = OllamaProvider()
 

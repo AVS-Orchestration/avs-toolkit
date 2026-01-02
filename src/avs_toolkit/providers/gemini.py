@@ -17,7 +17,7 @@ class GeminiProvider(LLMProvider):
             return None
 
         # Gemini API expects the model name in the URL
-        # e.g., "gemini-1.5-flash" or "gemini-1.5-pro"
+        # e.g., "gemini-2.5-flash" or "gemini-1.5-pro"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         
         # Construct Gemini payload

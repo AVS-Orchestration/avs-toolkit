@@ -15,7 +15,8 @@ metadata:
   story_id: "VS-000"
   version: "1.5"
   author: "Patrick Heaney"
-  preferred_model: "llama3"
+  provider: "ollama" # Options: ollama, google-gemini
+  preferred_model: "llama3" # e.g., llama3 or gemini-2.5-flash
 ```
 
 ## THE MCP MANIFEST: Defines ephemeral servers (e.g., firecrawl, filesystem)
