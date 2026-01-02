@@ -13,14 +13,32 @@ mcp = FastMCP("AVS-GitHub-Context")
 async def get_github_content(owner: str, repo: str, path: str) -> str:
     token = os.getenv("GITHUB_PAT")
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
+    
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    if token and token.strip() and not token.startswith("your_"):
+        headers["Authorization"] = f"token {token.strip()}"
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers)
         if response.status_code == 200:
             content_b64 = response.json().get("content", "")
             return base64.b64decode(content_b64).decode("utf-8")
-        return f"ERROR: Status {response.status_code}"
+        elif response.status_code == 401:
+            return f"ERROR: Unauthorized (401). Please check your GITHUB_PAT in .env."
+        elif response.status_code == 404:
+            return f"ERROR: Not Found (404). Check if the repo/path '{owner}/{repo}/{path}' is correct."
+        return f"ERROR: Status {response.status_code} - {response.text}"
+
+@mcp.tool()
+async def fetch_github_file(owner: str, repo: str, path: str) -> str:
+    """
+    Fetches the raw text content of a file from a GitHub repository.
+    Args:
+        owner: The GitHub user or organization name.
+        repo: The repository name.
+        path: The path to the file within the repository (e.g., 'README.md' or 'src/main.py').
+    """
+    return await get_github_content(owner, repo, path)
 
 @mcp.tool()
 async def release_product_to_github(repo_full_name: str, path: str, content: str, commit_message: str):
