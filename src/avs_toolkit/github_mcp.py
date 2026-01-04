@@ -30,6 +30,35 @@ async def get_github_content(owner: str, repo: str, path: str) -> str:
         return f"ERROR: Status {response.status_code} - {response.text}"
 
 @mcp.tool()
+async def create_github_issue(owner: str, repo: str, title: str, body: str, labels: list[str] = []) -> str:
+    """
+    Creates a new issue in a GitHub repository.
+    Args:
+        owner: The GitHub user or organization name.
+        repo: The repository name.
+        title: The title of the issue.
+        body: The detailed description of the issue (Markdown supported).
+        labels: A list of labels to apply to the issue (e.g., ['bug', 'enhancement']).
+    """
+    token = os.getenv("GITHUB_PAT")
+    if not token or token.startswith("your_"):
+        return "ERROR: GITHUB_PAT not configured. Issue creation requires an API token."
+
+    url = f"https://api.github.com/repos/{owner}/{repo}/issues"
+    headers = {
+        "Authorization": f"token {token.strip()}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    payload = {"title": title, "body": body, "labels": labels}
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=payload, headers=headers)
+        if response.status_code == 201:
+            issue_url = response.json().get("html_url")
+            return f"SUCCESS: Issue created at {issue_url}"
+        return f"ERROR: Status {response.status_code} - {response.text}"
+
+@mcp.tool()
 async def fetch_github_file(owner: str, repo: str, path: str) -> str:
     """
     Fetches the raw text content of a file from a GitHub repository.
