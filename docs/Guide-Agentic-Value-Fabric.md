@@ -2,7 +2,9 @@
 ## A New Architecture for Interwoven Intelligence in AI Operations
 
 **Date:** January 3, 2026  
-**Project:** 3PM.AI
+**Project:** AVS-Orchestration
+
+![Agentic Value Fabric Diagram](./images/agentic-value-fabric.png)
 
 ---
 
