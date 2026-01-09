@@ -83,6 +83,8 @@ Before diving into the technical setup, you can explore a complete Illustrative 
 
 ## ⚡ Operational Use Cases
 
+> *Note: These scenarios illustrate the architectural vision and workflow of the AVS Framework. The specific Value Stories referenced (`vs-status-report`, `vs-audit-logging`) are conceptual examples of what you can build, rather than pre-installed files in this repository.*
+
 ### Scenario A: "The Tuesday Status Report"
 *   **The Pain:** Digging through 50 Jira tickets and 3 Slack channels to find out why "Project X" is red.
 *   **The AVS Way:** Run `avs run vs-status-report`. The agent checks the repo commits against the Jira board, identifies the discrepancy, and drafts a decision memo for you to review.
@@ -165,12 +167,14 @@ my-avs-workspace/                      <-- Your Private Root
 Validate the provided template to ensure your environment is configured correctly:
 
 ```bin
-uv run avs validate vs-000-template.yaml
+uv run avs validate templates/vs-000-template.md
 ```
 
 ## 🛠 The Toolkit CLI
 
 The `avs` toolkit provides a suite of commands to move from architectural intent to execution.
+
+> **Note:** All command examples below assume you are running them from your workspace root directory (e.g., `my-avs-workspace/`).
 
 ### `validate`
 
