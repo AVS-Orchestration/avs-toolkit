@@ -4,13 +4,18 @@
 
 Developed by **Patrick Heaney**, this framework provides a rigorous methodological shift from "automating work" to **multiplying value** by externalizing tacit knowledge into **Algorithmically Legible Instructions**.
 
-## 🚀 **The Problem: The Information Hunt**
+## 🚀 **The Problem: The "Admin Tax" on Leadership**
 
-The current crisis in knowledge work is characterized by the **"5–15 hour information hunt"**—time lost every week by workers simply trying to gather the context needed to do their actual jobs [cite: 1.1, 2.1]. This **"context blindness"** is the primary reason AI requires excessive human oversight [cite: 2.4, 6.2] and fails to produce acceptable results.
+**For the Technical Program Manager (TPM):**
+You were hired to lead strategy, but you spend **15 hours a week** acting as a "human router." You chase status updates, hunt for missing Jira tickets, and manually aggregate data for the Wednesday status meeting.
+
+This is the **"Information Hunt"** [cite: 1.1, 2.1]. It is the administrative tax that prevents you from doing the work you were hired to do.
 
 # 💡 **The Solution: Agentic Value Streams (AVS)**
 
-The Agentic Value Stream (AVS) tracks the flow of agency and decision-making rather than just static data [cite: 1.1]. It organizes the capabilities of Large Language Models (LLMs) into a **cascading, iterative, and cumulative sequence** of value creation centered around the Value Story [cite: 1.1].
+The AVS Toolkit is your personal force multiplier. It allows you to build **Agentic Value Streams** that automate the collection, synthesis, and dissemination of project context.
+
+Instead of nagging developers for updates, you run a command. The Agent "reads" the repo, checks the backlog, and drafts the status report for you.
 
 **Web Research Integration:** AVS now integrates **Live Web Research** via Gemini 2.5 Flash with Google Search grounding to automate the retrieval of public information and market data.
 
@@ -60,50 +65,31 @@ Every Value Story in this repository follows the **Agile v1.2 Standard**, ensuri
 
 Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
 
-# 🛠️ The Value Story Lifecyle
+## 🛠️ The Value Story Lifecyle
 
 This diagram illustrates the **Value Story** lifecycle: **Plan** (Human), **Run** (Agent), and **Review** (Human).
 
 ```mermaid
-graph TD
-    subgraph VS [" "]
-        subgraph plan ["<span style='font-size:20px'>**1-Plan**</span>"]
-            Start([Human-Agent]) ==> Goal
-            Goal --> Instructions --> Context-Manifest
-            Start ==> Instructions
-            Start ==> Context-Manifest
-        end
-        subgraph run  ["<span style='font-size:20px'>**2-Run**</span>"]
-            Goal ==> Automation
-            Instructions ==> Automation
-            Context-Manifest ==> Automation
-            Automation == **.YAML** ==> AI-Agent
-        end
-        subgraph review ["<span style='font-size:20px'>**3-Review**</span>"]
-            AI-Agent ==> Product
-            Business-Review{Human<br>Review}
-            Product ==> Business-Review
-            Business-Review -- **Refine** --> Goal
-            
-        end
-        Business-Review == **Release** ==> Context[(GitHub, MCP,<br>Local Files)]
-        Context <==> Automation
-    end
-    
-    %% Syles
-    classDef Plan fill:#ffb6c1,stroke:#333,stroke-width:2px;
-    classDef Run fill:#90ee90,stroke:#333,stroke-width:2px;
-    classDef Review fill:#add8e6,stroke:#333,stroke-width:2px;
-    
-    %% Assignments
-    class plan Plan;
-    class run Run;
-    class review Review;
+graph LR
+    Plan([1. Plan]) -->|Goal & Context| Run[2. Run Automation]
+    Run -->|Draft Product| Review{3. Review & Refine}
+    Review -->|Approved| Release([4. Release])
+    Review -->|Iterate| Plan
 ```
 
 ## Illustrative Example
 
 Before diving into the technical setup, you can explore a complete Illustrative Example focused on tailoring a resume. This walkthrough demonstrates how a sequence of Value Stories generates a high-fidelity "Strategic Alignment Matrix," mapping a candidate's background to specific job requirements to ensure the agent produces a competitive, fact-based product without context blindness.
+
+## ⚡ Operational Use Cases
+
+### Scenario A: "The Tuesday Status Report"
+*   **The Pain:** Digging through 50 Jira tickets and 3 Slack channels to find out why "Project X" is red.
+*   **The AVS Way:** Run `avs run vs-status-report`. The agent checks the repo commits against the Jira board, identifies the discrepancy, and drafts a decision memo for you to review.
+
+### Scenario B: "The Compliance Audit"
+*   **The Pain:** Manually verifying if 20 new microservices meet the "Logging Standard."
+*   **The AVS Way:** Run `avs run vs-audit-logging`. The agent scans the codebases, flags the 2 violations, and drafts the remediation ticket for the team.
 
 # Getting Started
 
@@ -153,7 +139,28 @@ uv sync
 ```
 *Note: In local mode, you must prefix commands with `uv run avs`.*
 
-## 3. Your First Governance Pass
+## 3. Setting up Your Private Workspace
+
+The AVS Toolkit is the *engine*, but you need a *factory* to do your work. We call this the **AVS Private Workspace**. This is a folder on your local machine (e.g., in OneDrive/Dropbox) where your sensitive data and custom Value Stories live.
+
+**The Golden Rule:** Never modify the Toolkit or Standard Library directly. Always work within your Private Workspace.
+
+### Workspace Structure
+```text
+my-avs-workspace/                      <-- Your Private Root
+├── .env                               <-- Your API Keys (Secrets)
+├── avs-toolkit/                       <-- Cloned Toolkit (The Engine)
+├── avs-standard-library/              <-- Cloned Library (The Blueprints)
+│
+└── my-active-project/                 <-- YOUR WORK HAPPENS HERE
+    ├── inputs/                        <-- Your Resumes, Data, Transcripts
+    ├── outputs/                       <-- The Agent's Results
+    └── private-stories/               <-- Custom Value Stories you build
+```
+
+*To create this structure, see the [Non-Developer Setup Guide](docs/Guide-Setup-for-Non-Developers.md).*
+
+## 4. Your First Governance Pass
 
 Validate the provided template to ensure your environment is configured correctly:
 
