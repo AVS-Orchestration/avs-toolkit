@@ -61,6 +61,10 @@ Every Value Story in this repository follows the **Agile v1.2 Standard**, ensuri
 
 **Context-Manifest**: A mandatory component that shifts the burden of information retrieval from "runtime execution" to "design-time definition." It supports local files and **Live Web Research** via the `search_query` field [cite: 2.2.3].
 
+> ### ⚠️ **Important Distinction: Validation vs. Agents**
+> *   **`avs validate` (Structural)**: This CLI command checks the *format* and *schema* of your Value Story file. It ensures the YAML is valid and all mandatory fields are present.
+> *   **Agentic Validation (Reasoning)**: When you **`avs run`** a Value Story, you are deploying an "Agent." This agent uses an LLM to perform *reasoning*—such as validating your project against compliance rules or auditing a resume for alignment.
+
 ## 🧠 The Strategic Shift
 
 Under the **AVS Framework**, the highest-value human contributions complete the shift higher level thinking. Users shift from "doing the work" to strategicly generating and improving the goals, instructions, and context, used by Agentic-AI-Agents to produce the product. This moves the human architect from the role of a "task-manager" to a **"Orchestrator of Agency"** and moves the Agentic AI Agent from a "task-doer" to a **"force multiplier."**
