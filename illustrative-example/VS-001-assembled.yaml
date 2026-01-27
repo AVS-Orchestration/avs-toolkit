@@ -3,6 +3,7 @@ metadata:
   version: '1.2'
   author: Patrick Heaney
   status: assembled
+  provider: "ollama"
   preferred_model: llama3
   assembled_at: '2025-12-28T14:28:14.590310'
 goal:

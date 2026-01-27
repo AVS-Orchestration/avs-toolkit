@@ -15,6 +15,7 @@ metadata:
   story_id: "VS-000"
   version: "1.5"
   author: "Patrick Heaney"
+  provider: "ollama"
   preferred_model: "llama3"
 ```
 

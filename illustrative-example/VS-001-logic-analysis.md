@@ -11,6 +11,7 @@ metadata:
   repository: "https://github.com/AVS-Orchestration/avs-toolkit"
   license: "CC BY-SA 4.0"
   status: "active"
+  provider: "ollama"
   preferred_model: "llama3"
 ```
 
